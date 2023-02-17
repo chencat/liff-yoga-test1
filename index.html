@@ -120,9 +120,9 @@
 
 
                 liff.getProfile().then(profile => {
-                    console.log(profile)
-                    $('#profile').val(`${profile.displayName}`)
-                    $('#line').val(`LINE ID：${profile.displayName}`)
+                    // console.log(profile)
+                    $('#profile').text(`${profile.displayName}`)
+                    $('#line').text(`LINE ID：${profile.displayName}`)
                     $("#line-profile-picture").attr("src", profile.pictureUrl);
                 });
 
