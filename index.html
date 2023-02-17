@@ -109,7 +109,7 @@
                 liff.getProfile().then(profile => {
                     // console.log(profile)
                     let userId = profile.userId;
-                    $('#profile').text(`${profile.displayName}`)
+                    // $('#profile').text(`${profile.displayName}`)
                     $('#line').text(`LINE ID：${profile.displayName}`)
                     $("#line-profile-picture").attr("src", profile.pictureUrl);
 
@@ -134,6 +134,8 @@
             })
                 .then(function (response) {
                     console.log(response);
+                    $('#profile').text('測試')
+                    // $('#profile').text(`${profile.displayName}`)
                 })
                 .catch(function (error) {
                     console.log(error);
