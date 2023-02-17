@@ -106,12 +106,12 @@
             if (!liff.isLoggedIn()) {
                 liff.login();
             } else {
-                const context = liff.getContext();
-                console.log(context);
-                const idToken = liff.getIDToken();
-                console.log(idToken); // print raw idToken object
-                const decodedIDToken = liff.getDecodedIDToken();
-                console.log(decodedIDToken); // print decoded idToken object
+                // const context = liff.getContext();
+                // console.log(context);
+                // const idToken = liff.getIDToken();
+                // console.log(idToken); // print raw idToken object
+                // const decodedIDToken = liff.getDecodedIDToken();
+                // console.log(decodedIDToken); // print decoded idToken object
 
                 // const profile = liff.getProfile();
                 // console.log(profile);
@@ -121,9 +121,9 @@
 
                 liff.getProfile().then(profile => {
                     console.log(profile)
-                    $('#profile').val(`${profile.name}`)
-                    $('#line').val(`LINE ID：${profile.name}`)
-                    $("#line-profile-picture").attr("src", profile.picture);
+                    $('#profile').val(`${profile.displayName}`)
+                    $('#line').val(`LINE ID：${profile.displayName}`)
+                    $("#line-profile-picture").attr("src", profile.pictureUrl);
                 });
 
             }
