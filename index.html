@@ -36,8 +36,8 @@
         <div class="card">
             <div class="d-flex flex-row div-background align-items-center mt-3 mb-1">
                 <div class="d-flex flex-column align-self-center flex-fill align-items-center justify-content-center">
-                    <h2>123</h2>
-                    <h5>456</h5>
+                    <h2 id="profile"></h2>
+                    <h5 id="line"></h5>
                     <form class="pe-2 d-none">
                         <div class="form-group d-flex flex-row mb-2">
                             <label class="align-self-center flex-fill mx-2" style="width: 50px;"
@@ -105,15 +105,18 @@
             if (!liff.isLoggedIn()) {
                 liff.login();
             } else {
-                const context = liff.getContext();
-                console.log(context);
-                const idToken = liff.getIDToken();
-                console.log(idToken); // print raw idToken object
-                const decodedIDToken = liff.getDecodedIDToken();
-                console.log(decodedIDToken); // print decoded idToken object
+                // const context = liff.getContext();
+                // console.log(context);
+                // const idToken = liff.getIDToken();
+                // console.log(idToken); // print raw idToken object
+                // const decodedIDToken = liff.getDecodedIDToken();
+                // console.log(decodedIDToken); // print decoded idToken object
 
                 const profile = liff.getProfile();
                 console.log(profile);
+
+                $('#profile').val(`${profile.name}`)
+                $('#line').val(`LINE ID：${profile.name}`)
 
             }
         }).catch(function (error) {
