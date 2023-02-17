@@ -53,7 +53,8 @@
                         </div>
                     </form>
                 </div>
-                <img src="./5399908.png" class="align-self-center me-3" style="width: 128px;height: 128px;" alt="">
+                <img id="line-profile-picture" src="./5399908.png" class="align-self-center me-3"
+                    style="width: 128px;height: 128px;" alt="">
             </div>
 
             <div class="d-flex flex-row align-items-center mb-1">
@@ -94,19 +95,19 @@
             // 這邊開始寫使用其他功能
 
             // print the environment in which the LIFF app is running
-            console.log(liff.getLanguage());
-            console.log(liff.getVersion());
-            console.log(liff.isInClient());
-            console.log(liff.isLoggedIn());
-            console.log(liff.getOS());
-            console.log(liff.getLineVersion());
+            // console.log(liff.getLanguage());
+            // console.log(liff.getVersion());
+            // console.log(liff.isInClient());
+            // console.log(liff.isLoggedIn());
+            // console.log(liff.getOS());
+            // console.log(liff.getLineVersion());
 
             // login call, only when external browser or LINE's in-app browser is used
             if (!liff.isLoggedIn()) {
                 liff.login();
             } else {
-                // const context = liff.getContext();
-                // console.log(context);
+                const context = liff.getContext();
+                console.log(context);
                 // const idToken = liff.getIDToken();
                 // console.log(idToken); // print raw idToken object
                 // const decodedIDToken = liff.getDecodedIDToken();
@@ -114,10 +115,11 @@
 
                 const profile = liff.getProfile();
                 console.log(profile);
+                // let picture = "https://profile.line-scdn.net/0m00fe1e9572519de4512b99b214ee3248d3f18dd44302"
 
                 $('#profile').val(`${profile.name}`)
                 $('#line').val(`LINE ID：${profile.name}`)
-
+                $("#line-profile-picture").attr("src", profile.picture);
             }
         }).catch(function (error) {
             console.log(error);
