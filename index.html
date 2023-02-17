@@ -126,17 +126,17 @@
     <script>
 
         function get_me(token) {
-            axios.get('http://localhost:8000/ccdartstudio/me'), {
+
+            axios.get('http://localhost:8000/ccdartstudio/me', {
                 headers: {
                     'Authorization': `${token}`
                 }
-            }
+            })
                 .then(function (response) {
                     console.log(response);
                 })
                 .catch(function (error) {
                     console.log(error);
-                    liff.logout();
                 });
 
         }
