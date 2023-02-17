@@ -118,6 +118,7 @@
             }
         }).catch(function (error) {
             console.log(error);
+            liff.logout();
         });
 
     </script>
@@ -135,6 +136,7 @@
                 })
                 .catch(function (error) {
                     console.log(error);
+                    liff.logout();
                 });
 
         }
