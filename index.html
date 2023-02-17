@@ -22,6 +22,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -85,7 +86,8 @@
     </div>
 
     <script>
-        var liffID = '1657127222-vlpYeZjK';
+
+        let liffID = '1657127222-vlpYeZjK';
 
         liff.init({
             liffId: liffID
@@ -94,45 +96,50 @@
 
             // 這邊開始寫使用其他功能
 
-            // print the environment in which the LIFF app is running
-            // console.log(liff.getLanguage());
-            // console.log(liff.getVersion());
-            // console.log(liff.isInClient());
-            // console.log(liff.isLoggedIn());
-            // console.log(liff.getOS());
-            // console.log(liff.getLineVersion());
-
             // login call, only when external browser or LINE's in-app browser is used
             if (!liff.isLoggedIn()) {
                 liff.login();
             } else {
-                // const context = liff.getContext();
-                // console.log(context);
-                // const idToken = liff.getIDToken();
-                // console.log(idToken); // print raw idToken object
-                // const decodedIDToken = liff.getDecodedIDToken();
-                // console.log(decodedIDToken); // print decoded idToken object
 
-                // const profile = liff.getProfile();
-                // console.log(profile);
-                // let picture = "https://profile.line-scdn.net/0m00fe1e9572519de4512b99b214ee3248d3f18dd44302"
+                const idToken = liff.getIDToken();
+                console.log(idToken); // print raw idToken object
 
-
+                get_me(idToken)
 
                 liff.getProfile().then(profile => {
                     // console.log(profile)
+                    let userId = profile.userId;
                     $('#profile').text(`${profile.displayName}`)
                     $('#line').text(`LINE ID：${profile.displayName}`)
                     $("#line-profile-picture").attr("src", profile.pictureUrl);
+
                 });
 
             }
         }).catch(function (error) {
             console.log(error);
         });
+
     </script>
 
+    <script>
 
+        function get_me(token) {
+            axios.get('http://localhost:8000/ccdartstudio/me'), {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            }
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        }
+
+    </script>
 
 </body>
 
