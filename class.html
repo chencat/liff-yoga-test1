@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url("./image/picture/background.jpg");
+            height: 100%;
+            width: 100%;
+        }
+
+        .navbar-expand-md {
+            background: #B2C5BF;
+        }
+
+        .navbar-expand-md h1 {
+            color: white;
+        }
+
+        .navbar .container-fluid {
+            background: #B2C5BF;
+        }
+
+        .navbar .container-fluid h1 {
+            color: white;
+        }
+
+        .calendar-style {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .calendar-style .card .card-header {
+            background: #B2C5BF;
+            color: white;
+        }
+
+        .rounded-circle {
+            /* width: 40px; */
+            /* height: 40px; */
+            /* border-radius: 50%; */
+            font-size: 12px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .navbar-brand.abs {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            text-align: center;
+        }
+
+        .bg-default {
+            background: #B2C5BF;
+            color: white;
+        }
+
+        .btn-select {
+            background: #B2C5BF !important;
+            color: blac !important;
+            border-color: black !important;
+        }
+
+        .btn-class {
+            background: lightgray !important;
+            color: black !important;
+        }
+
+        .btn-before {
+            color: lightgray !important;
+        }
+
+
+
+        .text-default {
+            color: #B2C5BF;
+        }
+
+
+        .center {
+            margin: auto;
+            padding: 1px;
+        }
+
+        .child {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <style>
+        /* override variables here */
+        :root {
+            --color-dark: #000;
+            --color-dark-gray: #555;
+            --color-blue: #1E3A8A;
+            --box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2)
+        }
+
+        /* core styles */
+        nav {
+            background-color: white;
+            display: flex;
+            grid-area: header;
+            box-shadow: var(--box-shadow);
+        }
+
+        nav a {
+            color: var(--color-dark-gray);
+            text-align: center;
+            font-size: 12px;
+            padding: 1.2rem 0;
+            width: 25%;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: var(--color-dark);
+            color: white;
+        }
+
+        nav a:focus {
+            background-color: var(--color-blue);
+        }
+
+        nav .active {
+            background-color: var(--color-blue);
+            color: white;
+        }
+
+        /* @media screen and (max-width: 600px) { */
+        nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .class-card {
+            height: calc(100% - 88px - 36px - 227px - 66px - 40px);
+        }
+
+        .thumb-post-img {
+            object-fit: none;
+            /* Do not scale the image */
+            object-position: center;
+            /* Center the image within the element */
+            width: 100%;
+            max-height: 52;
+            margin-bottom: 1rem;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <nav class="navbar position-fixed bg-default" style="height: 88px;top: 0px;">
+        <div class="container-fluid justify-content-center">
+            <h1 class="navbar-brand">課程列表</h1>
+        </div>
+    </nav>
+
+    <div class="container-fluid position-fixed" style="height: 227px;top:98px;">
+        <div class="calendar-style">
+            <div class="card text-center">
+                <div class="card-header">
+                    <div class="row bg-default">
+                        <div class="col text-start center">
+                            <button onclick="onToday()" type="button" class="btn text-white"
+                                style="font-size: 12px;">今日</button>
+                        </div>
+                        <div class="col-6 center">
+                            <div class="hstack">
+                                <button onclick="onPrev()" type="button" class="btn text-white"
+                                    style="font-size: 8px;">❮</button>
+                                <p class="center month"></p>
+                                <button onclick="onNext()" type="button" class="btn text-white"
+                                    style="font-size: 8px;">❯</button>
+                            </div>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col p-1 mb-2 text-dark">一</div>
+                        <div class="col p-1 mb-2 text-dark">二</div>
+                        <div class="col p-1 mb-2 text-dark">三</div>
+                        <div class="col p-1 mb-2 text-dark">四</div>
+                        <div class="col p-1 mb-2 text-dark">五</div>
+                        <div class="col p-1 mb-2 text-dark">六</div>
+                        <div class="col p-1 mb-2 text-dark">日</div>
+                    </div>
+                    <div class="row">
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(1)" type="button"
+                                class="btn rounded-circle text-center day-1">1</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(2)" type="button"
+                                class="btn rounded-circle text-center day-2">2</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(3)" type="button"
+                                class="btn rounded-circle text-center day-3">3</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(4)" type="button"
+                                class="btn rounded-circle text-center day-4">4</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(5)" type="button"
+                                class="btn rounded-circle text-center day-5">5</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(6)" type="button"
+                                class="btn rounded-circle text-center day-6">6</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(7)" type="button"
+                                class="btn rounded-circle text-center day-7">7</button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(8)" type="button"
+                                class="btn rounded-circle text-center day-8">8</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(9)" type="button"
+                                class="btn rounded-circle text-center day-9">9</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(10)" type="button"
+                                class="btn rounded-circle text-center day-10">10</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(11)" type="button"
+                                class="btn rounded-circle text-center day-11">11</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(12)" type="button"
+                                class="btn rounded-circle text-center day-12">12</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(13)" type="button"
+                                class="btn rounded-circle text-center day-13">13</button>
+                        </div>
+                        <div class="col p-1 mb-2">
+                            <button onclick="onSelect(14)" type="button"
+                                class="btn rounded-circle text-center day-14">14</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mb-2 position-fixed d-flex align-items-center justify-content-center"
+        style="height: 36px;top:335px">
+        <div class="card w-100 h-100 align-self-center p-1 selectday" style="background: #D9D9D9;">
+            週一
+        </div>
+    </div>
+
+    <div class="container-fluid position-fixed overflow-auto class-card" style="top:381px;">
+
+    </div>
+
+
+    <!-- <nav style="height: 66px;">
+        <a href="#">課程公告</a>
+        <a href="#" class="active">課程列表</a>
+        <a href="#">個人通知</a>
+        <a href="#">個人資訊</a>
+    </nav> -->
+
+    <script>
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var today = moment().format('yyyy-MM-DD');
+        var current = moment().format('yyyy-MM-DD');
+        var firstday = moment().weekday(0).format('yyyy-MM-DD');
+        var selectday = null;
+
+        var array_class = [
+            {
+                "student": {
+                    "status": "已報名"
+                },
+                "class": {
+                    "id": "",
+                    "yyyymmdd": "2023-02-18",
+                    "cpacity": "",
+                    "type": "offline",
+                },
+                "course": {
+                    "id": "",
+                    "name": "療癒 Restorative",
+                    "weekday": "週六",
+                    "hhmm_start": "14:15",
+                    "hhmm_end": "15:30",
+                    "minutes": 75,
+                    "location": "",
+                    "address": "",
+                    "teacher": [
+                        {
+                            "icon": "./image/icon/teacher/Doris.jpg"
+                        }
+
+                    ],
+                    "type": ["offline", "online"],//工作坊 workshop/實體課 offline/視訊課 online
+                    "cpacity": 10,//課程人數上限
+                    "note": {
+                        "offline": "",
+                        "online": "",
+                        "workshop": "",
+                    }
+                }
+            }
+        ];
+
+        function onToday() {
+            current = moment().format('yyyy-MM-DD');
+
+            onCalendarView(current, today)
+            onListView(today)
+        }
+
+        function onNext() {
+            if (current == today) {
+                current = moment(today).add(14, 'days').format('yyyy-MM-DD')
+            } else {
+                current = moment(current).add(14, 'days').format('yyyy-MM-DD')
+            }
+            onCalendarView(current, current);
+            onListView(current)
+        }
+
+        function onPrev() {
+
+            if (current == today) {
+                current = moment(today).add(-14, 'days').format('yyyy-MM-DD')
+            } else {
+                current = moment(current).add(-14, 'days').format('yyyy-MM-DD')
+            }
+
+            onCalendarView(current, current)
+            onListView(current)
+        }
+
+        function onSelect(index) {
+
+            selectday = moment(firstday).add(index - 1, 'days').format('yyyy-MM-DD')
+
+            onCalendarView(current, selectday)
+            onListView(selectday)
+        }
+
+        function onCalendarView(begin, select) {
+
+            selectday = select
+
+            for (let i = 0; i < 14; i++) {
+                let yyyymmdd = moment(begin).weekday(0).add(i, 'days').format('yyyy-MM-DD');
+                let day = parseInt(moment(begin).weekday(0).add(i, 'days').format('DD'));
+                // console.log(moment().weekday(0).add(i, 'days').format('yyyy-MM-DD'))
+
+                $(`.day-${i + 1}`).html(day);
+
+                if (yyyymmdd < today) {
+                    $(`.day-${i + 1}`).addClass('btn-before')
+                } else {
+                    $(`.day-${i + 1}`).removeClass('btn-before')
+                }
+
+                if (yyyymmdd == select && yyyymmdd >= today) {
+                    $(`.day-${i + 1}`).addClass('btn-select')
+                    // $(`.day-${i + 1}`).toggleClass("btn-select");
+                } else {
+                    $(`.day-${i + 1}`).removeClass('btn-select')
+                }
+            }
+
+            $(`.month`).html(moment(begin).weekday(0).format('yyyy年MM月'));
+            firstday = moment(begin).weekday(0).format('yyyy-MM-DD');
+
+            let weekday = ['一', '二', '三', '四', '五', '六', '日'][moment(select).weekday()];
+
+            $('.selectday').html(`${moment(select).format('yyyy/MM/DD')} 週${weekday}`)
+        }
+
+        function onListView(yyyymmdd) {
+            $(".class-card").empty();
+
+            let _array_class = array_class.filter(row => row.class.yyyymmdd == yyyymmdd);
+            console.log(_array_class, yyyymmdd)
+            if (_array_class.length == 0) {
+
+            } else {
+
+
+                _array_class.forEach(obj_class => {
+
+                    let class_type = obj_class.class.type;
+                    if (class_type == 'offline') {
+                        class_type = '實體課'
+                    } else if (class_type == 'online') {
+                        class_type = '視訊課'
+                    } else if (class_type == 'workshop') {
+                        class_type = '工作坊'
+                    }
+                    $(".class-card").append(`<div class="card mb-2 card-class">
+            <div class="hstack gap-2" style="height: 88px;">
+                <div></div>
+                <img src="${obj_class.course.teacher[0].icon}" style="width: 52px;height: 52px;" alt="...">
+                <div class="vstack gap-2" style="width: 100%;">
+                    <div></div>
+                    <h5 class="card-title" style="color:#A95050;">${obj_class.course.hhmm_start}~${obj_class.course.hhmm_end}</h5>
+                    <p class="card-text" style="color: #5F5F5F;">${obj_class.course.name}</p>
+                </div>
+                <div class="vstack gap-2" style="width: 100px;">
+                    <div></div>
+                    <div class="bg-body-tertiary border text-center">${class_type}</div>
+                    <div></div>
+                    <div class="bg-body-tertiary border text-center d-none">${''}</div>
+                    <div></div>
+                </div>
+                <div></div>
+            </div>
+        </div>`)
+                })
+            }
+
+        }
+
+        function onRefresh() {
+
+            const token = liff.getIDToken();
+
+            axios.get(`http://localhost:8000/ccdartstudio/me?date=${selectday}`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+                    console.log(response);
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+
+        onToday();
+        onListView(today);
+
+        // moment.locale('zh-tw');
+        // var begin = moment(new Date()).startOf('week').isoWeekday(1);
+        // console.log(moment.locale(), begin)
+
+        // console.log(moment().format('yyyy-MM-DD'))
+        // console.log(moment().weekday())
+        // console.log(moment().weekday(0).add(14, 'days').format('yyyy-MM-DD'))
+
+
+        let calendar = [
+
+        ];
+
+        let array = [
+            {
+                "class": {
+                    "id": "",
+                    "yyyymmdd": "",
+                    "cpacity": "",
+                },
+                "course": {
+                    "id": "",
+                    "name": "課程名稱",
+                    "weekday": "週一",
+                    "hhmm-start": "14:15",
+                    "hhmm-end": "15:30",
+                    "minutes": 75,
+                    "location": "",
+                    "address": "",
+                    "teacher": [
+
+                    ],
+                    "type": ["offline", "online"],//工作坊 workshop/實體課 offline/視訊課 online
+                    "cpacity": 10,//課程人數上限
+                    "note": {
+                        "offline": "",
+                        "online": "",
+                        "workshop": "",
+                    }
+                }
+            }
+        ];
+
+
+        $(".card-class").click(function () {
+            window.location.href = 'class-info.html';
+        });
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
