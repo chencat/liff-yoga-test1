@@ -28,18 +28,12 @@
 </head>
 
 <body>
-
-    <nav class="navbar">
-        <div class="container-fluid justify-content-center">
-            <h1 class="navbar-brand">首頁</h1>
-        </div>
-    </nav>
-
     <script>
 
         function fetchUser() {
 
-            let host = 'https://e523-2001-b011-8006-300f-ec2e-de2c-8dcd-a66d.ngrok.io'
+            // let host = 'https://e523-2001-b011-8006-300f-ec2e-de2c-8dcd-a66d.ngrok.io'
+            let host = 'http://59.126.54.247:8000/'
             const token = liff.getIDToken();
 
             axios.get(`${host}/ccdartstudio/me`, {
