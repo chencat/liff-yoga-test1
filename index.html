@@ -39,9 +39,10 @@
 
         function fetchUser() {
 
+            let host = 'https://e523-2001-b011-8006-300f-ec2e-de2c-8dcd-a66d.ngrok.io'
             const token = liff.getIDToken();
 
-            axios.get(`http://59.126.54.247:8000/ccdartstudio/me`, {
+            axios.get(`${host}/ccdartstudio/me`, {
                 headers: {
                     'Authorization': `${token}`
                 }
