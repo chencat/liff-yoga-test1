@@ -31,7 +31,7 @@
             color: white;
         }
 
-        .fab {
+        .btn-activity {
             width: 70px;
             height: 70px;
             /* background-color: red; */
@@ -39,7 +39,7 @@
             box-shadow: 0 6px 10px 0 #666;
             transition: all 0.1s ease-in-out;
 
-            font-size: 12px;
+            font-size: 20px;
             color: white;
             text-align: center;
             line-height: 70px;
@@ -66,28 +66,44 @@
         /* } */
     </style>
 
+    <style>
+        .course-teacher-icon {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10%;
+        }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 </head>
 
 <body>
-
-    <nav class="navbar bg-default row" style="height: 88px">
-        <button onclick="onBack()" type="button" class="col btn align-self-center text-white">
+    <div class="bg-default d-flex justify-content-center align-items-center" style="height: 44px;">
+        <button onclick="onBack()" style="width:40px" type="button" class="btn align-self-center">
             <img src="image/icon/student/back.png">
         </button>
+        <div class="align-self-center text-center flex-fill" style="font-size: 20px;">課程資訊</div>
+        <div style="width:40px"></div>
+    </div>
 
-        <h1 class="col-8 align-self-center text-center">課程資訊</h1>
-        <div class="col"> </div>
-    </nav>
+    <div class="container-fluid mt-3 d-none class-message">
+        <div class="card d-flex flex-row justify-content-start align-items-center bg-default">
+            <img class="align-self-center mx-2" src="./image/icon/student/information.png" />
+            <h6 class="number_of_alternate align-self-center flex-grow-1 m-0 p-1">本課程已額滿，您的候補序號：3號</h6>
+        </div>
+    </div>
 
-    <div class="container-fluid overflow-auto div-info mt-4">
+    <div class="container-fluid overflow-auto div-info mt-3">
         <div class="card">
             <div class="card-header" style="background: white;border-color: white;">
                 <div class="hstack gap-2 d-flex" style="height: 44px;">
                     <p class="me-auto m-0 class-name"></p>
-                    <span class="badge bg-secondary m-0 class-type"></span>
+                    <span class="badge bg-light m-0 class-type text-secondary"></span>
                 </div>
                 <hr>
                 <div class="hstack" style="height: 120px;">
@@ -96,7 +112,7 @@
                         <p class="course-tearcher"></p>
                     </div>
                     <div>
-                        <img class="course-teacher-icon" style="width: 100px;height: 100px;" />
+                        <img class="course-teacher-icon mt-4" />
                     </div>
                 </div>
                 <div class="hstack gap-2 d-flex" style="height: 44px;">
@@ -107,39 +123,76 @@
                     <img src="./image/icon/student/time.png">
                     <p class="me-auto m-0 class-time"></p>
                 </div>
-                <!-- <div class="hstack gap-2 d-flex" style="height: 44px;">
-                    <img src="./image/icon/student/clsss-type.png">
-                    <p class="me-auto m-0 course-type">基礎1 Basic1</p>
-                </div> -->
+                <div class="hstack gap-2 d-flex div-location" style="height: 44px;">
+                    <img src="./image/icon/student/location.png">
+                    <p class="me-auto m-0 course-location"></p>
+                </div>
             </div>
 
         </div>
         <div class="card" style="margin-top: 10px;">
             <div class="card-header" style="background: white;border-color: white;">
                 <div class="hstack gap-2 d-flex" style="height: 44px;">
-                    <img src="./image/icon/student/message.png">
+                    <img src="./image/icon/student/message1.png">
                     <p class="me-auto m-0">課程簡介</p>
                 </div>
                 <hr>
-                <p class="overflow-auto course-note">
+                <p class="overflow-auto course-info">
+
+                </p>
+            </div>
+        </div>
+
+        <div class="card card-online d-none" style="margin-top: 10px;">
+            <div class="card-header" style="background: white;border-color: white;">
+                <div class="hstack gap-2 d-flex" style="height: 44px;">
+                    <img src="./image/icon/student/message1.png">
+                    <p class="me-auto m-0">視訊課簡介</p>
+                </div>
+                <hr>
+                <p class="overflow-auto course-online-info">
+
+                </p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 10px;">
+            <div class="card-header" style="background: white;border-color: white;">
+                <div class="hstack gap-2 d-flex" style="height: 44px;">
+                    <img src="./image/icon/student/message1.png">
+                    <p class="me-auto m-0">老師介紹</p>
+                </div>
+                <hr>
+                <p class="overflow-auto course-teacher-info">
 
                 </p>
             </div>
         </div>
         <div style="height: 160px;"></div>
     </div>
-    <div class="fab bg-default"> 報名上課 </div>
+    <div class="btn-activity bg-default"> 報名 </div>
 
     <script>
-        var class_info =
-        {
-            "student": {
-                "status": "已報名"
-            },
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var activity_type = null;
+
+        var obj_class =
+        {//學生課堂名單
+            // "activity": {
+            //     "id": "4E22936B-29CE-4804-89E9-34D5B2DF645D",
+            //     "check": null,//簽到
+            //     "case": "apply",//報名
+            //     "number_of_alternate": 0//報名序號，<=0為上課名單中，>0候補名單
+            // },
             "class": {
-                "id": "",
-                "yyyymmdd": "2023-02-18",
-                "cpacity": "",
+                "id": "6724BCAE-05AB-4E0D-83C7-040BE52873D7",
+                "yyyymmdd": "2023-02-21",
+                "cpacity": 10,
                 "type": "offline",
             },
             "course": {
@@ -155,6 +208,9 @@
                     {
                         "icon": "./image/icon/teacher/Doris.jpg",
                         "name": "Doris"
+                    }, {
+                        "icon": "./image/icon/teacher/bella.jpg",
+                        "name": "Bella"
                     }
                 ],
                 "type": ["offline", "online"],//工作坊 workshop/實體課 offline/視訊課 online
@@ -167,46 +223,249 @@
             }
         };
 
-        let class_type = class_info.class.type;
-        if (class_type == 'offline') {
-            class_type = '實體課'
-        } else if (class_type == 'online') {
-            class_type = '視訊課'
-        } else if (class_type == 'workshop') {
-            class_type = '工作坊'
-        }
-
-        $(".class-name").html(class_info.course.name)
-        $(".class-type").html(class_type)
-
-        let teacher = [];
-        class_info.course.teacher.forEach(obj => {
-            teacher.push(obj.name)
-        })
-
-        $(".course-tearcher").html(teacher.join(','))
 
 
-        $(".course-teacher-icon").attr("src", class_info.course.teacher[0].icon);
+        // "check": null,//簽到
+        //     "case": "apply",//報名
+        //         "number_of_alternate": 0//報名序號，<=0為上課名單中，>0候補名單
 
-
-        let yyyymmdd = class_info.class.yyyymmdd;
-        let weekday = ['一', '二', '三', '四', '五', '六', '日'][moment(yyyymmdd).weekday()];
-
-        let class_date = `${moment(yyyymmdd).format('yyyy/MM/DD')} 週${weekday}`;
-
-        $(".class-date").html(class_date)
-
-        $(".class-time").html(`${class_info.course.hhmm_start}~${class_info.course.hhmm_end}`)
-
-        let course_note = class_info.course.note[class_info.class.type];
-
-        $(".course-note").html(course_note)
 
         function onBack() {
             window.location.href = 'class.html';
         }
 
+        $('body').on('click', '.btn-activity', function () {
+
+            if (activity_type == 'apply') {
+                onApply()
+            } else if (activity_type == 'cancel') {
+                onCancel()
+            } else if (activity_type == 'checkin') {
+                onCheckin()
+            }
+        })
+
+    </script>
+
+    <script>
+        function onApply() {
+            // 上課
+            let yyyymmdd = obj_class.class.yyyymmdd;
+
+            let now = moment().format('yyyy-MM-DDThh:mm:ss')
+            let bound = moment(`${yyyymmdd}T${obj_class.course.hhmm_start}:00`).add(-1, 'hours').format('yyyy-MM-DDTHH:mm:ss')
+
+            if (now > bound) {
+                Swal.fire({
+                    title: '是否參加?目前已過取消時間，選擇參加後，就無法取消',
+                    showCancelButton: true,
+                    comfirmButtonText: '參加',
+                    cancelButtonText: '取消',
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        let data = {
+                            class_id: obj_class.class.id,
+                            case: 'apply'
+                        }
+
+                        sendRequest(data);
+                    }
+                })
+            } else {
+                Swal.fire({
+                    title: '是否參加',
+                    showCancelButton: true,
+                    confirmButtonText: '參加',
+                    cancelButtonText: '取消',
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        let data = {
+                            class_id: obj_class.class.id,
+                            case: 'apply'
+                        }
+
+                        sendRequest(data);
+                    }
+                })
+            }
+
+
+
+        }
+
+        function onCancel() {
+            // 取消上課
+            let data = {
+                class_id: obj_class.class.id,
+                case: 'cancel',
+                activity_id: obj_class.activity.id
+            }
+            // console.log(data)
+            sendRequest(data);
+        }
+
+        function onCheckin() {
+            // 簽到
+            let data = {
+                class_id: obj_class.class.id,
+                case: 'checkin',
+                activity_id: obj_class.activity.id
+            }
+
+            sendRequest(data);
+        }
+
+        function sendRequest(data) {
+            // const token = liff.getIDToken();
+
+            axios.post(`http://localhost:8000/ccdartstudio/activity`, data,
+                // {
+                //     headers: {
+
+                //     }
+                // }
+            )
+                .then(function (response) {
+                    console.log(response);
+
+                    swal.fire(response.data.msg)
+                    fetchData();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function fetchData() {
+            // let class_id = '1B158576-D979-4A5A-91EB-E9431A6D2069';
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+            axios.get(`http://localhost:8000/ccdartstudio/class/${class_id}`)
+                .then(function (response) {
+                    // console.log(response);
+                    obj_class = response.data.obj;
+
+                    onView();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function onView() {
+
+            let class_type = obj_class.class.type;
+            let class_type_text = '';
+            if (class_type == 'offline') {
+                class_type_text = '實體課'
+            } else if (class_type == 'online') {
+                class_type_text = '視訊課'
+            } else if (class_type == 'workshop') {
+                class_type_text = '工作坊'
+            }
+
+            $(".class-name").html(obj_class.course.name)
+            $(".class-type").html(class_type_text)
+
+            if (class_type == 'online') {
+                $(".div-location").addClass('d-none')
+            } else {
+                $(".div-location").removeClass('d-none')
+                $(".course-location").html(obj_class.course.location)
+            }
+
+            let teacher = [];
+            obj_class.course.teacher.forEach(obj => {
+                teacher.push(obj.name)
+            })
+
+            $(".course-tearcher").html(teacher.join('、'))
+
+            $(".course-teacher-icon").attr("src", obj_class.course.teacher[0].pictureUrl);
+
+
+            let yyyymmdd = obj_class.class.yyyymmdd;
+
+            let weekday = ['一', '二', '三', '四', '五', '六', '日'][moment(yyyymmdd).weekday()];
+
+            let class_date = `${moment(yyyymmdd).format('yyyy/MM/DD')} 週${weekday}`;
+
+            $(".class-date").html(class_date)
+
+            $(".class-time").html(`${obj_class.course.hhmm_start}~${obj_class.course.hhmm_end}`)
+
+            // let course_note = obj_class.course.note[obj_class.class.type];
+
+            let course_info = obj_class.course.note.info;
+            let course_online_info = obj_class.course.note.online;
+            let course_teacher_info = obj_class.course.teacher[0].info;
+
+            $(".course-info").html(course_info.replaceAll('\n', '<br>'))
+
+            $(".course-teacher-info").html(course_teacher_info.replaceAll('\n', '<br>'))
+
+            $(".course-online-info").html(course_online_info.replaceAll('\n', '<br>'))
+
+            if (class_type == 'online') {
+                $(".card-online").removeClass('d-none')
+            } else {
+                $(".card-online").addClass('d-none')
+            }
+
+            let activity = obj_class.activity
+
+            $(".btn-activity").removeClass('d-none');
+
+            let chackinable = false;//只有課堂開始前60分鐘才可以簽到，前30才可以取消
+
+            let now = moment().format('yyyy-MM-DDThh:mm:ss')
+            let bound = moment(`${yyyymmdd}T${obj_class.course.hhmm_start}:00`).add(-1, 'hours').format('yyyy-MM-DDTHH:mm:ss')
+
+            if (now > bound) {
+                chackinable = true;
+            } else {
+                chackinable = false;
+            }
+
+            let class_activity = obj_class.class.activity;
+            console.log(class_activity)
+            if (activity != null && activity.checkin == true) {
+                $(".btn-activity").addClass('d-none');
+            } else if (class_activity == 'apply' && (activity == null || activity.case == 'cancel')) {
+                $(".btn-activity").html('參加')
+                activity_type = 'apply';
+                $(".btn-activity").removeClass('d-none');
+            } else if (activity != null && chackinable == false) {
+                $(".btn-activity").html('取消')
+                activity_type = 'cancel';
+                $(".btn-activity").removeClass('d-none');
+            } else if (activity != null && chackinable == true) {
+                $(".btn-activity").html('簽到')
+                activity_type = 'checkin';
+                $(".btn-activity").removeClass('d-none');
+            } else {
+                $(".btn-activity").addClass('d-none');
+            }
+
+            if (activity != null && activity.number_of_alternate != null && activity.number_of_alternate > 0) {
+                $(".number_of_alternate").html(`本課程已額滿，您的候補序號：${activity.number_of_alternate}號`)
+                $(".class-message").removeClass('d-none')
+            }
+            // else if (class_activity == 'none') {
+            //     $(".number_of_alternate").html(`本課程目前無法預約`)
+            //     $(".class-message").removeClass('d-none')
+            // } else if (class_activity == 'finish') {
+            //     $(".number_of_alternate").html(`本課程已結束`)
+            //     $(".class-message").removeClass('d-none')
+            // } 
+            else {
+                $(".class-message").addClass('d-none')
+            }
+        }
+
+        fetchData();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

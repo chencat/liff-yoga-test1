@@ -14,22 +14,6 @@
             width: 100%;
         }
 
-        .navbar-expand-md {
-            background: #B2C5BF;
-        }
-
-        .navbar-expand-md h1 {
-            color: white;
-        }
-
-        .navbar .container-fluid {
-            background: #B2C5BF;
-        }
-
-        .navbar .container-fluid h1 {
-            color: white;
-        }
-
         .calendar-style {
             padding-left: 0px;
             padding-right: 0px;
@@ -41,20 +25,11 @@
         }
 
         .rounded-circle {
-            /* width: 40px; */
-            /* height: 40px; */
-            /* border-radius: 50%; */
             font-size: 12px;
-            padding-left: 10px;
-            padding-right: 10px;
+            /* padding-left: 10px; */
+            /* padding-right: 10px; */
         }
 
-        .navbar-brand.abs {
-            position: absolute;
-            width: 100%;
-            left: 0;
-            text-align: center;
-        }
 
         .bg-default {
             background: #B2C5BF;
@@ -72,10 +47,14 @@
             color: black !important;
         }
 
+        .btn-activity {
+            background: lightgreen !important;
+            color: black !important;
+        }
+
         .btn-before {
             color: lightgray !important;
         }
-
 
 
         .text-default {
@@ -87,63 +66,11 @@
             margin: auto;
             padding: 1px;
         }
-
-        .child {
-            position: relative;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
     </style>
     <style>
-        /* override variables here */
-        :root {
-            --color-dark: #000;
-            --color-dark-gray: #555;
-            --color-blue: #1E3A8A;
-            --box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2)
-        }
-
-        /* core styles */
-        nav {
-            background-color: white;
-            display: flex;
-            grid-area: header;
-            box-shadow: var(--box-shadow);
-        }
-
-        nav a {
-            color: var(--color-dark-gray);
-            text-align: center;
-            font-size: 12px;
-            padding: 1.2rem 0;
-            width: 25%;
-            transition: all 0.3s ease;
-        }
-
-        nav a:hover {
-            background-color: var(--color-dark);
-            color: white;
-        }
-
-        nav a:focus {
-            background-color: var(--color-blue);
-        }
-
-        nav .active {
-            background-color: var(--color-blue);
-            color: white;
-        }
-
-        /* @media screen and (max-width: 600px) { */
-        nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
         .class-card {
-            height: calc(100% - 88px - 36px - 227px - 66px - 40px);
+            height: calc(100% - 88px - 36px - 227px - 60px);
+            /* - 66px */
         }
 
         .thumb-post-img {
@@ -156,21 +83,33 @@
             margin-bottom: 1rem;
         }
     </style>
+    <style>
+        .circle-img {
+            width: 52px;
+            height: 52px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
 
+        .bg-badge-case {
+            color: white;
+            background: #E8AFAF;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 </head>
 
 <body>
 
-    <nav class="navbar position-fixed bg-default" style="height: 88px;top: 0px;">
-        <div class="container-fluid justify-content-center">
-            <h1 class="navbar-brand">課程列表</h1>
-        </div>
-    </nav>
+    <div class="container-fluid position-fixed bg-default d-flex justify-content-center align-items-center"
+        style="height: 44px;top: 0px;">
+        <div class="align-self-center text-center flex-fill text-white" style="font-size: 20px;">課程列表</div>
+    </div>
 
-    <div class="container-fluid position-fixed" style="height: 227px;top:98px;">
+    <div class="container-fluid position-fixed" style="height: 227px;top:78px;">
         <div class="calendar-style">
             <div class="card text-center">
                 <div class="card-header">
@@ -267,14 +206,13 @@
         </div>
     </div>
 
-    <div class="container-fluid mb-2 position-fixed d-flex align-items-center justify-content-center"
-        style="height: 36px;top:335px">
-        <div class="card w-100 h-100 align-self-center p-1 selectday" style="background: #D9D9D9;">
-            週一
+    <div class="container-fluid mb-2 position-fixed" style="height: 36px;top:335px">
+        <div class="d-flex flex-row justify-content-start" style="background: #D9D9D9;">
+            <div class="p-2 align-self-center flex-fill selectday">週一</div>
         </div>
     </div>
 
-    <div class="container-fluid position-fixed overflow-auto class-card" style="top:381px;">
+    <div class="container-fluid position-fixed overflow-auto class-card" style="top:401px;">
 
     </div>
 
@@ -285,6 +223,25 @@
         <a href="#">個人通知</a>
         <a href="#">個人資訊</a>
     </nav> -->
+
+
+    <script>
+        function fetchData(firstday) {
+
+            axios.get(`http://localhost:8000/ccdartstudio/class?firstday=${firstday}`)
+                .then(function (response) {
+                    console.log(response.data);
+
+                    array_class = response.data.array;
+
+                    onCalendarView(current, selectday)
+                    onListView(selectday)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
 
     <script>
 
@@ -301,8 +258,11 @@
 
         var array_class = [
             {
-                "student": {
-                    "status": "已報名"
+                "activity": {
+                    "id": "4E22936B-29CE-4804-89E9-34D5B2DF645D",
+                    "check": null,//簽到
+                    "case": "apply",//報名
+                    "number_of_alternate": 0//報名序號，<=0為上課名單中，>0候補名單
                 },
                 "class": {
                     "id": "",
@@ -341,6 +301,8 @@
 
             onCalendarView(current, today)
             onListView(today)
+
+            fetchData(firstday);
         }
 
         function onNext() {
@@ -351,6 +313,8 @@
             }
             onCalendarView(current, current);
             onListView(current)
+
+            fetchData(firstday);
         }
 
         function onPrev() {
@@ -363,6 +327,8 @@
 
             onCalendarView(current, current)
             onListView(current)
+
+            fetchData(firstday);
         }
 
         function onSelect(index) {
@@ -371,10 +337,11 @@
 
             onCalendarView(current, selectday)
             onListView(selectday)
+
         }
 
         function onCalendarView(begin, select) {
-
+            // 要顯示簽到但過期的資料
             selectday = select
 
             for (let i = 0; i < 14; i++) {
@@ -390,11 +357,21 @@
                     $(`.day-${i + 1}`).removeClass('btn-before')
                 }
 
+                let _array_class = array_class.filter(row => row.class.yyyymmdd == yyyymmdd)
+
+                if (_array_class.length > 0) {
+                    $(`.day-${i + 1}`).addClass('btn-class')
+                } else {
+                    $(`.day-${i + 1}`).removeClass('btn-class')
+                }
+
                 if (yyyymmdd == select && yyyymmdd >= today) {
                     $(`.day-${i + 1}`).addClass('btn-select')
+                    $(`.day-${i + 1}`).removeClass('btn-class')
                     // $(`.day-${i + 1}`).toggleClass("btn-select");
                 } else {
                     $(`.day-${i + 1}`).removeClass('btn-select')
+
                 }
             }
 
@@ -410,13 +387,12 @@
             $(".class-card").empty();
 
             let _array_class = array_class.filter(row => row.class.yyyymmdd == yyyymmdd);
-            console.log(_array_class, yyyymmdd)
             if (_array_class.length == 0) {
 
             } else {
 
-
                 _array_class.forEach(obj_class => {
+
 
                     let class_type = obj_class.class.type;
                     if (class_type == 'offline') {
@@ -426,23 +402,31 @@
                     } else if (class_type == 'workshop') {
                         class_type = '工作坊'
                     }
-                    $(".class-card").append(`<div class="card mb-2 card-class">
-            <div class="hstack gap-2" style="height: 88px;">
-                <div></div>
-                <img src="${obj_class.course.teacher[0].icon}" style="width: 52px;height: 52px;" alt="...">
-                <div class="vstack gap-2" style="width: 100%;">
-                    <div></div>
-                    <h5 class="card-title" style="color:#A95050;">${obj_class.course.hhmm_start}~${obj_class.course.hhmm_end}</h5>
-                    <p class="card-text" style="color: #5F5F5F;">${obj_class.course.name}</p>
+
+                    let activity = obj_class.activity;
+
+                    let activity_text = '_'
+                    let activity_display = false;
+
+                    if (activity != null && activity.case == 'apply' && activity.checkin == false) {
+                        activity_text = '參加'
+                        activity_display = true;
+                    }
+
+                    $(".class-card").append(`<div class="card mb-2 card-class" id="${obj_class.class.id}">
+            <div class="hstack gap-2" style="height: 68px;">
+                <div>
+                <img class="circle-img ms-2" src="${obj_class.course.teacher[0].pictureUrl}" />
                 </div>
-                <div class="vstack gap-2" style="width: 100px;">
-                    <div></div>
-                    <div class="bg-body-tertiary border text-center">${class_type}</div>
-                    <div></div>
-                    <div class="bg-body-tertiary border text-center d-none">${''}</div>
-                    <div></div>
+                <div class="vstack gap-1" style="width: 100%;">
+                    <h5 class="card-title mt-1" style="font-size:16px;color:#A95050;">${obj_class.course.hhmm_start}~${obj_class.course.hhmm_end}</h5>
+                    <p class="card-text" style="font-size:16px;color: #5F5F5F;">${obj_class.course.name}</p>
                 </div>
-                <div></div>
+                <div class="d-flex flex-column gap-1 me-2" style="width: 100px;">
+
+                    <div class="text-center" style="font-size:12px;">${class_type}</div>
+                    <div class="${activity_display == false ? 'text-white' : 'bg-badge-case border'} text-center" style="font-size:12px;">${activity_text}</div>
+
             </div>
         </div>`)
                 })
@@ -454,7 +438,7 @@
 
             const token = liff.getIDToken();
 
-            axios.get(`http://localhost:8000/ccdartstudio/me?date=${selectday}`, {
+            axios.get(`http://localhost:8000/ccdartstudio/me`, {
                 headers: {
                     'Authorization': `${token}`
                 }
@@ -480,47 +464,23 @@
         // console.log(moment().weekday())
         // console.log(moment().weekday(0).add(14, 'days').format('yyyy-MM-DD'))
 
+        // $(".card-class").click(function () {
+        //     window.location.href = 'class-info.html';
+        // });
 
-        let calendar = [
+        $('body').on('click', '.card-class', function () {
 
-        ];
+            let class_id = this.id;
 
-        let array = [
-            {
-                "class": {
-                    "id": "",
-                    "yyyymmdd": "",
-                    "cpacity": "",
-                },
-                "course": {
-                    "id": "",
-                    "name": "課程名稱",
-                    "weekday": "週一",
-                    "hhmm-start": "14:15",
-                    "hhmm-end": "15:30",
-                    "minutes": 75,
-                    "location": "",
-                    "address": "",
-                    "teacher": [
+            // console.log(this.id)
 
-                    ],
-                    "type": ["offline", "online"],//工作坊 workshop/實體課 offline/視訊課 online
-                    "cpacity": 10,//課程人數上限
-                    "note": {
-                        "offline": "",
-                        "online": "",
-                        "workshop": "",
-                    }
-                }
-            }
-        ];
+            window.location.href = `class-info.html?class_id=${class_id}`;
+        })
 
-
-        $(".card-class").click(function () {
-            window.location.href = 'class-info.html';
-        });
-
+        fetchData(firstday);
     </script>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
