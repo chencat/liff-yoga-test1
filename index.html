@@ -39,7 +39,7 @@
 
 <body>
     <script>
-        var host = 'https://e873-59-126-54-247.jp.ngrok.io'
+        var host = 'https://b6ba-2001-b011-8006-300f-a12b-469d-67e6-9c79.ngrok.io'
 
         moment.locale('zh-tw', {
             week: {
@@ -51,9 +51,6 @@
 
         function fetchUser() {
 
-            // let host = 'https://e873-59-126-54-247.jp.ngrok.io'
-            // let host = `https://fc2f-2001-b011-8006-300f-ec2e-de2c-8dcd-a66d.ngrok.io`;
-            // let host = 'http://localhost:8000'
             const token = liff.getIDToken();
             axios.get(`${host}/ccdartstudio/me`, {
                 headers: {
