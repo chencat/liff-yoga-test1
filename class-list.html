@@ -503,7 +503,7 @@
 
             const token = liff.getIDToken();
 
-            axios.get(`http://localhost:8000/ccdartstudio/me`, {
+            axios.get(`http://${host}/ccdartstudio/me`, {
                 headers: {
                     'Authorization': `${token}`
                 }
@@ -553,7 +553,6 @@
     <script>
 
         function fetchUser() {
-
 
             // let host = `https://fc2f-2001-b011-8006-300f-ec2e-de2c-8dcd-a66d.ngrok.io`;
             // let host = 'http://localhost:8000'
@@ -654,11 +653,10 @@
                 current = yyyymmdd;
                 firstday = moment(yyyymmdd).weekday(0).format('yyyy-MM-DD');
 
-                onCalendarView(current, selectday)
-                onListView(selectday)
+                fetchData(firstday);
             } else {
                 onToday();
-                onListView(today);
+
             }
         }
 
