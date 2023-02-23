@@ -39,7 +39,7 @@
 
 <body>
     <script>
-        var host = 'https://b6ba-2001-b011-8006-300f-a12b-469d-67e6-9c79.ngrok.io'
+        var host = 'https://5cc1-59-126-54-247.jp.ngrok.io '
 
         moment.locale('zh-tw', {
             week: {
@@ -60,7 +60,7 @@
                 .then(function (response) {
 
                     let user = response.data.obj;
-                    console.log(response.data)
+
                     if (user.select_role_type == 'guest') {
                         window.location.href = 'class-list.html';
                     } else if (user.select_role_type == 'student') {
