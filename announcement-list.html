@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>璽璽藝術空間D Art Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url("./image/picture/background.jpg");
+            height: 100%;
+            width: 100%;
+        }
+
+        .bg-default {
+            background: #B2C5BF;
+            color: white;
+        }
+
+        .tab-img-select {
+            filter: invert(29%) sepia(60%) saturate(317%) hue-rotate(124deg) brightness(89%) contrast(87%);
+        }
+
+        .tab-img-unselect {
+            filter: invert(81%) sepia(4%) saturate(18%) hue-rotate(354deg) brightness(89%) contrast(102%);
+        }
+
+        .tab-text-select {
+            color: #305B56;
+            font-size: 12px;
+        }
+
+        .tab-text-unselect {
+            color: #BCBCBC;
+            font-size: 12px;
+        }
+    </style>
+
+    <!-- UI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Control -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+    <!-- API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container-fluid position-fixed bg-default d-flex justify-content-center align-items-center"
+        style="height: 44px;top: 0px;">
+        <div class="align-self-center text-center flex-fill text-white" style="font-size: 20px;">課程公告</div>
+    </div>
+
+
+
+    <div class="container-fluid position-fixed overflow-auto" style="top:64px;">
+        <button onclick="onSelect()" class="btn bg-white text-black dropdown-toggle position-fixed announcement-button"
+            type="button" aria-expanded="false" style="top:64px;">
+            全部公告
+        </button>
+    </div>
+
+    <div class="container-fluid position-fixed overflow-auto announcement-list" style="top:124px;bottom:86px;">
+
+    </div>
+
+
+    <div class="container-fluid position-fixed" style="bottom:0px;background: white;">
+        <div class="row mt-2">
+            <div class="col d-flex flex-column align-items-center">
+                <img src="./image/icon/student/message0.png" class="align-self-center tab-img-select"></img>
+                <p class="align-self-center text-center tab-text-select">課程公告</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-class">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center tab-text-unselect">課程列表</p>
+            </div>
+            <div class="col d-flex flex-column align-items-cente tab-notification">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center tab-text-unselect">個人通知</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-me">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center tab-text-unselect">個人資訊</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="announcement_type bg-default text-center p-2" id="all">全部公告</div>
+                    <div class="announcement_type text-center p-2" id="pause">停課資訊</div>
+                    <div class="announcement_type text-center p-2" id="open">開課資訊</div>
+                    <div class="announcement_type text-center p-2" id="notice">注意事項</div>
+                </div>
+                <!-- <div class="modal-footer">
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var select_type = 'all';
+
+        function onSelect() {
+
+            $(".announcement_type").removeClass('bg-default')
+            $(`#${select_type}`).addClass('bg-default')
+
+            $('.modal').modal('show');
+        }
+
+        function onRefresh() {
+
+            const token = liff.getIDToken();
+
+            axios.get(`http://localhost:8000/ccdartstudio/me`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+                    console.log(response);
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        $(".announcement_type").click(function () {
+
+            select_type = this.id;
+
+            let select_type_text = '全部公告'
+
+            if (select_type == 'pause') {
+                select_type_text = '停課資訊';
+            } else if (select_type == 'open') {
+                select_type_text = '開課資訊';
+            } else if (select_type == 'notice') {
+                select_type_text = '注意事項';
+            }
+
+            $(".announcement-button").html(select_type_text)
+
+            onView(announcement_list, select_type)
+
+            $('.modal').modal('hide');
+        });
+
+        $('body').on('click', '.tab-announcement', function () {
+
+            window.location.href = 'announcement-list.html';
+        })
+
+        $('body').on('click', '.tab-class', function () {
+
+            window.location.href = 'class-list.html';
+        })
+
+        $('body').on('click', '.tab-notification', function () {
+
+            window.location.href = 'notification-list.html';
+        })
+
+        $('body').on('click', '.tab-me', function () {
+
+            window.location.href = 'me.html';
+        })
+
+    </script>
+
+    <script>
+
+        var announcement_list = [];
+
+        function fetchData() {
+
+            axios.get(`http://localhost:8000/ccdartstudio/announcement`)
+                .then(function (response) {
+                    console.log(response.data)
+                    announcement_list = response.data.array;
+
+                    onView(announcement_list, select_type);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    $(".announcement-list").empty();
+                });
+        }
+
+        function onView(announcement_list, select_type) {
+            $(".announcement-list").empty();
+
+            announcement_list.filter(row => row.type == select_type || select_type == 'all').forEach(element => {
+
+                $(".announcement-list").append(`<div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">${element.title || ''}</h5>
+                <small class="card-text">${element.yyyymmdd || ''}</small>
+                <p class="card-text">${(element.content || '').replaceAll('\n', '<br>')}</p>
+            </div>
+        </div>`)
+
+            });
+
+
+        }
+
+        fetchData()
+
+    </script>
+</body>
+
+</html>
