@@ -199,6 +199,8 @@
 
         var model = null;
 
+        var user = null;
+
     </script>
 
     <script>
@@ -314,7 +316,7 @@
             // let class_id = '1B158576-D979-4A5A-91EB-E9431A6D2069';
             let searchParams = new URLSearchParams(window.location.search)
             let class_id = searchParams.get('class_id')
-            axios.get(`${host}/ccdartstudio/class/${class_id}`)
+            axios.get(`${host}/ccdartstudio/class/${class_id}&role_type=${user.select_role_type}`)
                 .then(function (response) {
                     console.log(response.data);
                     model = response.data.obj;
@@ -448,7 +450,6 @@
     <script>
 
         function fetchUser() {
-
 
             const token = liff.getIDToken();
             axios.get(`${host}/ccdartstudio/me`, {
