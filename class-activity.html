@@ -317,7 +317,7 @@
             let searchParams = new URLSearchParams(window.location.search)
             let class_id = searchParams.get('class_id')
             let token = liff.getIDToken();
-            axios.get(`${host}/ccdartstudio/class/${class_id}&role_type=${user.select_role_type}`, {
+            axios.get(`${host}/ccdartstudio/class/${class_id}?role_type=${user.select_role_type}`, {
                 headers: {
                     'Authorization': `${token}`
                 }
