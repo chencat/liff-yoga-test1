@@ -334,7 +334,13 @@
     <script>
         function fetchData(firstday) {
 
-            axios.get(`${host}/ccdartstudio/class?firstday=${firstday}&role_type=${user.select_role_type}`)
+            const token = liff.getIDToken();
+
+            axios.get(`${host}/ccdartstudio/class?firstday=${firstday}&role_type=${user.select_role_type}`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
                 .then(function (response) {
                     console.log(response.data);
 
