@@ -570,12 +570,13 @@
                     if (user.select_role_type == 'guest') {
                         $('.tab-list').addClass('d-none')
 
-                        fetchData(firstday);
+                        // fetchData(firstday);
+                        initView()
                     } else if (user.select_role_type == 'student') {
                         $('.tab-list').removeClass('d-none')
 
-                        fetchData(firstday);
-
+                        // fetchData(firstday);
+                        initView()
                     } else if (user.select_role_type == 'teacher') {
                         liff.logout();
                         window.location.href = 'index.html';
@@ -619,25 +620,6 @@
     </script>
 
     <script>
-
-        let searchParams = new URLSearchParams(window.location.search)
-        let yyyymmdd = searchParams.get('yyyymmdd')
-
-        if (yyyymmdd != null) {
-            selectday = yyyymmdd;
-            current = yyyymmdd;
-            firstday = moment(yyyymmdd).weekday(0).format('yyyy-MM-DD');
-
-            onCalendarView(current, selectday)
-            onListView(selectday)
-        } else {
-            onToday();
-            onListView(today);
-        }
-
-    </script>
-
-    <script>
         function fetchData(firstday) {
 
             const token = liff.getIDToken();
@@ -660,6 +642,31 @@
                 });
         }
     </script>
+
+    <script>
+
+        function initView() {
+            let searchParams = new URLSearchParams(window.location.search)
+            let yyyymmdd = searchParams.get('yyyymmdd')
+
+            if (yyyymmdd != null) {
+                selectday = yyyymmdd;
+                current = yyyymmdd;
+                firstday = moment(yyyymmdd).weekday(0).format('yyyy-MM-DD');
+
+                onCalendarView(current, selectday)
+                onListView(selectday)
+            } else {
+                onToday();
+                onListView(today);
+            }
+        }
+
+
+
+    </script>
+
+
 </body>
 
 </html>
