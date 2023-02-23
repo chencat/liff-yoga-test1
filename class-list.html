@@ -331,29 +331,7 @@
         });
     </script>
 
-    <script>
-        function fetchData(firstday) {
 
-            const token = liff.getIDToken();
-
-            axios.get(`${host}/ccdartstudio/class?firstday=${firstday}&role_type=${user.select_role_type}`, {
-                headers: {
-                    'Authorization': `${token}`
-                }
-            })
-                .then(function (response) {
-                    console.log(response.data);
-
-                    array_class = response.data.array;
-
-                    onCalendarView(current, selectday)
-                    onListView(selectday)
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
-    </script>
 
     <script>
 
@@ -679,6 +657,29 @@
 
     </script>
 
+    <script>
+        function fetchData(firstday) {
+
+            const token = liff.getIDToken();
+
+            axios.get(`${host}/ccdartstudio/class?firstday=${firstday}&role_type=${user.select_role_type}`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+                    console.log(response.data);
+
+                    array_class = response.data.array;
+
+                    onCalendarView(current, selectday)
+                    onListView(selectday)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
 </body>
 
 </html>
