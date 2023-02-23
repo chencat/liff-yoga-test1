@@ -336,7 +336,7 @@
 
             axios.get(`${host}/ccdartstudio/class?firstday=${firstday}&role_type=${user.select_role_type}`)
                 .then(function (response) {
-                    // console.log(response.data);
+                    console.log(response.data);
 
                     array_class = response.data.array;
 
