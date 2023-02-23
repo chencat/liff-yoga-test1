@@ -63,7 +63,7 @@
                 .then(function (response) {
 
                     let user = response.data.obj;
-
+                    console.log(response.data)
                     if (user.select_role_type == 'guest') {
                         window.location.href = 'class-list.html';
                     } else if (user.select_role_type == 'student') {
