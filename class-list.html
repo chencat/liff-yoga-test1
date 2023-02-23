@@ -329,19 +329,6 @@
                 dow: 1
             }
         });
-    </script>
-
-
-
-    <script>
-
-        // var host = 'https://e873-59-126-54-247.jp.ngrok.io'
-
-        // moment.locale('zh-tw', {
-        //     week: {
-        //         dow: 1
-        //     }
-        // });
 
         var today = moment().format('yyyy-MM-DD');
         var current = moment().format('yyyy-MM-DD');
@@ -349,8 +336,10 @@
         var selectday = null;
         var user = null;
 
-
         var array_class = [];
+    </script>
+
+    <script>
 
         function onToday() {
             current = moment().format('yyyy-MM-DD');
@@ -529,37 +518,6 @@
         }
 
 
-
-        let searchParams = new URLSearchParams(window.location.search)
-        let yyyymmdd = searchParams.get('yyyymmdd')
-
-        if (yyyymmdd != null) {
-            selectday = yyyymmdd;
-            current = yyyymmdd;
-            firstday = moment(yyyymmdd).weekday(0).format('yyyy-MM-DD');
-
-            onCalendarView(current, selectday)
-            onListView(selectday)
-        } else {
-            onToday();
-            onListView(today);
-        }
-
-
-
-
-        // moment.locale('zh-tw');
-        // var begin = moment(new Date()).startOf('week').isoWeekday(1);
-        // console.log(moment.locale(), begin)
-
-        // console.log(moment().format('yyyy-MM-DD'))
-        // console.log(moment().weekday())
-        // console.log(moment().weekday(0).add(14, 'days').format('yyyy-MM-DD'))
-
-        // $(".card-class").click(function () {
-        //     window.location.href = 'class-info.html';
-        // });
-
         $('body').on('click', '.card-class', function () {
 
             let class_id = this.id;
@@ -611,10 +569,13 @@
 
                     if (user.select_role_type == 'guest') {
                         $('.tab-list').addClass('d-none')
+
                         fetchData(firstday);
                     } else if (user.select_role_type == 'student') {
                         $('.tab-list').removeClass('d-none')
+
                         fetchData(firstday);
+
                     } else if (user.select_role_type == 'teacher') {
                         liff.logout();
                         window.location.href = 'index.html';
@@ -654,6 +615,25 @@
             console.log(error);
             liff.logout();
         });
+
+    </script>
+
+    <script>
+
+        let searchParams = new URLSearchParams(window.location.search)
+        let yyyymmdd = searchParams.get('yyyymmdd')
+
+        if (yyyymmdd != null) {
+            selectday = yyyymmdd;
+            current = yyyymmdd;
+            firstday = moment(yyyymmdd).weekday(0).format('yyyy-MM-DD');
+
+            onCalendarView(current, selectday)
+            onListView(selectday)
+        } else {
+            onToday();
+            onListView(today);
+        }
 
     </script>
 
