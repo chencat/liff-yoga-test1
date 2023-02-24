@@ -251,9 +251,9 @@
             $('.me-name').html(user.name || '')
             $('.me-age').html(user.age || '')
             $('.me-health').html(user.health || '')
-            $('.me-assistive_devices').html(user.assistive_devices || '')
-            $('.me-number_of_offline').html(user.number_of_offline || '')
-            $('.me-number_of_online').html(user.number_of_online || '')
+            $('.me-assistive_devices').html(user.assistive_devices || ' ')
+            $('.me-number_of_offline').html(user.number_of_offline || '0')
+            $('.me-number_of_online').html(user.number_of_online || '0')
             $('.me-expiration_date').html(user.expiration_date || '')
 
             $('#input-name').val(user.name || '')
@@ -352,7 +352,7 @@
             })
                 .then(function (response) {
                     // console.log(response)
-                    let user = response.data.obj;
+                    user = response.data.obj;
 
                     if (user != null) {
 
