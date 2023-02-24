@@ -93,6 +93,7 @@
     <!-- Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 
+    <script src="yoga-local.js"></script>
 </head>
 
 <body>
@@ -190,19 +191,19 @@
 
     <script>
 
-        var host = 'https://5cc1-59-126-54-247.jp.ngrok.io'
+        // var host = 'https://5cc1-59-126-54-247.jp.ngrok.io'
 
-        moment.locale('zh-tw', {
-            week: {
-                dow: 1
-            }
-        });
-
-        var user = null;
+        // moment.locale('zh-tw', {
+        //     week: {
+        //         dow: 1
+        //     }
+        // });
 
         var activity_type = null;
 
         var model = null;
+
+        var user = null;
 
     </script>
 
@@ -297,14 +298,14 @@
         }
 
         function sendRequest(data) {
-            const token = liff.getIDToken();
+            // const token = liff.getIDToken();
 
             axios.post(`${host}/ccdartstudio/activity`, data,
-                {
-                    headers: {
-                        'Authorization': `${token}`
-                    }
-                }
+                // {
+                //     headers: {
+
+                //     }
+                // }
             )
                 .then(function (response) {
                     console.log(response);
@@ -321,30 +322,46 @@
 
             let searchParams = new URLSearchParams(window.location.search)
             let class_id = searchParams.get('class_id')
-            let token = liff.getIDToken();
 
-            axios.get(`${host}/ccdartstudio/class/${class_id}?role_type=${user.select_role_type}`, {
-                headers: {
-                    'Authorization': `${token}`
+            fetchResponse(`${host}/ccdartstudio/class/${class_id}?role_type=${user.select_role_type}`, function (data) {
+                model = data.obj;
+
+                onView();
+
+                if (user.select_role_type == 'student') {
+                    onActivityView();
                 }
             })
-                .then(function (response) {
-                    // console.log(response.data);
-
-                    model = response.data.obj;
-                    onView();
-
-                    if (user.select_role_type == 'student') {
-                        onActivityView();
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-
-                });
-
-
         }
+        /*
+                function fetchData() {
+        
+        
+                    // let class_id = '1B158576-D979-4A5A-91EB-E9431A6D2069';
+                    let searchParams = new URLSearchParams(window.location.search)
+                    let class_id = searchParams.get('class_id')
+                    let token = liff.getIDToken();
+                    axios.get(`${host}/ccdartstudio/class/${class_id}?role_type=${user.select_role_type}`, {
+                        headers: {
+                            'Authorization': `${token}`
+                        }
+                    })
+                        .then(function (response) {
+                            console.log(response.data);
+                            model = response.data.obj;
+        
+                            onView();
+        
+                            if (user.select_role_type == 'student') {
+                                onActivityView();
+                            }
+        
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+                */
 
         function onView() {
 
@@ -465,65 +482,94 @@
     </script>
 
     <script>
-        function fetchUser() {
 
-            const token = liff.getIDToken();
-            axios.get(`${host}/ccdartstudio/me`, {
-                headers: {
-                    'Authorization': `${token}`
-                }
-            })
-                .then(function (response) {
-                    // console.log(response)
-                    let user = response.data.obj;
+        initApp(() => {
+            fetchUser(_user => {
+                user = _user;
 
+                if (user != null) {
 
-                    if (user != null) {
-
-                        if (user.select_role_type == 'guest') {
-                            $('.btn-activity').addClass('d-none')
-                            fetchData();
-                        } else if (user.select_role_type == 'student') {
-                            fetchData();
-                        } else if (user.select_role_type == 'teacher') {
-                            // exitApp()
-                            window.location.href = 'index.html';
-                        } else if (user.select_role_type == 'admin') {
-                            // exitApp()
-                            window.location.href = 'index.html';
-                        }
-                    } else {
-                        // exitApp();
+                    if (user.select_role_type == 'guest') {
+                        $('.btn-activity').addClass('d-none')
+                        fetchData();
+                    } else if (user.select_role_type == 'student') {
+                        fetchData();
+                    } else if (user.select_role_type == 'teacher') {
+                        exitApp()
+                        window.location.href = 'index.html';
+                    } else if (user.select_role_type == 'admin') {
+                        exitApp()
+                        window.location.href = 'index.html';
                     }
+                } else {
+                    exitApp();
+                }
 
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
+
+            })
+        })
+    </script>
+
+    <script>
+
+        // function fetchUser() {
+
+        //     const token = liff.getIDToken();
+        //     axios.get(`${host}/ccdartstudio/me`, {
+        //         headers: {
+        //             'Authorization': `${token}`
+        //         }
+        //     })
+        //         .then(function (response) {
+
+        //             user = response.data.obj;
+
+        //             if (user.select_role_type == 'guest') {
+        //                 $('.btn-activity').addClass('d-none')
+        //                 fetchData();
+        //             } else if (user.select_role_type == 'student') {
+        //                 fetchData();
+
+        //             } else if (user.select_role_type == 'teacher') {
+        //                 liff.logout();
+        //                 window.location.href = 'index.html';
+        //             } else if (user.select_role_type == 'admin') {
+        //                 liff.logout();
+        //                 window.location.href = 'index.html';
+        //             }
+
+        //         })
+        //         .catch(function (error) {
+
+        //             liff.logout();
+        //         });
+        // }
 
 
         let liffID = '1657127222-vlpYeZjK';
 
-        liff.init({
-            liffId: liffID
-        }).then(function () {
-            console.log('LIFF init');
+        // liff.init({
+        //     liffId: liffID
+        // }).then(function () {
+        //     console.log('LIFF init');
 
-            // 這邊開始寫使用其他功能
+        //     // 這邊開始寫使用其他功能
 
-            // login call, only when external browser or LINE's in-app browser is used
-            if (!liff.isLoggedIn()) {
-                liff.login();
-            } else {
+        //     // login call, only when external browser or LINE's in-app browser is used
+        //     if (!liff.isLoggedIn()) {
+        //         window.location.href = 'index.html';
+        //     } else {
 
-                fetchUser();
+        //         // window.location.href = 'class.html';
 
-            }
-        }).catch(function (error) {
-            console.log(error);
-            liff.logout();
-        });
+        //         fetchUser();
+
+        //     }
+        // }).catch(function (error) {
+        //     console.log(error);
+        //     liff.logout();
+        // });
+
     </script>
 </body>
 

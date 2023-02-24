@@ -15,12 +15,16 @@
         }
 
         .bg-default {
-            background: #B2C5BF;
+            background: #D28C8C;
             color: white;
         }
 
+        .text-default {
+            color: #D28C8C;
+        }
+
         .tab-img-select {
-            filter: invert(29%) sepia(60%) saturate(317%) hue-rotate(124deg) brightness(89%) contrast(87%);
+            filter: invert(68%) sepia(6%) saturate(2111%) hue-rotate(314deg) brightness(92%) contrast(87%);
         }
 
         .tab-img-unselect {
@@ -28,7 +32,7 @@
         }
 
         .tab-text-select {
-            color: #305B56;
+            color: #D28C8C;
             font-size: 12px;
         }
 
@@ -57,9 +61,14 @@
 
 <body>
 
-    <div class="container-fluid position-fixed bg-default d-flex justify-content-center align-items-center"
-        style="height: 44px;top: 0px;">
-        <div class="align-self-center text-center flex-fill text-white" style="font-size: 20px;">課程公告</div>
+    <div class="container-fluid bg-default d-flex justify-content-center align-items-center position-fixed"
+        style="top:0;;height: 44px;">
+        <div style="width:50px"></div>
+        <div class="align-self-center text-center flex-fill" style="font-size: 20px;">課程公告</div>
+        <button onclick="onAdd()" style="width:50px;font-size: 12px;" type="button"
+            class="btn align-self-center btn-add text-white">
+            新增
+        </button>
     </div>
 
 
@@ -76,23 +85,23 @@
     </div>
 
 
-    <div class="container-fluid position-fixed" style="bottom:0px;background: white;">
+    <div class="container-fluid position-fixed tab-list" style="bottom:0px;background: white;">
         <div class="row mt-2">
             <div class="col d-flex flex-column align-items-center">
-                <img src="./image/icon/student/message0.png" class="align-self-center tab-img-select"></img>
+                <img src="./image/icon/student/message0.png" class="align-self-cente tab-img-select"></img>
                 <p class="align-self-center text-center tab-text-select">課程公告</p>
             </div>
             <div class="col d-flex flex-column align-items-center tab-class">
                 <img src="./image/icon/student/message0.png" class="align-self-center"></img>
                 <p class="align-self-center text-center tab-text-unselect">課程列表</p>
             </div>
-            <div class="col d-flex flex-column align-items-cente tab-notification">
+            <div class="col d-flex flex-column align-items-cente tab-user">
                 <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center tab-text-unselect">個人通知</p>
+                <p class="align-self-center text-center tab-text-unselect">使用者管理</p>
             </div>
-            <div class="col d-flex flex-column align-items-center tab-me">
+            <div class="col d-flex flex-column align-items-center tab-checkin">
                 <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center tab-text-unselect">個人資訊</p>
+                <p class="align-self-center text-center tab-text-unselect">簽到管理</p>
             </div>
         </div>
     </div>
@@ -101,7 +110,6 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <p class="card-title">請選擇公告類型</p>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -117,7 +125,6 @@
     </div>
 
     <script>
-        var host = 'https://5cc1-59-126-54-247.jp.ngrok.io'
 
         moment.locale('zh-tw', {
             week: {
@@ -125,14 +132,7 @@
             }
         });
 
-        var user = null;
-
-        var announcement_list = [];
-
         var select_type = 'all';
-    </script>
-
-    <script>
 
         function onSelect() {
 
@@ -140,6 +140,24 @@
             $(`#${select_type}`).addClass('bg-default')
 
             $('.modal').modal('show');
+        }
+
+        function onRefresh() {
+
+            const token = liff.getIDToken();
+
+            axios.get(`http://localhost:8000/ccdartstudio/me`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+                    console.log(response);
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
 
         $(".announcement_type").click(function () {
@@ -165,33 +183,35 @@
 
         $('body').on('click', '.tab-announcement', function () {
 
-            window.location.href = 'announcement-list.html';
+            window.location.href = 'teacher-announcement-list.html';
         })
 
         $('body').on('click', '.tab-class', function () {
 
-            window.location.href = 'class-list.html';
+            window.location.href = 'teacher-class-list.html';
         })
 
-        $('body').on('click', '.tab-notification', function () {
+        $('body').on('click', '.tab-user', function () {
 
-            window.location.href = 'notification-list.html';
+            window.location.href = 'teacher-user-list.html';
         })
 
-        $('body').on('click', '.tab-me', function () {
+        $('body').on('click', '.tab-checkin', function () {
 
-            window.location.href = 'me.html';
+            window.location.href = 'teacher-checkin-list.html';
         })
 
     </script>
 
     <script>
 
+        var announcement_list = [];
+
         function fetchData() {
 
-            axios.get(`${host}/ccdartstudio/announcement`)
+            axios.get(`http://localhost:8000/ccdartstudio/announcement`)
                 .then(function (response) {
-                    // console.log(response.data)
+                    console.log(response.data)
                     announcement_list = response.data.array;
 
                     onView(announcement_list, select_type);
@@ -208,69 +228,20 @@
             announcement_list.filter(row => row.type == select_type || select_type == 'all').forEach(element => {
 
                 $(".announcement-list").append(`<div class="card mb-2">
-                <div class="card-body">
-                    <h5 class="card-title">${element.title || ''}</h5>
-                    <small class="card-text">${element.yyyymmdd || ''}</small>
-                    <p class="card-text">${(element.content || '').replaceAll('\n', '<br>')}</p>
-                </div>
-            </div>`)
+            <div class="card-body">
+                <h5 class="card-title">${element.title || ''}</h5>
+                <small class="card-text">${element.yyyymmdd || ''}</small>
+                <p class="card-text">${(element.content || '').replaceAll('\n', '<br>')}</p>
+            </div>
+        </div>`)
 
             });
 
-            if (announcement_list.length == 0) {
-                $(".announcement-list").append('<div class="text-center">目前無公告</div>')
-            }
-
 
         }
 
-    </script>
+        fetchData()
 
-    <script>
-        function fetchUser() {
-
-            const token = liff.getIDToken();
-            axios.get(`${host}/ccdartstudio/me`, {
-                headers: {
-                    'Authorization': `${token}`
-                }
-            })
-                .then(function (response) {
-                    console.log(response)
-                    let user = response.data.obj;
-
-                    if (user != null) {
-                        fetchData();
-                    }
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
-
-
-        let liffID = '1657127222-vlpYeZjK';
-
-        liff.init({
-            liffId: liffID
-        }).then(function () {
-            console.log('LIFF init');
-
-            // 這邊開始寫使用其他功能
-
-            // login call, only when external browser or LINE's in-app browser is used
-            if (!liff.isLoggedIn()) {
-                liff.login();
-            } else {
-
-                fetchUser();
-
-            }
-        }).catch(function (error) {
-            console.log(error);
-            liff.logout();
-        });
     </script>
 </body>
 

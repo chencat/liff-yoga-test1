@@ -39,7 +39,7 @@
             font-size: 12px;
         }
 
-        .me-picture {
+        .line-pictureUrl {
             width: 100px;
             height: 100px;
             object-fit: cover;
@@ -75,10 +75,18 @@
 
     <div class="container-fluid position-fixed bg-default d-flex justify-content-center align-items-center"
         style="height: 44px;">
-        <div style="width:40px"></div>
+        <div class="div-left" style="width:50px"></div>
+        <button onclick="onClose()" style="width:50px" type="button"
+            class="btn align-self-center btn-exit text-white d-none">
+            <img src="image/icon/student/close.png">
+        </button>
         <div class="align-self-center text-center flex-fill" style="font-size: 20px;">個人通知</div>
-        <button onclick="onSave()" style="width:40px" type="button" class="btn align-self-center">
+        <button onclick="onEdit()" style="width:50px" type="button" class="btn align-self-center btn-edit">
             <img src="image/icon/student/edit.png">
+        </button>
+        <button onclick="onSave()" style="width:50px;font-size: 12px;" type="button"
+            class="btn align-self-center btn-save text-white d-none ">
+            儲存
         </button>
     </div>
 
@@ -86,63 +94,104 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex flex-column bg-default" style="border-radius: 10px;">
-                    <img class="me-picture align-self-center mt-2" src="./image/picture/doris2.jpg"></img>
-                    <p class="align-self-center my-2">LINE ID：</p>
+                    <img class="line-pictureUrl align-self-center mt-2" src=""></img>
+                    <p class="align-self-center my-2 line-displayName">LINE ID：</p>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body card-user-edit d-none">
+                <div class="mb-3">
+                    <label for="input-name" class="form-label">姓名</label>
+                    <input type="text" class="form-control" id="input-name" placeholder="請輸入姓名">
+                </div>
+                <div class="mb-3">
+                    <label for="input-age" class="form-label">生日</label>
+                    <input type="date" class="form-control" id="input-age">
+                </div>
+                <div class="mb-3">
+                    <label for="input-health" class="form-label">個人身體狀況</label>
+                    <textarea class="form-control" id="input-health" rows="5"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="input-assistive_devices" class="form-label">輔具使用狀況</label>
+                    <textarea class="form-control" id="input-assistive_devices" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="card-body card-user-info">
                 <div class="d-flex flex-row justify-content-center align-items-center gap-2">
                     <div class="card align-self-center p-2" style="width:120px">
                         <p class="align-self-center m-0">實體課</p>
-                        <p class="align-self-center m-0" style="font-size: 12px;">10.5小時</p>
+                        <p class="align-self-center m-0 me-number_of_offline" style="font-size: 12px;"></p>
                     </div>
                     <div class="card align-self-center p-2" style="width:120px">
-                        <p class="align-self-center m-0">實體課</p>
-                        <p class="align-self-center m-0" style="font-size: 12px;">10.5小時</p>
+                        <p class="align-self-center m-0">視訊課</p>
+                        <p class="align-self-center m-0 me-number_of_online" style="font-size: 12px;"></p>
                     </div>
                     <div class="card align-self-center p-2" style="width:120px">
-                        <p class="align-self-center m-0">實體課</p>
-                        <p class="align-self-center m-0" style="font-size: 12px;">2023-02-21</p>
+                        <p class="align-self-center m-0">截止日期</p>
+                        <p class="align-self-center m-0 me-expiration_date" style="font-size: 12px;"></p>
                     </div>
                 </div>
 
-                <div class="d-flex flex-column justify-content-center align-items-center gap-2 mt-4">
-                    <div class="d-flex flex-row align-items-center mb-1">
-                        <img src="./5399908.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
-                            alt="">
-                        <small class="text-muted align-self-center flex-fill">Last updated 3 mins ago</small>
-                        <div class="align-self-end me-3">1234567890</div>
+                <div class="vstack gap-2 mt-4">
+                    <div class="d-flex flex-row align-items-end mb-1">
+                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3"
+                            style="width: 11px;height: 11px;" alt="">
+                        <small class="text-muted align-self-center flex-fill">姓名</small>
+                        <small class="align-self-end me-3 me-name"></small>
                     </div>
 
-                    <div class="d-flex flex-row align-items-center mb-1">
-                        <img src="./5399908.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
-                            alt="">
-                        <small class="text-muted align-self-center flex-fill">Last updated 3 mins ago</small>
-                        <div class="align-self-end me-3">1234567890</div>
+                    <div class="d-flex flex-row align-items-start mb-1">
+                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3"
+                            style="width: 11px;height: 11px;" alt="">
+                        <small class="text-muted align-self-center flex-fill">權限</small>
+                        <small class="align-self-end me-3 me-role">學生</small>
                     </div>
 
-                    <div class="d-flex flex-row align-items-center mb-1">
-                        <img src="./5399908.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
-                            alt="">
-                        <small class="text-muted align-self-center flex-fill">Last updated 3 mins ago</small>
-                        <div class="align-self-end me-3">1234567890</div>
+                    <div class="d-flex flex-row align-items-start mb-1">
+                        <img src="./image/icon/student/calendar.png" class="align-self-center mx-3"
+                            style="width: 11px;height: 11px;" alt="">
+                        <small class="text-muted align-self-center flex-fill">生日</small>
+                        <small class="align-self-end me-3 me-age"></small>
                     </div>
-                    <div class="d-flex flex-row align-items-center mb-1">
-                        <img src="./5399908.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
-                            alt="">
-                        <small class="text-muted align-self-center flex-fill">Last updated 3 mins ago</small>
-                        <div class="align-self-end me-3">1234567890</div>
+                    <div class="d-flex flex-row align-items-start mb-1">
+                        <img src="./image/icon/student/health.png" class="align-self-center mx-3"
+                            style="width: 11px;height: 11px;" alt="">
+                        <small class="text-muted align-self-center flex-fill">個人身體狀況</small>
+                        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#health"
+                            aria-expanded="false" aria-controls="health">
+                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3"
+                                style="width: 11px;height: 11px;" alt="">
+                        </button>
                     </div>
-                    <div class="d-flex flex-row align-items-center mb-1">
-                        <img src="./5399908.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
-                            alt="">
-                        <small class="text-muted align-self-center flex-fill">Last updated 3 mins ago</small>
-                        <div class="align-self-end me-3">1234567890</div>
+                    <div class="collapse" id="health">
+                        <div class="px-3 me-health">
+                            無
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-start mb-1">
+                        <img src="./image/icon/student/map_gym.png" class="align-self-center mx-3"
+                            style="width: 11px;height: 11px;" alt="">
+                        <small class="text-muted align-self-center flex-fill">輔具使用狀況</small>
+
+                        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#assistive_devices"
+                            aria-expanded="false" aria-controls="assistive_devices">
+                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3"
+                                style="width: 11px;height: 11px;" alt="">
+                        </button>
+                    </div>
+                    <div class="collapse" id="assistive_devices">
+                        <div class="px-3 me-assistive_devices">
+                            無
+                        </div>
                     </div>
                 </div>
-
-
+                <button onclick="onSwith()" type="button" class="btn bg-default text-center mx-2 mt-2 w-100 d-none"
+                    style="margin-bottom: 10px;">
+                    切換身份
+                </button>
             </div>
+
+
         </div>
 
     </div>
@@ -170,30 +219,104 @@
 
     <script>
 
+        var host = 'https://5cc1-59-126-54-247.jp.ngrok.io'
+
         moment.locale('zh-tw', {
             week: {
                 dow: 1
             }
         });
 
-        function onRefresh() {
+        var user = null;
 
-            const token = liff.getIDToken();
+    </script>
 
-            axios.get(`http://localhost:8000/ccdartstudio/me`, {
-                headers: {
-                    'Authorization': `${token}`
-                }
-            })
+
+    <script>
+
+        function onView(user) {
+
+            $('.card-user-edit').addClass('d-none')
+            $('.card-user-info').removeClass('d-none')
+            $('.div-left').removeClass('d-none')
+            $('.btn-edit').removeClass('d-none')
+            $('.btn-save').addClass('d-none')
+            $('.btn-exit').addClass('d-none')
+
+            $('.line-pictureUrl').attr('src', user.line_profile.pictureUrl);
+            $('.line-displayName').html(`LINE ID：${user.line_profile.displayName}`)
+            $('.me-name').html(user.name || '')
+            $('.me-age').html(user.age || '')
+            $('.me-health').html(user.health || '')
+            $('.me-assistive_devices').html(user.assistive_devices || '')
+            $('.me-number_of_offline').html(user.number_of_offline || '')
+            $('.me-number_of_online').html(user.number_of_online || '')
+            $('.me-expiration_date').html(user.expiration_date || '')
+
+            $('#input-name').val(user.name || '')
+            $('#input-age').val(user.age || '')
+            $('#input-health').text(user.health || '')
+            $('#input-assistive_devices').text(user.assistive_devices || '')
+        }
+
+        function onEdit() {
+
+            $('.card-user-edit').removeClass('d-none')
+            $('.card-user-info').addClass('d-none')
+            $('.div-left').addClass('d-none')
+            $('.btn-edit').addClass('d-none')
+            $('.btn-save').removeClass('d-none')
+            $('.btn-exit').removeClass('d-none')
+
+        }
+
+        function onSave() {
+            $('.card-user-edit').addClass('d-none')
+            $('.card-user-info').removeClass('d-none')
+            $('.div-left').removeClass('d-none')
+            $('.btn-edit').removeClass('d-none')
+            $('.btn-save').addClass('d-none')
+            $('.btn-exit').addClass('d-none')
+
+            let name = $('#input-name').val().trim();
+            let age = $('#input-age').val();
+            let health = $('#input-health').val().trim();
+            let assistive_devices = $('#input-assistive_devices').val().trim();
+
+            age = age == '' ? '' : moment(age).format('YYYY-MM-DD')
+
+            sendRequest({ name: name, age: age, health: health, assistive_devices: assistive_devices })
+        }
+
+        function onClose() {
+            $('.card-user-edit').addClass('d-none')
+            $('.card-user-info').removeClass('d-none')
+            $('.div-left').removeClass('d-none')
+            $('.btn-edit').removeClass('d-none')
+            $('.btn-save').addClass('d-none')
+            $('.btn-exit').addClass('d-none')
+        }
+
+        function sendRequest(data) {
+            // const token = liff.getIDToken();
+
+            axios.patch(`${host}/ccdartstudio/me`, data,
+                // {
+                //     headers: {
+
+                //     }
+                // }
+            )
                 .then(function (response) {
                     console.log(response);
 
+                    swal.fire(response.data.msg)
+                    fetchUser();
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         }
-
         $('body').on('click', '.tab-announcement', function () {
 
             window.location.href = 'announcement-list.html';
@@ -215,6 +338,53 @@
         })
     </script>
 
+    <script>
+        function fetchUser() {
+
+            const token = liff.getIDToken();
+            axios.get(`${host}/ccdartstudio/me`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+                    // console.log(response)
+                    let user = response.data.obj;
+
+                    if (user != null) {
+
+                        onView(user);
+                    }
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                fetchUser();
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
+    </script>
 
 </body>
 

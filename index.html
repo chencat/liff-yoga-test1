@@ -46,8 +46,28 @@
                 dow: 1
             }
         });
+
+        var user = null;
     </script>
     <script>
+
+        // initApp(() => {
+        //     fetchUser(user => {
+        //         console.log(user)
+        //         if (user != null) {
+        //             if (user.select_role_type == 'guest') {
+        //                 window.location.href = 'class-list.html';
+        //             } else if (user.select_role_type == 'student') {
+        //                 window.location.href = 'class-list.html';
+        //             } else if (user.select_role_type == 'teacher') {
+        //                 window.location.href = 'teacher-class-list.html';
+        //             } else if (user.select_role_type == 'admin') {
+
+        //             }
+        //         }
+        //     })
+        // })
+
 
         function fetchUser() {
 
@@ -58,17 +78,19 @@
                 }
             })
                 .then(function (response) {
-
+                    console.log(response)
                     let user = response.data.obj;
 
-                    if (user.select_role_type == 'guest') {
-                        window.location.href = 'class-list.html';
-                    } else if (user.select_role_type == 'student') {
-                        window.location.href = 'class-list.html';
-                    } else if (user.select_role_type == 'teacher') {
+                    if (user != null) {
+                        if (user.select_role_type == 'guest') {
+                            window.location.href = 'class-list.html';
+                        } else if (user.select_role_type == 'student') {
+                            window.location.href = 'class-list.html';
+                        } else if (user.select_role_type == 'teacher') {
+                            // window.location.href = 'teacher-class-list.html';
+                        } else if (user.select_role_type == 'admin') {
 
-                    } else if (user.select_role_type == 'admin') {
-
+                        }
                     }
 
                 })
@@ -92,8 +114,6 @@
                 liff.login();
             } else {
 
-                // window.location.href = 'class.html';
-
                 fetchUser();
 
             }
@@ -101,8 +121,6 @@
             console.log(error);
             liff.logout();
         });
-
-
 
     </script>
 
