@@ -132,7 +132,7 @@
 
             const token = liff.getIDToken();
 
-            axios.get(`http://localhost:8000/ccdartstudio/notification`, {
+            axios.get(`${host}/ccdartstudio/notification`, {
                 headers: {
                     'Authorization': `${token}`
                 }

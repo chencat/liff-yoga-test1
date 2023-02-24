@@ -188,8 +188,13 @@
     <script>
 
         function fetchData() {
+            const token = liff.getIDToken();
 
-            axios.get(`${host}/ccdartstudio/announcement`)
+            axios.get(`${host}/ccdartstudio/announcement`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
                 .then(function (response) {
                     // console.log(response.data)
                     announcement_list = response.data.array;
