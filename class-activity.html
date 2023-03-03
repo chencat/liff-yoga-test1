@@ -386,7 +386,11 @@
 
             let teacher = [];
             model.course.teacher.forEach(obj => {
-                teacher.push(obj.name)
+                if (obj.name == "") {
+                    teacher.push(obj.displayName)
+                } else {
+                    teacher.push(obj.name)
+                }
             })
             let teacher_name = teacher.join('、')
             let teacher_picture = model.course.teacher[0].pictureUrl;
