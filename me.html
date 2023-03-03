@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-tw">
 
 <head>
     <meta charset="utf-8">
@@ -7,52 +7,6 @@
     <title>璽璽藝術空間D Art Studio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <style>
-        body {
-            background-image: url("./image/picture/background.jpg");
-            height: 100%;
-            width: 100%;
-        }
-
-
-
-        .bg-default {
-            background: #B2C5BF;
-            color: white;
-        }
-
-        .tab-img-select {
-            filter: invert(29%) sepia(60%) saturate(317%) hue-rotate(124deg) brightness(89%) contrast(87%);
-        }
-
-        .tab-img-unselect {
-            filter: invert(81%) sepia(4%) saturate(18%) hue-rotate(354deg) brightness(89%) contrast(102%);
-        }
-
-        .tab-text-select {
-            color: #305B56;
-            font-size: 12px;
-        }
-
-        .tab-text-unselect {
-            color: #BCBCBC;
-            font-size: 12px;
-        }
-
-        .line-pictureUrl {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        .div-line {
-            background-image: url("./image/picture/login.jpg");
-            height: 100px;
-            width: 100%;
-        }
-    </style>
-    </style>
 
     <!-- LINE -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -72,31 +26,33 @@
 
     <!-- Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
 </head>
 
 <body>
 
-    <div class="container-fluid position-fixed bg-default d-flex justify-content-center align-items-center"
-        style="height: 44px;">
+    <div
+        class="container-fluid position-fixed bg-default-student d-flex justify-content-center align-items-center nav-top">
         <div class="div-left" style="width:50px"></div>
         <button onclick="onClose()" style="width:50px" type="button"
             class="btn align-self-center btn-exit text-white d-none">
             <img src="image/icon/student/close.png">
         </button>
-        <div class="align-self-center text-center flex-fill" style="font-size: 20px;">個人通知</div>
+        <div class="align-self-center text-center flex-fill fs-20">個人資訊</div>
         <button onclick="onEdit()" style="width:50px" type="button" class="btn align-self-center btn-edit">
             <img src="image/icon/student/edit.png">
         </button>
-        <button onclick="onSave()" style="width:50px;font-size: 12px;" type="button"
-            class="btn align-self-center btn-save text-white d-none ">
+        <button onclick="onSave()" style="width:50px;" type="button"
+            class="btn align-self-center btn-save text-white d-none fs-12">
             儲存
         </button>
     </div>
 
     <div class="container-fluid position-fixed overflow-auto" style="top:64px;bottom:86px;">
         <div class="card">
-            <div class="card-header">
-                <div class="d-flex flex-column bg-default" style="border-radius: 10px;">
+            <div class="card-header bg-default-student">
+                <div class="d-flex flex-column div-line-profile" style="border-radius: 10px;">
                     <img class="line-pictureUrl align-self-center mt-2" src=""></img>
                     <p class="align-self-center my-2 line-displayName">LINE ID：</p>
                 </div>
@@ -123,47 +79,43 @@
                 <div class="d-flex flex-row justify-content-center align-items-center gap-2">
                     <div class="card align-self-center p-2" style="width:120px">
                         <p class="align-self-center m-0">實體課</p>
-                        <p class="align-self-center m-0 me-number_of_offline" style="font-size: 12px;"></p>
+                        <p class="align-self-center m-0 me-number_of_offline fs-12"></p>
                     </div>
                     <div class="card align-self-center p-2" style="width:120px">
                         <p class="align-self-center m-0">視訊課</p>
-                        <p class="align-self-center m-0 me-number_of_online" style="font-size: 12px;"></p>
+                        <p class="align-self-center m-0 me-number_of_online fs-12"></p>
                     </div>
                     <div class="card align-self-center p-2" style="width:120px">
                         <p class="align-self-center m-0">截止日期</p>
-                        <p class="align-self-center m-0 me-expiration_date" style="font-size: 12px;"></p>
+                        <p class="align-self-center m-0 me-expiration_date fs-12"></p>
                     </div>
                 </div>
 
                 <div class="vstack gap-2 mt-4">
                     <div class="d-flex flex-row align-items-end mb-1">
-                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3"
-                            style="width: 11px;height: 11px;" alt="">
+                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">姓名</small>
                         <small class="align-self-end me-3 me-name"></small>
                     </div>
 
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3"
-                            style="width: 11px;height: 11px;" alt="">
+                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">權限</small>
                         <small class="align-self-end me-3 me-role">學生</small>
                     </div>
 
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/calendar.png" class="align-self-center mx-3"
-                            style="width: 11px;height: 11px;" alt="">
+                        <img src="./image/icon/student/calendar.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">生日</small>
                         <small class="align-self-end me-3 me-age"></small>
                     </div>
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/health.png" class="align-self-center mx-3"
-                            style="width: 11px;height: 11px;" alt="">
+                        <img src="./image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">個人身體狀況</small>
                         <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#health"
                             aria-expanded="false" aria-controls="health">
-                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3"
-                                style="width: 11px;height: 11px;" alt="">
+                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                                alt="">
                         </button>
                     </div>
                     <div class="collapse" id="health">
@@ -172,14 +124,13 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/map_gym.png" class="align-self-center mx-3"
-                            style="width: 11px;height: 11px;" alt="">
+                        <img src="./image/icon/student/map_gym.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">輔具使用狀況</small>
 
                         <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#assistive_devices"
                             aria-expanded="false" aria-controls="assistive_devices">
-                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3"
-                                style="width: 11px;height: 11px;" alt="">
+                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                                alt="">
                         </button>
                     </div>
                     <div class="collapse" id="assistive_devices">
@@ -188,8 +139,8 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="onSwith()" type="button" class="btn bg-default text-center mx-2 mt-2 w-100 d-none"
-                    style="margin-bottom: 10px;">
+                <button onclick="onSwith()" type="button"
+                    class="btn bg-default-student text-center mx-2 mt-2 w-100 d-none" style="margin-bottom: 10px;">
                     切換身份
                 </button>
             </div>
@@ -199,30 +150,29 @@
 
     </div>
 
-    <div class="container-fluid position-fixed" style="bottom:0px;background: white;">
+    <div class="container-fluid position-fixed tab-list bg-white" style="bottom:0px;">
         <div class="row mt-2">
-            <div class="col d-flex flex-column align-items-center tab-announcement">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center tab-text-unselect">課程公告</p>
-            </div>
-            <div class="col d-flex flex-column align-items-center tab-class">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center tab-text-unselect">課程列表</p>
-            </div>
-            <div class="col d-flex flex-column align-items-cente tab-notification">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center tab-text-unselect">個人通知</p>
-            </div>
             <div class="col d-flex flex-column align-items-center">
-                <img src="./image/icon/student/message0.png" class="align-self-center tab-img-select"></img>
-                <p class="align-self-center text-center tab-text-select">個人資訊</p>
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-muted fs-12">課程公告</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-yoga">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-muted fs-12">課程列表</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-notification">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-muted fs-12">個人通知</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-me">
+                <img src="./image/icon/student/message0.png" class="align-self-center img-select-student"></img>
+                <p class="align-self-center text-center text-student fs-12">個人資訊</p>
             </div>
         </div>
     </div>
 
     <script>
-
-        var host = 'https://5cc1-59-126-54-247.jp.ngrok.io'
+        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
 
         moment.locale('zh-tw', {
             week: {
@@ -231,11 +181,31 @@
         });
 
         var user = null;
-
     </script>
 
-
     <script>
+
+
+        function fetchUser() {
+
+            const token = liff.getIDToken();
+
+            axios.get(`${host}/ccdartstudio/me`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+                    console.log(response.data);
+
+                    user = response.data.obj;
+
+                    onView(user);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
 
         function onView(user) {
 
@@ -251,10 +221,10 @@
             $('.me-name').html(user.name || '')
             $('.me-age').html(user.age || '')
             $('.me-health').html(user.health || '')
-            $('.me-assistive_devices').html(user.assistive_devices || ' ')
-            $('.me-number_of_offline').html(user.number_of_offline || '0')
-            $('.me-number_of_online').html(user.number_of_online || '0')
-            $('.me-expiration_date').html(user.expiration_date || '')
+            $('.me-assistive_devices').html(user.assistive_devices || '')
+            $('.me-number_of_offline').html(`${user.number_of_offline || '0'}堂`)
+            $('.me-number_of_online').html(`${user.number_of_online || '0'}堂`)
+            $('.me-expiration_date').html(user.expiration_date || '&nbsp;')
 
             $('#input-name').val(user.name || '')
             $('#input-age').val(user.age || '')
@@ -303,13 +273,11 @@
         function sendRequest(data) {
             const token = liff.getIDToken();
 
-            axios.patch(`${host}/ccdartstudio/me`, data,
-                {
-                    headers: {
-                        'Authorization': `${token}`
-                    }
+            axios.patch(`${host}/ccdartstudio/me`, data, {
+                headers: {
+                    'Authorization': `${token}`
                 }
-            )
+            })
                 .then(function (response) {
                     console.log(response);
 
@@ -320,14 +288,15 @@
                     console.log(error);
                 });
         }
+
         $('body').on('click', '.tab-announcement', function () {
 
             window.location.href = 'announcement-list.html';
         })
 
-        $('body').on('click', '.tab-class', function () {
+        $('body').on('click', '.tab-yoga', function () {
 
-            window.location.href = 'class-list.html';
+            window.location.href = 'yoga-list.html';
         })
 
         $('body').on('click', '.tab-notification', function () {
@@ -342,30 +311,6 @@
     </script>
 
     <script>
-        function fetchUser() {
-
-            const token = liff.getIDToken();
-            axios.get(`${host}/ccdartstudio/me`, {
-                headers: {
-                    'Authorization': `${token}`
-                }
-            })
-                .then(function (response) {
-                    // console.log(response)
-                    user = response.data.obj;
-
-                    if (user != null) {
-
-                        onView(user);
-                    }
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
-
-
         let liffID = '1657127222-vlpYeZjK';
 
         liff.init({
@@ -388,7 +333,6 @@
             liff.logout();
         });
     </script>
-
 </body>
 
 </html>

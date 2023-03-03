@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>璽璽藝術空間D Art Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- <style>
+        body {
+            background-image: url("./image/picture/background.jpg");
+            height: 100%;
+            width: 100%;
+        }
+
+        .calendar-style {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .calendar-style .card .card-header {
+            background: #D28C8C;
+            color: white;
+        }
+
+        .bg-default {
+            background: #D28C8C;
+            color: white;
+        }
+
+        .bg-select {
+            background: #B2C5BF !important;
+            color: blac !important;
+            border-color: black !important;
+        }
+
+        .bg-class {
+            background: #E9E9E9 !important;
+            color: black !important;
+        }
+
+        .bg-activity {
+            background: lightgreen !important;
+            color: black !important;
+        }
+
+        .bg-before {
+            color: lightgray !important;
+        }
+
+        .text-default {
+            color: #D28C8C;
+        }
+
+        .center {
+            margin: auto;
+            padding: 1px;
+        }
+    </style> -->
+    <!-- <style>
+        .thumb-post-img {
+            object-fit: none;
+            /* Do not scale the image */
+            object-position: center;
+            /* Center the image within the element */
+            width: 100%;
+            max-height: 52;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <style>
+        .circle-img {
+            width: 52px;
+            height: 52px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .bg-badge-case {
+            color: white;
+            background: #E8AFAF;
+        }
+
+        .date-style {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .tab-img-select {
+            filter: invert(68%) sepia(6%) saturate(2111%) hue-rotate(314deg) brightness(92%) contrast(87%);
+        }
+
+        .tab-img-unselect {
+            filter: invert(81%) sepia(4%) saturate(18%) hue-rotate(354deg) brightness(89%) contrast(102%);
+        }
+
+        .tab-text-select {
+            color: #D28C8C;
+            font-size: 12px;
+        }
+
+        .tab-text-unselect {
+            color: #BCBCBC;
+            font-size: 12px;
+        }
+    </style> -->
+
+    <!-- LINE -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <!-- UI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Control -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+    <!-- API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 
+    <div class="container-fluid position-fixed bg-default d-flex justify-content-center align-items-center"
+        style="height: 44px;top: 0px;">
+        <div class="align-self-center text-center flex-fill text-white" style="font-size: 20px;">課程列表</div>
+    </div> -->
+
+    <div
+        class="container-fluid bg-default-teacher d-flex justify-content-center align-items-center position-fixed nav-top">
+        <div class="div-space" style="width:50px"></div>
+        <div class="align-self-center text-center flex-fill fs-20">課程列表</div>
+        <button onclick="onAdd()" style="width:50px;" type="button"
+            class="btn align-self-center btn-add text-white fs-12">
+            新增
+        </button>
+    </div>
+
+    <div class="container-fluid position-fixed" style="top:44px;">
+        <div class="row justify-content-center bg-default-teacher">
+            <div class="col text-center text-teacher py-2 bg-white mb-1 tab-class">課程行事曆</div>
+            <div class="col text-center text-teacher py-2 bg-white tab-course">所有課程</div>
+        </div>
+    </div>
+
+    <div class="container-fluid position-fixed container-course px-0 d-none overflow-auto"
+        style="top:88px;bottom: 66px;">
+        <div class="d-flex flex-row align-items-center bg-white">
+            <img src="./image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
+            <small class="text-muted align-self-center flex-fill">一般課程</small>
+            <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#course-normal"
+                aria-expanded="false" aria-controls="course-normal">
+                <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size" alt="">
+            </button>
+        </div>
+        <div class="collapse p-2 my-2 show" id="course-normal">
+
+        </div>
+        <div class="d-flex flex-row align-items-center bg-white">
+            <img src="./image/icon/student/health.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
+                alt="">
+            <small class="text-muted align-self-center flex-fill">工作坊</small>
+            <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#course-workshop"
+                aria-expanded="false" aria-controls="course-workshop">
+                <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3"
+                    style="width: 11px;height: 11px;" alt="">
+            </button>
+        </div>
+        <div class="collapse p-2 my-2 overflow-auto" id="course-workshop">
+
+        </div>
+        <div class="d-flex flex-row align-items-center bg-white">
+            <img src="./image/icon/student/health.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
+                alt="">
+            <small class="text-muted align-self-center flex-fill">已取消課程</small>
+            <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#course-cancel"
+                aria-expanded="false" aria-controls="course-cancel">
+                <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3"
+                    style="width: 11px;height: 11px;" alt="">
+            </button>
+        </div>
+        <div class="collapse p-2 my-2 overflow-auto" id="course-cancel">
+
+        </div>
+    </div>
+    </div>
+
+    <div class="container-fluid position-fixed container-calendar" style="top:108px;">
+        <div class="card text-center">
+            <div class="card-header bg-default-teacher text-white">
+                <div class="row bg-default-teacher">
+                    <div class="col text-start center">
+                        <button onclick="onToday()" type="button" class="btn text-white"
+                            style="font-size: 12px;">今日</button>
+                    </div>
+                    <div class="col-6 center">
+                        <div class="hstack">
+                            <button onclick="onPrev()" type="button" class="btn text-white"
+                                style="font-size: 8px;">❮</button>
+                            <p class="center month"></p>
+                            <button onclick="onNext()" type="button" class="btn text-white"
+                                style="font-size: 8px;">❯</button>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col p-1 text-dark">一</div>
+                    <div class="col p-1 text-dark">二</div>
+                    <div class="col p-1 text-dark">三</div>
+                    <div class="col p-1 text-dark">四</div>
+                    <div class="col p-1 text-dark">五</div>
+                    <div class="col p-1 text-dark">六</div>
+                    <div class="col p-1 text-dark">日</div>
+                </div>
+                <div class="row">
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-1 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(1)" type="button"
+                                class="btn text-center day-1 align-self-center">1</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-2 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(2)" type="button"
+                                class="btn text-center day-2 align-self-center">2</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-3 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(3)" type="button"
+                                class="btn text-center day-3 align-self-center">3</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-4 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(4)" type="button"
+                                class="btn text-center day-4 align-self-center">4</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-5 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(5)" type="button"
+                                class="btn text-center day-5 align-self-center">5</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-6 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(6)" type="button"
+                                class="btn text-center day-6 align-self-center">6</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-7 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(7)" type="button"
+                                class="btn text-center day-7 align-self-center">7</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-8 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(8)" type="button"
+                                class="btn text-center day-8 align-self-center">8</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-9 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(9)" type="button"
+                                class="btn text-center day-9 align-self-center">9</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-10 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(10)" type="button"
+                                class="btn text-center day-10 align-self-center">10</button>
+                        </div>
+                    </div>
+
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-11 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(11)" type="button"
+                                class="btn text-center day-11 align-self-center">11</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-12 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(12)" type="button"
+                                class="btn text-center day-12 align-self-center">12</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-13 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(13)" type="button"
+                                class="btn text-center day-13 align-self-center">13</button>
+                        </div>
+                    </div>
+                    <div class="col p-1 d-flex flex-column justify-content-center align-items-center">
+                        <div
+                            class="date-style-14 d-flex flex-column justify-content-center align-items-center align-self-center date-style">
+                            <button onclick="onSelect(14)" type="button"
+                                class="btn text-center day-14 align-self-center">14</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mb-2 position-fixed select-class-date" style="top:320px">
+        <div class="d-flex flex-row justify-content-start" style="background: #D9D9D9;">
+            <div class="p-2 align-self-center flex-fill selectday">週一</div>
+        </div>
+    </div>
+
+    <div class="container-fluid position-fixed overflow-auto yoga-list" style="top:376px;bottom: 66px;">
+
+    </div>
+
+    <div class="container-fluid position-fixed tab-list bg-white" style="bottom:0px;">
+        <div class="row mt-2">
+            <div class="col d-flex flex-column align-items-center tab-announcement">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-muted fs-12">課程公告</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center">
+                <img src="./image/icon/student/message0.png" class="align-self-center img-select-teacher"></img>
+                <p class="align-self-center text-center text-teacher fs-12">課程列表</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-member">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-muted fs-12">使用者管理</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-checkin">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-muted fs-12">簽到管理</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var today = moment().format('yyyy-MM-DD');
+        var current = moment().format('yyyy-MM-DD');
+        var firstday = moment().weekday(0).format('yyyy-MM-DD');
+        var selectday = null;
+        var user = null;
+
+        var array_class = [];
+
+        var array_course = [];
+
+        var select_tab = 'class'
+
+    </script>
+
+    <script>
+
+        function onToday() {
+            current = moment().format('yyyy-MM-DD');
+
+            onCalendarView(current, today)
+            // onClassListView(today)
+
+            fetchData('class', firstday);
+        }
+
+        function onNext() {
+            if (current == today) {
+                current = moment(today).add(14, 'days').format('yyyy-MM-DD')
+            } else {
+                current = moment(current).add(14, 'days').format('yyyy-MM-DD')
+            }
+            onCalendarView(current, current);
+
+            // onClassListView(current)
+
+            fetchData('class', firstday);
+        }
+
+        function onPrev() {
+
+            if (current == today) {
+                current = moment(today).add(-14, 'days').format('yyyy-MM-DD')
+            } else {
+                current = moment(current).add(-14, 'days').format('yyyy-MM-DD')
+            }
+
+            onCalendarView(current, current)
+            // onClassListView(current)
+
+            fetchData('class', firstday);
+        }
+
+        function onSelect(index) {
+
+            selectday = moment(firstday).add(index - 1, 'days').format('yyyy-MM-DD')
+
+            onCalendarView(current, selectday)
+            onClassListView(selectday)
+
+        }
+
+        function onCalendarView(begin, select) {
+            // 要顯示簽到但過期的資料
+            selectday = select
+
+            // 有活動 bg-activity
+            // 有課堂 bg-class
+            // 選擇 bg-select
+            // 什麼都沒有
+
+            for (let i = 0; i < 14; i++) {
+                let yyyymmdd = moment(begin).weekday(0).add(i, 'days').format('yyyy-MM-DD');
+                let day = parseInt(moment(begin).weekday(0).add(i, 'days').format('DD'));
+
+                $(`.day-${i + 1}`).html(day);
+
+                $(`.day-${i + 1}`).removeClass('bg-before')
+                $(`.date-style-${i + 1}`).removeClass('bg-select')
+                $(`.date-style-${i + 1}`).removeClass('bg-class')
+
+                let date_type = null;
+
+                let _array_class = array_class.filter(row => row.class.yyyymmdd == yyyymmdd)
+
+
+                if (yyyymmdd == select) {
+                    date_type = 'select';
+                } else if (_array_class.length > 0 && yyyymmdd >= today) {
+                    date_type = 'class';
+                } else if (yyyymmdd < today) {
+                    date_type = 'before';
+                }
+
+                if (date_type == 'select') {
+                    $(`.date-style-${i + 1}`).addClass('bg-select')
+                } else if (date_type == 'class') {
+                    $(`.date-style-${i + 1}`).addClass('bg-class')
+                } else if (date_type == 'before') {
+                    $(`.day-${i + 1}`).addClass('bg-before')
+                }
+
+            }
+
+            $(`.month`).html(moment(begin).weekday(0).format('yyyy年MM月'));
+            firstday = moment(begin).weekday(0).format('yyyy-MM-DD');
+
+            let weekday = ['一', '二', '三', '四', '五', '六', '日'][moment(select).weekday()];
+
+            $('.selectday').html(`${moment(select).format('yyyy/MM/DD')} 週${weekday}`)
+        }
+
+        function onClassListView(yyyymmdd) {
+            $(".yoga-list").empty();
+
+            let _array_class = array_class.filter(row => row.class.yyyymmdd == yyyymmdd);
+            if (_array_class.length == 0) {
+
+            } else {
+
+                _array_class.forEach(obj_class => {
+
+                    let class_type = obj_class.class.type;
+                    if (class_type == 'offline') {
+                        class_type = '實體課'
+                    } else if (class_type == 'online') {
+                        class_type = '視訊課'
+                    } else if (class_type == 'workshop') {
+                        class_type = '工作坊'
+                    }
+
+                    $(".yoga-list").append(`<div class="card mb-2 card-class" id="${obj_class.class.id}">
+            <div class="hstack gap-2" style="height: 68px;">
+                <div>
+                <img class="circle-img ms-2" src="${obj_class.course.teacher[0].pictureUrl}" />
+                </div>
+                <div class="vstack gap-1 w-100">
+                    <h5 class="card-title mt-1" style="font-size:16px;color:#A95050;">${obj_class.course.hhmm_start}~${obj_class.course.hhmm_end}</h5>
+                    <p class="card-text" style="font-size:16px;color: #5F5F5F;">${obj_class.course.name}${obj_class.class.status == 'normal' ? '' : '(已暫停)'}</p>
+                </div>
+                <div class="d-flex flex-column gap-1 me-2" style="width: 100px;">
+
+                    <div class="text-center fs-12">${class_type}</div>
+
+            </div>
+        </div>`)
+                })
+            }
+
+        }
+
+        function onCourseListView(array_course) {
+            console.log(array_course)
+
+            let course_normal = array_course.filter(row => row.enable == true && row.type.includes('workshop') == false);
+            let course_workshop = array_course.filter(row => row.enable == true && row.type.includes('workshop') == true);
+            let course_cancel = array_course.filter(row => row.enable == false);
+
+            $('#course-normal').empty();
+            $('#course-workshop').empty();
+            $('#course-cancel').empty();
+
+            for (let i = 0; i < 7; i++) {
+                let _course_normal = course_normal.filter(row => row.weekday == i);
+                let _course_cancel = course_cancel.filter(row => row.weekday == i);
+
+                if (_course_normal.length > 0) {
+                    let weekday = `週${['一', '二', '三', '四', '五', '六', '日'][i]}`;
+                    $('#course-normal').append(`<div class="d-flex flex-row justify-content-start mb-2 bg-default-grayD9">
+                    <div class="p-2 align-self-center flex-fill">${weekday}</div>
+                </div>`);
+
+                    _course_normal.forEach(_course => {
+
+
+                        $('#course-normal').append(`
+
+<div class="card mb-2 card-course" id="${_course.id}">
+    <div class="hstack gap-2" style="height: 68px;">
+        <div>
+            <img class="circle-img ms-2" src="${_course.teacher[0].pictureUrl}" />
+        </div>
+        <div class="vstack gap-1">
+            <h5 class="card-title mt-1" style="font-size:16px;color:#A95050;">
+                ${_course.hhmm_start}~${_course.hhmm_end}</h5>
+            <p class="card-text" style="font-size:16px;color: #5F5F5F;">${_course.name}</p>
+        </div>
+        <div class="d-flex flex-column gap-1 me-2">
+
+            ${_course.type.includes('offline') == true ? '<div class="text-center" style="font-size:12px;">實體課</div>' : ''}
+
+            ${_course.type.includes('online') == true ? '<div class="text-center" style="font-size:12px;">視訊課</div>' : ''}
+
+        </div>
+    </div>
+</div>`);
+                    })
+                }
+
+
+                if (_course_cancel.length > 0) {
+                    let weekday = `週${['一', '二', '三', '四', '五', '六', '日'][i]}`;
+                    $('#course-cancel').append(`<div class="d-flex flex-row justify-content-start mb-2 bg-default-grayD9">
+                    <div class="p-2 align-self-center flex-fill">${weekday}</div>
+                </div>`);
+
+                    _course_cancel.forEach(_course => {
+
+
+                        $('#course-cancel').append(`
+
+<div class="card mb-2 card-course" id="${_course.id}">
+    <div class="hstack gap-2" style="height: 68px;">
+        <div>
+            <img class="circle-img ms-2" src="${_course.teacher[0].pictureUrl}" />
+        </div>
+        <div class="vstack gap-1">
+            <h5 class="card-title mt-1 fs-16" style="color:#A95050;">
+                ${_course.hhmm_start}~${_course.hhmm_end}</h5>
+            <p class="card-text fs-16" style="color: #5F5F5F;">${_course.name}</p>
+        </div>
+        <div class="d-flex flex-column gap-1 me-2">
+
+            ${_course.type.includes('offline') == true ? '<div class="text-center fs-12">實體課</div>' : ''}
+
+            ${_course.type.includes('online') == true ? '<div class="text-center fs-12">視訊課</div>' : ''}
+
+        </div>
+    </div>
+</div>`);
+                    })
+                }
+            }
+
+            // course_normal.forEach(obj => {
+
+
+
+
+        }
+
+        function onAdd() {
+            window.location.href = `teacher-edit-course.html?course_id=add`;
+        }
+
+        $('body').on('click', '.card-class', function () {
+
+            let class_id = this.id;
+
+            // console.log(this.id)
+
+            window.location.href = `teacher-yoga-activity.html?class_id=${class_id}`;
+        })
+
+        $('body').on('click', '.card-course', function () {
+
+            let course_id = this.id;
+
+            // console.log(this.id)
+
+            // window.location.href = `teacher-edit-course.html?course_id=${course_id}`;
+
+            window.location.href = `teacher-yoga-activity.html?course_id=${course_id}`;
+        })
+
+        $('body').on('click', '.tab-announcement', function () {
+
+            window.location.href = 'teacher-announcement-list.html';
+        })
+
+        // $('body').on('click', '.tab-yoga', function () {
+
+        //     window.location.href = 'teacher-yoga-list.html';
+        // })
+
+        $('body').on('click', '.tab-member', function () {
+
+            window.location.href = 'teacher-member-list.html';
+        })
+
+        $('body').on('click', '.tab-checkin', function () {
+
+            window.location.href = 'teacher-checkin-list.html';
+        })
+
+        $('body').on('click', '.tab-class', function () {
+
+            select_tab = 'class'
+
+            $('.tab-class').removeClass('mb-1')
+            $('.tab-course').removeClass('mb-1')
+            $('.tab-class').addClass('mb-1')
+
+            $('.select-class-date').removeClass('d-none')
+            $('.yoga-list').removeClass('d-none')
+            $('.container-calendar').removeClass('d-none')
+
+            $('.container-course').addClass('d-none')
+            $('.btn-add').addClass('d-none')
+            $('.div-space').addClass('d-none')
+
+        })
+
+        $('body').on('click', '.tab-course', function () {
+
+            select_tab = 'course'
+
+            $('.tab-class').removeClass('mb-1')
+            $('.tab-course').removeClass('mb-1')
+            $('.tab-course').addClass('mb-1')
+
+            $('.select-class-date').addClass('d-none')
+            $('.yoga-list').addClass('d-none')
+            $('.container-calendar').addClass('d-none')
+
+            $('.container-course').removeClass('d-none')
+            $('.btn-add').removeClass('d-none')
+            $('.div-space').removeClass('d-none')
+        })
+    </script>
+
+    <script>
+
+
+        function fetchData(api, firstday) {
+
+            const token = liff.getIDToken();
+
+            if (api == 'class') {
+
+                axios.get(`${host}/ccdartstudio/class?firstday=${firstday}&role_type=teacher`, {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                })
+                    .then(function (response) {
+                        // console.log(response.data);
+
+                        array_class = response.data.array;
+                        user = response.data.user;
+                        onCalendarView(current, selectday)
+                        onClassListView(selectday)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+
+            } else if (api == 'course') {
+
+                axios.get(`${host}/ccdartstudio/course?role_type=teacher`, {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                })
+                    .then(function (response) {
+                        // console.log(response.data);
+                        array_course = response.data.array;
+                        user = response.data.user;
+                        onCourseListView(array_course)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            }
+
+
+        }
+    </script>
+
+    <script>
+
+        function initView() {
+            let searchParams = new URLSearchParams(window.location.search)
+            let yyyymmdd = searchParams.get('yyyymmdd')
+            let tab = searchParams.get('tab')
+
+            select_tab = tab == null ? 'class' : tab;
+
+            if (yyyymmdd != null) {
+                selectday = yyyymmdd;
+                current = yyyymmdd;
+
+                onCalendarView(current, selectday)
+
+            } else {
+                selectday = today;
+                current = today;
+
+                onCalendarView(current, today)
+
+            }
+
+            if (select_tab == 'class') {
+                $('.tab-class').removeClass('mb-1')
+                $('.tab-course').removeClass('mb-1')
+                $('.tab-class').addClass('mb-1')
+
+                $('.select-class-date').removeClass('d-none')
+                $('.yoga-list').removeClass('d-none')
+                $('.container-calendar').removeClass('d-none')
+
+                $('.container-course').addClass('d-none')
+                $('.btn-add').addClass('d-none')
+                $('.div-space').addClass('d-none')
+
+            } else if (select_tab == 'course') {
+                $('.tab-class').removeClass('mb-1')
+                $('.tab-course').removeClass('mb-1')
+                $('.tab-course').addClass('mb-1')
+
+                $('.select-class-date').addClass('d-none')
+                $('.yoga-list').addClass('d-none')
+                $('.container-calendar').addClass('d-none')
+
+                $('.container-course').removeClass('d-none')
+                $('.btn-add').removeClass('d-none')
+                $('.div-space').removeClass('d-none')
+            }
+
+            fetchData('class', firstday);
+            fetchData('course');
+        }
+
+    </script>
+
+
+    <script>
+
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                initView()
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
+    </script>
+
+</body>
+
+</html>

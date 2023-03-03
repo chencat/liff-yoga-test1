@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-tw">
 
 <head>
     <meta charset="utf-8">
@@ -7,40 +7,9 @@
     <title>璽璽藝術空間D Art Studio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <style>
-        body {
-            background-image: url("./image/picture/background.jpg");
-            height: 100%;
-            width: 100%;
-        }
 
-        .bg-default {
-            background: #D28C8C;
-            color: white;
-        }
-
-        .text-default {
-            color: #D28C8C;
-        }
-
-        .tab-img-select {
-            filter: invert(68%) sepia(6%) saturate(2111%) hue-rotate(314deg) brightness(92%) contrast(87%);
-        }
-
-        .tab-img-unselect {
-            filter: invert(81%) sepia(4%) saturate(18%) hue-rotate(354deg) brightness(89%) contrast(102%);
-        }
-
-        .tab-text-select {
-            color: #D28C8C;
-            font-size: 12px;
-        }
-
-        .tab-text-unselect {
-            color: #BCBCBC;
-            font-size: 12px;
-        }
-    </style>
+    <!-- LINE -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
     <!-- UI -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
@@ -57,16 +26,19 @@
 
     <!-- Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+
 </head>
 
 <body>
 
-    <div class="container-fluid bg-default d-flex justify-content-center align-items-center position-fixed"
-        style="top:0;;height: 44px;">
+    <div
+        class="container-fluid bg-default-teacher d-flex justify-content-center align-items-center position-fixed nav-top">
         <div style="width:50px"></div>
-        <div class="align-self-center text-center flex-fill" style="font-size: 20px;">課程公告</div>
-        <button onclick="onAdd()" style="width:50px;font-size: 12px;" type="button"
-            class="btn align-self-center btn-add text-white">
+        <div class="align-self-center text-center flex-fill fa-20">課程公告</div>
+        <button onclick="onAdd()" style="width:50px;" type="button"
+            class="btn align-self-center btn-add text-white fs-12">
             新增
         </button>
     </div>
@@ -85,46 +57,44 @@
     </div>
 
 
-    <div class="container-fluid position-fixed tab-list" style="bottom:0px;background: white;">
+    <div class="container-fluid position-fixed tab-list bg-white" style="bottom:0px;">
         <div class="row mt-2">
             <div class="col d-flex flex-column align-items-center">
-                <img src="./image/icon/student/message0.png" class="align-self-cente tab-img-select"></img>
-                <p class="align-self-center text-center tab-text-select">課程公告</p>
+                <img src="./image/icon/student/message0.png" class="align-self-center img-select-teacher"></img>
+                <p class="align-self-center text-center text-teacher fs-12">課程公告</p>
             </div>
-            <div class="col d-flex flex-column align-items-center tab-class">
+            <div class="col d-flex flex-column align-items-center tab-yoga">
                 <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center tab-text-unselect">課程列表</p>
+                <p class="align-self-center text-center text-muted fs-12">課程列表</p>
             </div>
-            <div class="col d-flex flex-column align-items-cente tab-user">
+            <div class="col d-flex flex-column align-items-center tab-member">
                 <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center tab-text-unselect">使用者管理</p>
+                <p class="align-self-center text-center text-muted fs-12">使用者管理</p>
             </div>
             <div class="col d-flex flex-column align-items-center tab-checkin">
                 <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center tab-text-unselect">簽到管理</p>
+                <p class="align-self-center text-center text-muted fs-12">簽到管理</p>
             </div>
         </div>
     </div>
 
+
     <div class="modal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm" style="align-items: flex-end;">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body p-1">
+                    <div class="text-start p-2 announcement-type" id="all">全部公告</div>
+                    <div class="text-start p-2 announcement-type" id="pause">停課資訊</div>
+                    <div class="text-start p-2 announcement-type" id="open">開課資訊</div>
+                    <div class="text-start p-2 announcement-type" id="notice">注意事項</div>
+                    <div class="text-start p-2 announcement-type" id="other">其他</div>
                 </div>
-                <div class="modal-body">
-                    <div class="announcement_type bg-default text-center p-2" id="all">全部公告</div>
-                    <div class="announcement_type text-center p-2" id="pause">停課資訊</div>
-                    <div class="announcement_type text-center p-2" id="open">開課資訊</div>
-                    <div class="announcement_type text-center p-2" id="notice">注意事項</div>
-                </div>
-                <!-- <div class="modal-footer">
-                </div> -->
             </div>
         </div>
     </div>
 
     <script>
+        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
 
         moment.locale('zh-tw', {
             week: {
@@ -134,33 +104,25 @@
 
         var select_type = 'all';
 
+        var announcement_list = [];
+
+    </script>
+    <script>
+
+        function onAdd() {
+            window.location.href = 'teacher-edit-announcement.html?announcement_id=add';
+
+        }
+
         function onSelect() {
 
-            $(".announcement_type").removeClass('bg-default')
-            $(`#${select_type}`).addClass('bg-default')
+            $(".announcement-type").removeClass('bg-default-teacher')
+            $(`#${select_type}`).addClass('bg-default-teacher')
 
             $('.modal').modal('show');
         }
 
-        function onRefresh() {
-
-            const token = liff.getIDToken();
-
-            axios.get(`http://localhost:8000/ccdartstudio/me`, {
-                headers: {
-                    'Authorization': `${token}`
-                }
-            })
-                .then(function (response) {
-                    console.log(response);
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
-
-        $(".announcement_type").click(function () {
+        $(".announcement-type").click(function () {
 
             select_type = this.id;
 
@@ -172,6 +134,8 @@
                 select_type_text = '開課資訊';
             } else if (select_type == 'notice') {
                 select_type_text = '注意事項';
+            } else if (select_type == 'other') {
+                select_type_text = '其他';
             }
 
             $(".announcement-button").html(select_type_text)
@@ -181,19 +145,24 @@
             $('.modal').modal('hide');
         });
 
+        $('body').on('click', '.card-announcement', function () {
+
+            window.location.href = `teacher-edit-announcement.html?announcement_id=${this.id}`;
+        })
+
         $('body').on('click', '.tab-announcement', function () {
 
             window.location.href = 'teacher-announcement-list.html';
         })
 
-        $('body').on('click', '.tab-class', function () {
+        $('body').on('click', '.tab-yoga', function () {
 
-            window.location.href = 'teacher-class-list.html';
+            window.location.href = 'teacher-yoga-list.html';
         })
 
-        $('body').on('click', '.tab-user', function () {
+        $('body').on('click', '.tab-member', function () {
 
-            window.location.href = 'teacher-user-list.html';
+            window.location.href = 'teacher-member-list.html';
         })
 
         $('body').on('click', '.tab-checkin', function () {
@@ -205,11 +174,15 @@
 
     <script>
 
-        var announcement_list = [];
-
         function fetchData() {
 
-            axios.get(`http://localhost:8000/ccdartstudio/announcement`)
+            const token = liff.getIDToken();
+
+            axios.get(`${host}/ccdartstudio/announcement`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
                 .then(function (response) {
                     console.log(response.data)
                     announcement_list = response.data.array;
@@ -225,9 +198,11 @@
         function onView(announcement_list, select_type) {
             $(".announcement-list").empty();
 
-            announcement_list.filter(row => row.type == select_type || select_type == 'all').forEach(element => {
+            let _announcement_list = announcement_list.filter(row => row.type == select_type || select_type == 'all')
 
-                $(".announcement-list").append(`<div class="card mb-2">
+            _announcement_list.forEach(element => {
+
+                $(".announcement-list").append(`<div class="card mb-2 card-announcement" id="${element.id}">
             <div class="card-body">
                 <h5 class="card-title">${element.title || ''}</h5>
                 <small class="card-text">${element.yyyymmdd || ''}</small>
@@ -236,12 +211,36 @@
         </div>`)
 
             });
-
+            if (_announcement_list.length == 0) {
+                $(".announcement-list").append('<div class="text-center">目前無公告</div>')
+            }
 
         }
 
-        fetchData()
+    </script>
 
+    <script>
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                fetchData()
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
     </script>
 </body>
 

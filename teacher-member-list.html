@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>璽璽藝術空間D Art Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- UI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Control -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+    <!-- API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div
+        class="container-fluid bg-default-teacher d-flex justify-content-center align-items-center position-fixed nav-top">
+        <div class="align-self-center text-center flex-fill fs-20">使用者管理</div>
+    </div>
+
+    <div class="container-fluid bg-default-teacher d-flex justify-content-center align-items-center position-fixed"
+        style="top:44px;">
+        <input type="text" class="form-control align-self-center mb-3" id="input-search" placeholder="搜尋姓名">
+    </div>
+
+    <div class="container-fluid position-fixed overflow-auto member-list" style="top:108px;bottom:86px;">
+
+    </div>
+
+
+    <div class="container-fluid position-fixed tab-list bg-white" style="bottom:0px;">
+        <div class="row mt-2">
+            <div class="col d-flex flex-column align-items-center tab-announcement">
+                <img src="./image/icon/student/message0.png" class="align-self-cente"></img>
+                <p class="align-self-center text-center text-muted fs-12">課程公告</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-yoga">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-muted fs-12">課程列表</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center">
+                <img src="./image/icon/student/message0.png" class="align-self-center img-select-teacher"></img>
+                <p class="align-self-center text-center text-teacher fs-12">使用者管理</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-checkin">
+                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-muted fs-12">簽到管理</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var user = null;
+
+        var member_list = null;
+
+    </script>
+
+
+    <script>
+
+        $("#input-search").keyup(function () {
+
+            let text = this.value.trim();
+
+            let _member_list = text == '' ? member_list : member_list.filter(row => row.name.includes(text));
+
+            onView(_member_list)
+
+        });
+
+        $('body').on('click', '.card-memeber', function () {
+
+            window.location.href = `member.html?userId=${this.id}&back=teacher-member-list`;
+        })
+
+        $('body').on('click', '.tab-announcement', function () {
+
+            window.location.href = 'teacher-announcement-list.html';
+        })
+
+        $('body').on('click', '.tab-yoga', function () {
+
+            window.location.href = 'teacher-yoga-list.html';
+        })
+
+        $('body').on('click', '.tab-memeber', function () {
+
+            window.location.href = 'teacher-member-list.html';
+        })
+
+        $('body').on('click', '.tab-checkin', function () {
+
+            window.location.href = 'teacher-checkin-list.html';
+        })
+
+    </script>
+
+    <script>
+
+        var member_list = [];
+
+        function fetchData() {
+
+
+            const token = liff.getIDToken();
+
+            axios.get(`${host}/ccdartstudio/member`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+                    member_list = response.data.array;
+
+                    onView(member_list)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    $(".user-list").empty();
+                });
+        }
+
+        function onView(member_list) {
+
+            $('.member-list').empty();
+
+            member_list.forEach(member => {
+                let role = '';
+                let color = ''
+
+                if (member.role.includes('student')) {
+                    role = '學生'
+                    color = 'bg-default-student'
+                } else if (member.role.includes('guest')) {
+                    role = '訪客'
+                    color = 'bg-default-guest'
+                }
+
+                $('.member-list').append(`<div class="card card-memeber" id="${member.userId}">
+            <div class="d-flex flex-row align-items-center justify-content-center gap-2 my-2">
+                <img class="circle-img ms-2" src="${member.line_profile.pictureUrl}" />
+                <div class="card-title align-self-center flex-fill my-2">
+                    ${member.name || ''}(${member.nickname || ''})</div>
+                <div class="text-center m-2 ${color} h6 px-3 py-2 rounded-lg">${role}</div>
+            </div>
+        </div>`);
+            });
+        }
+
+
+
+    </script>
+    <script>
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                fetchData()
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
+    </script>
+</body>
+
+</html>

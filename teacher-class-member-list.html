@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>璽璽藝術空間D Art Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- LINE -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <!-- UI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Control -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+    <!-- API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div
+        class="container-fluid bg-default-teacher d-flex justify-content-center align-items-center position-fixed nav-top">
+        <button onclick="onBack()" style="width:50px" type="button" class="btn align-self-center btn-back text-white">
+            <img src="image/icon/student/back.png">
+        </button>
+        <div class="align-self-center text-center flex-fill fs-20">學生名單</div>
+        <button onclick="onAdd()" style="width:50px;" type="button"
+            class="btn align-self-center btn-add text-white fs-12">
+            新增
+        </button>
+    </div>
+
+    <div class="container-fluid position-fixed" style="top:44px;">
+        <div class="row justify-content-center bg-default-teacher">
+            <div class="col text-center text-teacher py-2 bg-white mb-1 tab-inside">上課名單</div>
+            <div class="col text-center text-teacher py-2 bg-white tab-outside ">候補名單</div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid position-fixed overflow-auto member-list" style="top:108px;bottom:20px;">
+
+    </div>
+
+    <div class="modal modal-activity-inside" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+            <div class="modal-content">
+                <div class="modal-body p-1">
+                    <div class="text-start p-2 activity-checkin-inside" id="checkin">簽到</div>
+                    <div class="text-start p-2 activity-checkout-inside" id="checkin">取消簽到</div>
+                    <div class="text-start p-2 activity-cancel-inside" id="cancel">移除</div>
+                    <div class="text-start p-2 activity-member-inside" id="member">查看個人資訊</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-activity-outside" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+            <div class="modal-content">
+                <div class="modal-body p-1">
+                    <div class="text-start p-2 activity-apply-outside" id="checkin">移至上課名單</div>
+                    <div class="text-start p-2 activity-member-outside" id="member">查看個人資訊</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-add" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-sm">
+            <div class="modal-content">
+                <div class="d-flex justify-content-between p-2">
+                    <button type="button" class="btn" data-bs-dismiss="modal">取消</button>
+                    <button onclick="onApply()" type="button" class="btn">加入</button>
+                </div>
+                <div class="px-2">
+                    <input type="text" class="form-control align-self-center" id="input-search" placeholder="搜尋姓名">
+                </div>
+                <div class="modal-body p-1 user-list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var member_list = null;
+
+        var user_list = null;
+
+        var userIds = [];
+
+        var select_tab = 'inside';
+
+        var obj_class = null;
+
+    </script>
+
+
+    <script>
+
+
+
+    </script>
+
+    <script>
+
+        function sendRequest(data) {
+            console.log(data)
+            const token = liff.getIDToken();
+
+            axios.post(`${host}/ccdartstudio/activity`, data,
+                {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                }
+            )
+                .then(function (response) {
+                    console.log(response.data);
+                    fetchData()
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function fetchData() {
+
+            const token = liff.getIDToken();
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+
+            axios.get(`${host}/ccdartstudio/activity?class_id=${class_id}`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+
+                    console.log(response.data)
+                    member_list = response.data.member;
+                    user_list = response.data.user_list;
+                    obj_class = response.data.class;
+                    onView(member_list, select_tab)
+
+                    $('.modal-add').modal('hide')
+                    $('.modal-activity-inside').modal('hide')
+                    $('.modal-activity-outside').modal('hide')
+                })
+                .catch(function (error) {
+                    console.log(error);
+
+                });
+        }
+
+        function onView(member_list, select_tab) {
+
+            $('.member-list').empty();
+
+            let _member_list = select_tab == 'inside' ? member_list.filter(row => row.activity.number_of_alternate == 0) : member_list.filter(row => row.activity.number_of_alternate != 0)
+
+            _member_list.forEach(member => {
+                let checkin = '';
+
+                if (member.activity.checkin == true) {
+                    checkin = '已簽到'
+                } else {
+                    checkin = '&nbsp;'
+                }
+
+                $('.member-list').append(`<div class="card card-memeber-${member.activity.number_of_alternate == 0 ? 'inside' : 'outside'}" id="${member.userId}">
+            <div class="d-flex flex-row align-items-center gap-2" style="height: 68px;">
+                <img class="circle-img ms-2" src="${member.line_profile.pictureUrl}" />
+                <div class="card-title align-self-center flex-fill" style="font-size:16px;color:#A95050;">
+                    ${member.name || ''}(${member.nickname || ''})</div>
+                <div class="text-center me-2 badge rounded-pill ${member.activity.checkin == true ? 'bg-default' : 'd-none'}">${checkin}</div>
+            </div>
+        </div>`);
+            });
+
+            if (obj_class.type == 'online') {
+                $('.tab-inside').removeClass('mb-1')
+                $('.tab-outside').addClass('d-none')
+            }
+        }
+
+
+
+    </script>
+    <script>
+
+        function onBack() {
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+
+            window.location.href = `teacher-yoga-activity.html?class_id=${class_id}`;
+        }
+        function onAdd() {
+
+            userIds = [];
+
+            $('.user-list').empty();
+
+            user_list.forEach(obj_user => {
+                $('.user-list').append(`<div class="text-start p-2 modal-bg-unselect-teacher activity-user activity-user-${obj_user.userId}" id="${obj_user.userId}">${obj_user.name}(${obj_user.nickname})</div>`)
+            })
+
+            $('.modal-add').modal('show')
+        }
+
+        function onApply() {
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+
+            if (userIds.length == 0) {
+                $('.modal-add').modal('hide')
+            } else {
+
+                let array = [];
+                userIds.forEach(userId => {
+                    array.push({
+                        student: userId,
+                        class_id: class_id,
+                        case: 'apply'
+                    })
+                })
+
+                let data = {
+                    array: array
+                }
+                sendRequest(data);
+            }
+
+        }
+
+        $("#input-search").keyup(function () {
+
+            let text = this.value.trim();
+
+            let _user_list = text == '' ? user_list : user_list.filter(row => row.name.includes(text));
+
+            $('.user-list').empty();
+
+            _user_list.forEach(obj_user => {
+                $('.user-list').append(`<div class="text-start p-2${userIds.includes(obj_user.userId) == true ? ' modal-bg-select-teacher ' : ' modal-bg-unselect-teacher '}activity-user activity-user-${obj_user.userId}" id="${obj_user.userId}">${obj_user.name}(${obj_user.nickname})</div>`)
+            })
+        });
+
+        $('body').on('click', '.activity-user', function () {
+
+
+            if (userIds.includes(this.id)) {
+                userIds = userIds.filter(row => row != this.id);
+                $(`.activity-user-${this.id}`).removeClass('modal-bg-select-teacher')
+                $(`.activity-user-${this.id}`).addClass('modal-bg-unselect-teacher')
+            } else {
+                $(`.activity-user-${this.id}`).removeClass('modal-bg-unselect-teacher')
+                $(`.activity-user-${this.id}`).addClass('modal-bg-select-teacher')
+                userIds.push(this.id)
+            }
+
+        })
+
+        $('body').on('click', '.tab-inside', function () {
+
+            select_tab = 'inside'
+
+            $('.tab-inside').removeClass('mb-1')
+            $('.tab-outside').removeClass('mb-1')
+            $('.tab-inside').addClass('mb-1')
+            onView(member_list, select_tab)
+        })
+
+        $('body').on('click', '.tab-outside', function () {
+
+            select_tab = 'outside'
+
+            $('.tab-inside').removeClass('mb-1')
+            $('.tab-outside').removeClass('mb-1')
+            $('.tab-outside').addClass('mb-1')
+            onView(member_list, select_tab)
+        })
+
+        $('body').on('click', '.card-memeber-inside', function () {
+            // let searchParams = new URLSearchParams(window.location.search)
+            // let class_id = searchParams.get('class_id')
+            // window.location.href = `member.html?userId=${this.id}&back=teacher-class-member-list&class_id=${class_id}`;
+
+            $('.activity-checkin-inside').removeClass('d-none')
+            $('.activity-checkout-inside').removeClass('d-none')
+
+            let member = member_list.filter(row => row.userId == this.id)[0];
+
+            if (member.activity.checkin == false) {
+                $('.activity-checkout-inside').addClass('d-none')
+            } else {
+                $('.activity-checkin-inside').addClass('d-none')
+            }
+
+            $('.activity-checkin-inside').attr('id', this.id)
+            $('.activity-checkout-inside').attr('id', this.id)
+            $('.activity-cancel-inside').attr('id', this.id)
+            $('.activity-member-inside').attr('id', this.id)
+            $('.modal-activity-inside').modal('show')
+        })
+
+        $('body').on('click', '.activity-checkin-inside', function () {
+            //  簽到
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+            let member = member_list.filter(row => row.userId == this.id)[0];
+
+            sendRequest({
+                array: [{
+                    id: member.activity.id,
+                    student: member.userId,
+                    class_id: class_id,
+                    checkin: true
+                }]
+            });
+        })
+        $('body').on('click', '.activity-checkout-inside', function () {
+            // 取消簽到
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+            let member = member_list.filter(row => row.userId == this.id)[0];
+
+            sendRequest({
+                array: [{
+                    id: member.activity.id,
+                    student: member.userId,
+                    class_id: class_id,
+                    checkin: false
+                }]
+            });
+        })
+
+        $('body').on('click', '.activity-cancel-inside', function () {
+            // 取消上課
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+            let member = member_list.filter(row => row.userId == this.id)[0];
+
+            sendRequest({
+                array: [{
+                    id: member.activity.id,
+                    student: member.userId,
+                    class_id: class_id,
+                    case: 'cancel'
+                }]
+            });
+        })
+
+        $('body').on('click', '.activity-apply-outside', function () {
+            // 上課名單
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+            let member = member_list.filter(row => row.userId == this.id)[0];
+
+            sendRequest({
+                array: [{
+                    id: member.activity.id,
+                    student: member.userId,
+                    class_id: class_id,
+                    case: 'apply'
+                }]
+            });
+        })
+
+        $('body').on('click', '.card-memeber-outside', function () {
+
+            $('.activity-apply-outside').attr('id', this.id)
+            $('.activity-member-outside').attr('id', this.id)
+            $('.modal-activity-outside').modal('show')
+        })
+
+        $('body').on('click', '.activity-member-inside', function () {
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+            window.location.href = `member.html?userId=${this.id}&back=teacher-class-member-list&class_id=${class_id}`;
+
+        })
+
+        $('body').on('click', '.activity-member-outside', function () {
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+            window.location.href = `member.html?userId=${this.id}&back=teacher-class-member-list&class_id=${class_id}`;
+
+        })
+
+    </script>
+
+    <script>
+
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                fetchData()
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
+    </script>
+</body>
+
+</html>

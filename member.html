@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>璽璽藝術空間D Art Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- UI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Control -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+    <!-- API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div
+        class="container-fluid position-fixed bg-default-teacher d-flex justify-content-center align-items-center nav-top">
+        <button onclick="onClose()" style="width:50px" type="button"
+            class="btn align-self-center btn-exit text-white d-none">
+            <img src="image/icon/student/close.png">
+        </button>
+        <button onclick="onBack()" style="width:50px" type="button" class="btn align-self-center btn-back text-white">
+            <img src="image/icon/student/back.png">
+        </button>
+        <div class="align-self-center text-center flex-fill fs-20">個人資訊</div>
+        <button onclick="onEdit()" style="width:50px" type="button" class="btn align-self-center btn-edit">
+            <img src="image/icon/student/edit.png">
+        </button>
+        <button onclick="onSave()" style="width:50px;" type="button"
+            class="btn align-self-center btn-save text-white d-none fs-12">
+            儲存
+        </button>
+    </div>
+
+    <div class="container-fluid position-fixed overflow-auto" style="top:64px;bottom:86px;">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex flex-column div-line-profile" style="border-radius: 10px;">
+                    <img class="line-pictureUrl align-self-center mt-2" src=""></img>
+                    <p class="align-self-center my-2 line-displayName">LINE ID：</p>
+                </div>
+            </div>
+            <div class="card-header card-user-edit d-none">
+                <div class="mb-3">
+                    <label for="input-nickname" class="form-label">暱稱</label>
+                    <input type="text" class="form-control" id="input-nickname" placeholder="請輸入姓名">
+                </div>
+
+                <div class="mb-3">
+                    <label for="input-role" class="form-label">權限</label>
+                    <div class="d-flex flex-row bg-white border border-secondary rounded">
+                        <div class="text-dark flex-fill align-self-center ms-4" id="input-role"></div>
+                        <button onclick="selectRole()" type="button" class="btn align-self-center text-center">
+                            <img src="./image/icon/student/down.png">
+                            </img>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="input-number_of_offline" class="form-label">實體課堂數</label>
+                    <input type="number" class="form-control" id="input-number_of_offline" placeholder="請輸入數字">
+                </div>
+                <div class="mb-3">
+                    <label for="input-number_of_online" class="form-label">視訊課堂數</label>
+                    <input type="number" class="form-control" id="input-number_of_online" placeholder="請輸入數字">
+                </div>
+                <div class="mb-3">
+                    <label for="input-expiration_date" class="form-label">上課截止日</label>
+                    <input type="date" class="form-control" id="input-expiration_date">
+                </div>
+
+            </div>
+            <div class="card-body card-user-info">
+                <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+                    <div class="card align-self-center p-2" style="width:120px">
+                        <p class="align-self-center m-0">實體課</p>
+                        <p class="align-self-center m-0 me-number_of_offline fs-12"></p>
+                    </div>
+                    <div class="card align-self-center p-2" style="width:120px">
+                        <p class="align-self-center m-0">視訊課</p>
+                        <p class="align-self-center m-0 me-number_of_online fs-12"></p>
+                    </div>
+                    <div class="card align-self-center p-2" style="width:120px">
+                        <p class="align-self-center m-0">截止日期</p>
+                        <p class="align-self-center m-0 me-expiration_date fs-12"></p>
+                    </div>
+                </div>
+
+                <div class="vstack gap-2 mt-4">
+                    <div class="d-flex flex-row align-items-end mb-1">
+                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">姓名</small>
+                        <small class="align-self-end me-3 me-name"></small>
+                    </div>
+                    <div class="d-flex flex-row align-items-end mb-1">
+                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">暱稱</small>
+                        <small class="align-self-end me-3 me-nickname"></small>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-start mb-1">
+                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">權限</small>
+                        <small class="align-self-end me-3 me-role"></small>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-start mb-1">
+                        <img src="./image/icon/student/calendar.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">生日</small>
+                        <small class="align-self-end me-3 me-age"></small>
+                    </div>
+                    <div class="d-flex flex-row align-items-start mb-1">
+                        <img src="./image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">個人身體狀況</small>
+                        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#health"
+                            aria-expanded="false" aria-controls="health">
+                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                                alt="">
+                        </button>
+                    </div>
+                    <div class="collapse" id="health">
+                        <div class="px-3 me-health">
+                            無
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-start mb-1">
+                        <img src="./image/icon/student/map_gym.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">輔具使用狀況</small>
+
+                        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#assistive_devices"
+                            aria-expanded="false" aria-controls="assistive_devices">
+                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                                alt="">
+                        </button>
+                    </div>
+                    <div class="collapse" id="assistive_devices">
+                        <div class="px-3 me-assistive_devices">
+                            無
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <button onclick="onPause()" type="button"
+            class="btn bg-light text-center w-100 mt-4 mb-2 btn-pause d-none text-warning">
+            學生暫停
+        </button>
+        <button onclick="onSuspend()" type="button"
+            class="btn bg-light text-center w-100 mb-2 btn-suspend d-none text-danger">
+            停權
+        </button>
+        <button onclick="onNormal()" type="button"
+            class="btn bg-light text-center w-100 mt-4 mb-2 btn-normal d-none text-success">
+
+        </button>
+
+    </div>
+
+    <div class="modal modal-role" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm" style="align-items: flex-end;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="card-title">請選擇權限</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-1">
+                    <div class="text-start p-2 member-role member-role-guest" id="guest">訪客</div>
+                    <div class="text-start p-2 member-role member-role-student" id="student">學生</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var user = null;
+
+        var member = null;
+
+    </script>
+
+    <script>
+
+        function fetchMember() {
+
+            const token = liff.getIDToken();
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let userId = searchParams.get('userId')
+
+            axios.get(`${host}/ccdartstudio/member/${userId}`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+
+                    member = response.data.obj;
+
+                    onView(member);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function onView(member) {
+
+            $('.card-user-edit').addClass('d-none')
+            $('.card-user-info').removeClass('d-none')
+            $('.div-left').removeClass('d-none')
+            $('.btn-edit').removeClass('d-none')
+            $('.btn-save').addClass('d-none')
+            $('.btn-exit').addClass('d-none')
+
+            let role = '';
+
+            $('.div-line-profile').removeClass('bg-default-student')
+            $('.div-line-profile').removeClass('bg-default-guest')
+            if (member.role.includes('guest')) {
+                role = '訪客'
+                $('.div-line-profile').addClass('bg-default-guest')
+            } else if (member.role.includes('student')) {
+                role = '學生'
+
+                $('.div-line-profile').addClass('bg-default-student')
+            }
+
+            $('.line-pictureUrl').attr('src', member.line_profile.pictureUrl);
+            $('.line-displayName').html(`LINE ID：${member.line_profile.displayName}`)
+            $('.me-name').html(member.name || '')
+            $('.me-nickname').html(member.nickname || '')
+            $('.me-role').html(role)
+            $('.me-age').html(member.age || '')
+            $('.me-health').html(member.health || '')
+            $('.me-assistive_devices').html(member.assistive_devices || '')
+            $('.me-number_of_offline').html(`${member.number_of_offline || '0'}堂`)
+            $('.me-number_of_online').html(`${member.number_of_online || '0'}堂`)
+            $('.me-expiration_date').html(member.expiration_date || '&nbsp;')
+
+            $('#input-nickname').val(member.nickname || '')
+            $('#input-role').html(role)
+            $('#input-number_of_offline').val(member.number_of_offline || '')
+            $('#input-number_of_online').val(member.number_of_online || '')
+            $('#input-expiration_date').val(member.expiration_date || '')
+
+            if (member.permission == 'normal') {
+                $('.btn-pause').removeClass('d-none')
+                $('.btn-suspend').removeClass('d-none')
+                $('.btn-normal').addClass('d-none')
+            } else {
+                $('.btn-pause').addClass('d-none')
+                $('.btn-suspend').addClass('d-none')
+                $('.btn-normal').removeClass('d-none')
+            }
+
+            if (member.permission == 'pause') {
+                $('.btn-normal').html('取消學生暫停')
+            } else if (member.permission == 'suspend') {
+                $('.btn-normal').html('取消停權')
+            }
+        }
+
+        function onEdit() {
+
+            let role = '';
+
+            if (member.role.includes('guest')) {
+                role = '訪客'
+            } else if (member.role.includes('student')) {
+                role = '學生'
+            }
+
+            $('#input-nickname').val(member.nickname || '')
+            $('#input-role').html(role)
+            $('#input-number_of_offline').val(member.number_of_offline);
+            $('#input-number_of_online').val(member.number_of_online);
+            $('#input-expiration_date').val(member.expiration_date);
+
+            $('.card-user-edit').removeClass('d-none')
+            $('.card-user-info').addClass('d-none')
+            $('.btn-back').addClass('d-none')
+            $('.btn-edit').addClass('d-none')
+            $('.btn-save').removeClass('d-none')
+            $('.btn-exit').removeClass('d-none')
+
+
+            if (member.permission == 'normal') {
+                $('.btn-pause').addClass('d-none')
+                $('.btn-suspend').addClass('d-none')
+            } else {
+                $('.btn-normal').addClass('d-none')
+            }
+
+        }
+
+        function onSave() {
+            $('.card-user-edit').addClass('d-none')
+            $('.card-user-info').removeClass('d-none')
+            $('.btn-back').removeClass('d-none')
+            $('.btn-edit').removeClass('d-none')
+            $('.btn-save').addClass('d-none')
+            $('.btn-exit').addClass('d-none')
+
+            if (member.permission == 'normal') {
+                $('.btn-pause').removeClass('d-none')
+                $('.btn-suspend').removeClass('d-none')
+            } else {
+                $('.btn-normal').removeClass('d-none')
+            }
+
+            let nickname = $('#input-nickname').val().trim();
+            let role = $('#input-role').html();
+            let number_of_offline = $('#input-number_of_offline').val().trim();
+            let number_of_online = $('#input-number_of_online').val().trim();
+            let expiration_date = $('#input-expiration_date').val().trim();
+
+            expiration_date = expiration_date == '' ? '' : moment(expiration_date).format('YYYY-MM-DD')
+
+            if (role == '訪客') {
+                member.role = ['guest']
+            } else if (role == '學生') {
+                member.role = ['student']
+            }
+
+            number_of_offline = number_of_offline == '' ? 0 : parseFloat(number_of_offline);
+            number_of_online = number_of_online == '' ? 0 : parseFloat(number_of_online);
+
+            sendRequest({ nickname: nickname, role: member.role, number_of_offline: number_of_offline, number_of_online: number_of_online, expiration_date: expiration_date })
+        }
+
+        function onBack() {
+            let searchParams = new URLSearchParams(window.location.search)
+            let back = searchParams.get('back')
+            if (back == 'teacher-member-list') {
+                window.location.href = `teacher-member-list.html`;
+            } else if (back == 'teacher-class-member-list') {
+                let class_id = searchParams.get('class_id')
+                window.location.href = `teacher-class-member-list.html?class_id=${class_id}`;
+            }
+
+        }
+
+        function onClose() {
+            $('.card-user-edit').addClass('d-none')
+            $('.card-user-info').removeClass('d-none')
+            $('.btn-back').removeClass('d-none')
+            $('.btn-edit').removeClass('d-none')
+            $('.btn-save').addClass('d-none')
+            $('.btn-exit').addClass('d-none')
+            $('.btn-pause').removeClass('d-none')
+            $('.btn-suspend').removeClass('d-none')
+        }
+
+        function selectRole() {
+            // 基礎、療癒、睡眠修復
+
+            $('.member-role').removeClass('modal-bg-select');
+            $('.member-role').removeClass('modal-bg-unselect');
+
+
+            if (member.role.includes('guest')) {
+                $(`.member-role-guest`).addClass('modal-bg-select');
+            } else if (member.role.includes('student')) {
+                $(`.member-role-student`).addClass('modal-bg-select');
+            }
+
+            $('.modal-role').modal('show')
+        }
+
+        function onPause() {
+
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: '是否設定學生暫停？',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    sendRequest({ permission: 'pause' })
+                }
+            })
+        }
+        function onSuspend() {
+
+
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: '是否停權？',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    sendRequest({ permission: 'suspend' })
+                }
+            })
+        }
+
+        function onNormal() {
+
+            let title = '';
+
+            if (member.permission == 'pause') {
+                title = '是否取消學生暫停？';
+            } else if (member.permission == 'suspend') {
+                title = '是否取消停權？';
+            }
+
+
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: title,
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    sendRequest({ permission: 'normal' })
+                }
+            })
+        }
+
+        function sendRequest(data) {
+            const token = 'develop';
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let userId = searchParams.get('userId')
+
+            axios.patch(`${host}/ccdartstudio/member/${userId}`, data, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+
+                    let title = response.data.msg;
+
+                    if (data.permission == 'normal' && member.permission == 'pause') {
+                        title = '已取消學生暫停。'
+                    } else if (data.permission == 'normal' && member.permission == 'suspend') {
+                        title = '已取消停權。'
+                    }
+
+                    Swal.fire({
+                        title: title,
+                        confirmButtonText: '確定',
+
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        fetchMember();
+
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        $('body').on('click', '.member-role', function () {
+
+            // member.role = [this.id]
+            if (this.id == 'guest') {
+                $('#input-role').html(`訪客`)
+            } else if (this.id == 'student') {
+                $('#input-role').html(`學生`)
+            }
+
+            $('.modal-role').modal('hide')
+        })
+
+    </script>
+
+    <script>
+
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                fetchMember();
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
+    </script>
+
+</body>
+
+</html>

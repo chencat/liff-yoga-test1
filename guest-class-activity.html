@@ -32,7 +32,7 @@
 
 <body>
     <div
-        class="container-fluid bg-default-student d-flex justify-content-center align-items-center position-fixed nav-top">
+        class="container-fluid bg-default-guest d-flex justify-content-center align-items-center position-fixed nav-top">
         <button onclick="onBack()" style="width:40px" type="button" class="btn align-self-center">
             <img src="image/icon/student/back.png">
         </button>
@@ -40,14 +40,7 @@
         <div style="width:40px"></div>
     </div>
 
-    <div class="container-fluid mt-3 class-message position-fixed d-none" style="top:44px">
-        <div class="card d-flex flex-row justify-content-start align-items-center bg-default">
-            <img class="align-self-center mx-2" src="./image/icon/student/information.png" />
-            <h6 class="number_of_alternate align-self-center flex-grow-1 m-0 p-1"></h6>
-        </div>
-    </div>
-
-    <div class="container-fluid overflow-auto div-info mt-3 position-fixed" style="top:88px;bottom: 86px;">
+    <div class="container-fluid overflow-auto div-info position-fixed" style="top:64px;bottom: 20px;">
         <div class="card">
             <div class="card-header">
                 <div class="hstack gap-2 mt-2">
@@ -94,19 +87,6 @@
             </div>
         </div>
 
-        <div class="card mt-3 card-online-link d-none">
-            <div class="card-header">
-                <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
-                    <p class="me-auto m-0">視訊課連結</p>
-                </div>
-                <hr>
-                <p class="overflow-auto class-online-link">
-
-                </p>
-            </div>
-        </div>
-
         <div class="card mt-3 card-online d-none">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
@@ -147,11 +127,6 @@
     </div>
 
 
-
-    <div class="btn-activity bg-default-student position-fixed p-3 text-center fs-20" style="bottom: 0px;width: 100%;">
-
-    </div>
-
     <script>
 
         let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
@@ -162,11 +137,7 @@
             }
         });
 
-        var activity_type = null;
-
         var model = null;
-
-        var obj_activity = null;
 
         var user = null;
 
@@ -177,172 +148,7 @@
         function onBack() {
             let yyyymmdd = model.class.yyyymmdd;
 
-            window.location.href = `yoga-list.html?yyyymmdd=${yyyymmdd}`;
-        }
-
-        $('body').on('click', '.btn-activity', function () {
-
-            if (activity_type == 'apply' && (user.name == '' || user.age == '' || user.health == '')) {
-                Swal.fire({
-                    title: `需要填完個人資訊才能報名上課`,
-                    confirmButtonText: '確定',
-
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-
-                })
-            } else {
-                if (activity_type == 'apply') {
-                    onApply()
-                } else if (activity_type == 'cancel') {
-                    onCancel()
-                } else if (activity_type == 'checkin') {
-                    onCheckin()
-                }
-            }
-
-
-        })
-
-        function onApply() {
-            // 上課
-            let yyyymmdd = model.class.yyyymmdd;
-
-            let now = moment().format('yyyy-MM-DDThh:mm:ss')
-            let bound = moment(`${yyyymmdd}T${model.course.hhmm_start}:00`).add(-1, 'hours').format('yyyy-MM-DDTHH:mm:ss')
-
-            if (now > bound) {
-                Swal.fire({
-                    customClass: {
-                        cancelButton: 'order-1',
-                        confirmButton: 'order-2',
-                    },
-                    title: '是否參加?目前已過取消時間，選擇參加後，就無法取消',
-                    showCancelButton: true,
-                    cancelButtonText: '否',
-                    comfirmButtonText: '是',
-
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        let data = {
-                            class_id: model.class.id,
-                            case: 'apply'
-                        }
-
-                        sendRequest(data);
-                    }
-                })
-            } else {
-                Swal.fire({
-                    customClass: {
-                        cancelButton: 'order-1',
-                        confirmButton: 'order-2',
-                    },
-                    title: '是否參加',
-                    showCancelButton: true,
-                    cancelButtonText: '否',
-                    confirmButtonText: '是',
-
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        let data = {
-                            class_id: model.class.id,
-                            case: 'apply'
-                        }
-
-                        sendRequest(data);
-                    }
-                })
-            }
-
-
-
-        }
-
-        function onCancel() {
-            // 取消上課
-            Swal.fire({
-                customClass: {
-                    cancelButton: 'order-1',
-                    confirmButton: 'order-2',
-                },
-                title: '是否取消參加',
-                showCancelButton: true,
-                cancelButtonText: '否',
-                confirmButtonText: '是',
-
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    let data = {
-                        class_id: model.class.id,
-                        case: 'cancel',
-                        activity_id: model.activity.id
-                    }
-                    // console.log(data)
-                    sendRequest(data);
-                }
-            })
-
-
-        }
-
-        function onCheckin() {
-            // 簽到
-
-
-            Swal.fire({
-                customClass: {
-                    cancelButton: 'order-1',
-                    confirmButton: 'order-2',
-                },
-                title: '是否簽到',
-                showCancelButton: true,
-                cancelButtonText: '否',
-                confirmButtonText: '是',
-
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    let data = {
-                        class_id: model.class.id,
-                        case: 'checkin',
-                        activity_id: model.activity.id
-                    }
-
-                    sendRequest(data);
-                }
-            })
-        }
-
-        function sendRequest(data) {
-            const token = liff.getIDToken();
-
-            axios.post(`${host}/ccdartstudio/activity`, data,
-                {
-                    headers: {
-                        'Authorization': `${token}`
-                    }
-                })
-                .then(function (response) {
-                    console.log(response);
-
-                    Swal.fire({
-                        title: response.data.msg,
-                        confirmButtonText: '確定',
-
-                    }).then((result) => {
-                        /* Read more about isConfirmed, isDenied below */
-                        fetchData();
-
-                    })
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            window.location.href = `guest-yoga-list.html?yyyymmdd=${yyyymmdd}`;
         }
 
         function fetchData() {
@@ -362,8 +168,6 @@
                     model = response.data.obj;
                     user = response.data.user;
                     onClassView();
-
-                    onActivityView();
 
                 })
                 .catch(function (error) {
@@ -439,12 +243,9 @@
             $(".course-teacher-info").html(course_teacher_info.replaceAll('\n', '<br>'))
             $(".course-online-info").html(course_online_info.replaceAll('\n', '<br>'))
             $(".course-offline-info").html(course_offline_info.replaceAll('\n', '<br>'))
-            $(".class-online-link").html(class_online_link.replaceAll('\n', '<br>'))
-
 
             if (class_type == 'online') {
                 $(".card-online").removeClass('d-none')
-                $(".card-online-link").removeClass('d-none')
 
             } else if (class_type == 'offline') {
                 $(".div-location").removeClass('d-none')
@@ -453,59 +254,6 @@
             }
 
         }
-
-
-        function onActivityView() {
-
-            // 課程結束前30分鐘都可以，點選參加
-            // 課程開始前分30鐘才可以取消，之後不可以取消，只能由老師取消
-            // 課堂開始前30分鐘後才可以簽到
-
-            let yyyymmdd = model.class.yyyymmdd;
-
-            let now = moment().format('yyyy-MM-DDTHH:mm:ss')
-            // let now = '2023-02-21T14:15:00'
-
-            let apply_bound_time = moment(`${yyyymmdd}T${model.course.hhmm_start}:00`).add(-30, 'minutes').format('yyyy-MM-DDTHH:mm:ss')
-            let cancel_bound_time = moment(`${yyyymmdd}T${model.course.hhmm_start}:00`).add(-30, 'minutes').format('yyyy-MM-DDTHH:mm:ss')
-            let checkin_bound_time = moment(`${yyyymmdd}T${model.course.hhmm_start}:00`).add(-30, 'minutes').format('yyyy-MM-DDTHH:mm:ss')
-
-
-            let activity = model.activity;
-            let activity_case = activity == null ? null : activity.case;
-            let checkin = activity == null ? null : activity.checkin;
-
-            $(".btn-activity").removeClass('d-none');
-
-            activity_type = null
-
-            if (now <= apply_bound_time && (activity == null || activity_case == 'cancel')) {
-                activity_type = 'apply'
-            } else if (now >= checkin_bound_time && activity_case == 'apply' && checkin != true) {
-                activity_type = 'checkin'
-            } else if (now < cancel_bound_time && activity_case == 'apply') {
-                activity_type = 'cancel'
-            }
-            console.log(activity_type, activity_case, checkin)
-            if (activity_type == 'apply') {
-                $(".btn-activity").html('報名上課')
-            } else if (activity_type == 'cancel') {
-                $(".btn-activity").html('取消參加')
-            } else if (activity_type == 'checkin') {
-                $(".btn-activity").html('簽到')
-            } else {
-                $(".btn-activity").addClass('d-none');
-            }
-
-            if (activity != null && activity.number_of_alternate != null && activity.number_of_alternate > 0) {
-                $(".number_of_alternate").html(`本課程已額滿，您的候補序號：${activity.number_of_alternate}號`)
-                $(".class-message").removeClass('d-none')
-            }
-            else {
-                $(".class-message").addClass('d-none')
-            }
-        }
-
 
     </script>
 

@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>璽璽藝術空間D Art Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+
+    <!-- LINE -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <!-- UI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Control -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+    <!-- API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+    <div
+        class="container-fluid bg-default-teacher d-flex justify-content-center align-items-center position-fixed nav-top">
+        <button onclick="onBack()" style="width:40px" type="button" class="btn align-self-center">
+            <img src="image/icon/student/back.png">
+        </button>
+        <div class="div-space" style="width:40px"></div>
+        <div class="align-self-center text-center flex-fill fs-20">課程資訊</div>
+        <button onclick="onMember()" style="width:40px" type="button" class="btn align-self-center btn-member">
+            <img src="image/icon/teacher/book.png">
+        </button>
+        <button onclick="onSet()" style="width:40px" type="button" class="btn align-self-center">
+            <img src="image/icon/teacher/ellipsis.png">
+        </button>
+    </div>
+
+    <div class="container-fluid mt-3 class-message position-fixed d-none" style="top:44px">
+        <div class="card d-flex flex-row justify-content-start align-items-center bg-default">
+            <img class="align-self-center mx-2" src="./image/icon/student/information.png" />
+            <h6 class="number_of_alternate align-self-center flex-grow-1 m-0 p-1"></h6>
+        </div>
+    </div>
+
+    <div class="container-fluid overflow-auto div-info mt-3 position-fixed" style="top:44px;bottom: 20px;">
+        <div class="card">
+            <div class="card-header">
+                <div class="hstack gap-2 mt-2">
+                    <p class="me-auto m-0 class-name"></p>
+                    <span class="class-type bg-default-grayE2 tesxt-white px-3 py-2"></span>
+                </div>
+                <hr>
+                <div class="hstack">
+                    <div class="me-auto">
+                        <p>授課老師</p>
+                        <p class="course-tearcher"></p>
+                    </div>
+                    <div>
+                        <img class="course-teacher-picture" />
+                    </div>
+                </div>
+                <div class="hstack gap-2 d-flex mb-2">
+                    <img src="./image/icon/student/calendar.png">
+                    <p class="me-auto m-0 class-date"></p>
+                </div>
+                <div class="hstack gap-2 d-flex mb-2">
+                    <img src="./image/icon/student/time.png">
+                    <p class="me-auto m-0 class-time"></p>
+                </div>
+                <div class="hstack gap-2 d-flex mb-2 div-location d-none">
+                    <img src="./image/icon/student/location.png">
+                    <p class="me-auto m-0 course-location"></p>
+                </div>
+                <div class="hstack gap-2 d-flex mb-2 div-capacity d-none">
+                    <img src="./image/icon/student/location.png">
+                    <p class="me-auto m-0 course-capacity"></p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="card mt-3 card-offline d-none">
+            <div class="card-header">
+                <div class="hstack gap-2 d-flex mt-2">
+                    <img src="./image/icon/student/message1.png">
+                    <p class="me-auto m-0">實體課注意事項</p>
+                </div>
+                <hr>
+                <p class="overflow-auto course-offline-info">
+
+                </p>
+            </div>
+        </div>
+
+        <div class="card mt-3 card-online-link d-none">
+            <div class="card-header">
+                <div class="hstack gap-2 d-flex mt-2">
+                    <img src="./image/icon/student/message1.png">
+                    <p class="me-auto m-0">視訊課連結</p>
+                </div>
+                <hr>
+                <p class="overflow-auto class-online-link">
+
+                </p>
+            </div>
+        </div>
+
+        <div class="card mt-3 card-online d-none">
+            <div class="card-header">
+                <div class="hstack gap-2 d-flex mt-2">
+                    <img src="./image/icon/student/message1.png">
+                    <p class="me-auto m-0">視訊課注意事項</p>
+                </div>
+                <hr>
+                <p class="overflow-auto course-online-info">
+
+                </p>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <div class="hstack gap-2 d-flex mt-2">
+                    <img src="./image/icon/student/message1.png">
+                    <p class="me-auto m-0">課程簡介</p>
+                </div>
+                <hr>
+                <p class="overflow-auto course-info">
+                </p>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <div class="hstack gap-2 d-flex mt-2">
+                    <img src="./image/icon/student/message1.png">
+                    <p class="me-auto m-0">老師介紹</p>
+                </div>
+                <hr>
+                <p class="overflow-auto course-teacher-info">
+
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-class" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm" style="align-items: flex-end;">
+            <div class="modal-content">
+                <div class="modal-body p-1">
+                    <div class="text-start p-2 class-edit">編輯課堂</div>
+                    <div class="text-start p-2 class-pause">暫停課堂</div>
+                    <div class="text-start p-2 class-rework d-none">恢復課堂</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-course" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm" style="align-items: flex-end;">
+            <div class="modal-content">
+                <div class="modal-body p-1">
+                    <div class="text-start p-2 course-edit">編輯課程</div>
+                    <div class="text-start p-2 course-pause">取消課程</div>
+                    <div class="text-start p-2 course-rework d-none">恢復課程</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var host = 'https://5cc1-59-126-54-247.jp.ngrok.io'
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var model = null;
+
+    </script>
+
+    <script>
+
+        function onBack() {
+            let searchParams = new URLSearchParams(window.location.search)
+
+            if (searchParams.has('class_id') == true) {
+                let yyyymmdd = model.class.yyyymmdd;
+
+                window.location.href = `teacher-yoga-list.html?tab=class&yyyymmdd=${yyyymmdd}`;
+            } else if (searchParams.has('course_id') == true) {
+                window.location.href = `teacher-yoga-list.html?tab=course`;
+            }
+
+
+        }
+
+        function sendRequest(method, path, data) {
+            const token = liff.getIDToken();
+
+            if (method == 'post') {
+                axios.post(`${host}/ccdartstudio/${path}`, data,
+                    {
+                        headers: {
+                            'Authorization': `${token}`
+                        }
+                    }
+                )
+                    .then(function (response) {
+                        // console.log(response);
+
+                        // swal.fire(response.data.msg)
+                        // fetchData();
+
+                        let title = response.data.msg;
+                        Swal.fire({
+                            title: title,
+                            confirmButtonText: '確定',
+
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            fetchData();
+
+                        })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            } else if (method == 'patch') {
+                axios.patch(`${host}/ccdartstudio/${path}`, data,
+                    {
+                        headers: {
+                            'Authorization': `${token}`
+                        }
+                    }
+                )
+                    .then(function (response) {
+                        // console.log(response);
+
+                        // swal.fire(response.data.msg)
+                        // fetchData();
+
+                        let title = response.data.msg;
+                        Swal.fire({
+                            title: title,
+                            confirmButtonText: '確定',
+
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            fetchData();
+
+                        })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+
+
+        }
+
+        function fetchData() {
+
+            const token = liff.getIDToken();
+
+            let searchParams = new URLSearchParams(window.location.search)
+
+            if (searchParams.has('class_id') == true) {
+
+                let class_id = searchParams.get('class_id')
+
+                axios.get(`${host}/ccdartstudio/class/${class_id}`, {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                })
+                    .then(function (response) {
+
+                        model = response.data.obj;
+
+                        onClassView();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            } else if (searchParams.has('course_id') == true) {
+
+                let course_id = searchParams.get('course_id')
+
+                axios.get(`${host}/ccdartstudio/course/${course_id}`, {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                })
+                    .then(function (response) {
+
+                        console.log(response.data)
+                        model = { course: response.data.course };
+
+                        onCourseView();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+
+        }
+
+        function onClassView() {
+
+            let searchParams = new URLSearchParams(window.location.search)
+
+            let yyyymmdd = model.class.yyyymmdd;
+            let class_type = model.class.type;
+
+            let course_name = model.course.name;
+            let course_location = model.course.location;
+            let class_capacity = model.class.capacity;
+
+            let class_status = model.class.status || 'normal';
+
+
+            let teacher = [];
+            model.course.teacher.forEach(obj => {
+
+                if (obj.name == "") {
+                    teacher.push(obj.displayName)
+                } else {
+                    teacher.push(obj.name)
+                }
+
+            })
+            let teacher_name = teacher.join('、')
+            let teacher_picture = model.course.teacher[0].pictureUrl;
+
+            let weekday = ['一', '二', '三', '四', '五', '六', '日'][moment(yyyymmdd).weekday()];
+
+            let class_date = `${moment(yyyymmdd).format('yyyy/MM/DD')} 週${weekday}`;
+
+            let course_hhmm_start = model.course.hhmm_start;
+            let course_hhmm_end = model.course.hhmm_end;
+
+            let course_info = model.class.course.note.info || '';
+            course_info = course_info == '' ? model.course.note.info : course_info;
+
+            let course_online_info = model.class.course.note.online || '';
+            course_online_info = course_online_info == '' ? model.course.note.online : course_online_info;
+            course_online_info = course_online_info == '' ? '無資訊' : course_online_info
+
+            let course_offline_info = model.class.course.note.offline || '';
+            course_offline_info = course_offline_info == '' ? model.course.note.offline : course_offline_info;
+            course_offline_info = course_offline_info == '' ? '無資訊' : course_offline_info
+
+            let course_teacher_info = model.class.course.teacher[0].info || '';
+
+            let class_online_link = model.class.online_link || '';
+            class_online_link = class_online_link == '' ? '無資訊' : class_online_link
+
+            $(".class-name").html(`${course_name}${model.course.enable == true ? '' : '(課程已取消)'}${class_status == 'normal' ? '' : '(課堂已暫停)'}`)
+
+            let class_type_text = '';
+            if (class_type == 'offline') {
+                class_type_text = '實體課'
+            } else if (class_type == 'online') {
+                class_type_text = '視訊課'
+            } else if (class_type == 'workshop') {
+                class_type_text = '工作坊'
+            }
+            $(".class-type").html(class_type_text)
+
+            $(".course-tearcher").html(teacher_name)
+
+            $(".course-teacher-picture").attr("src", teacher_picture);
+
+            $(".class-date").html(class_date)
+
+            $(".class-time").html(`${course_hhmm_start}~${course_hhmm_end}`)
+
+            $(".course-info").html(course_info.replaceAll('\n', '<br>'))
+
+            $(".course-teacher-info").html(course_teacher_info.replaceAll('\n', '<br>'))
+            $(".course-online-info").html(course_online_info.replaceAll('\n', '<br>'))
+            $(".course-offline-info").html(course_offline_info.replaceAll('\n', '<br>'))
+            $(".class-online-link").html(class_online_link.replaceAll('\n', '<br>'))
+
+
+            if (class_type == 'online') {
+                $(".card-online").removeClass('d-none')
+                $(".card-online-link").removeClass('d-none')
+
+            } else if (class_type == 'offline') {
+                $(".div-location").removeClass('d-none')
+                $(".div-capacity").removeClass('d-none')
+                $(".course-location").html(course_location)
+                $(".course-capacity").html(`實體課程人數上限：${class_capacity}`)
+                $(".card-offline").removeClass('d-none')
+            }
+
+
+            $('.modal-class').modal('hide')
+            $('.modal-course').modal('hide')
+
+        }
+
+
+        function onCourseView() {
+
+            let course_type = model.course.type;
+
+            let course_name = model.course.name;
+            let course_location = model.course.location;
+            let course_capacity = model.course.capacity;
+
+
+            let teacher = [];
+            model.course.teacher.forEach(obj => {
+
+                if (obj.name == "") {
+                    teacher.push(obj.displayName)
+                } else {
+                    teacher.push(obj.name)
+                }
+
+            })
+            let teacher_name = teacher.join('、')
+            let teacher_picture = model.course.teacher[0].pictureUrl;
+
+            let weekday = ['一', '二', '三', '四', '五', '六', '日'][model.course.weekday];
+
+            let class_date = `週${weekday}`;
+
+            let course_hhmm_start = model.course.hhmm_start;
+            let course_hhmm_end = model.course.hhmm_end;
+
+            let course_info = model.course.note.info || '';
+            course_info = course_info == '' ? '無資料' : course_info;
+            let course_online_info = model.course.note.online || '';
+            course_online_info = course_online_info == '' ? '無資料' : course_online_info;
+            let course_offline_info = model.course.note.offline || '';
+            course_offline_info = course_offline_info == '' ? '無資料' : course_offline_info;
+            let course_teacher_info = model.course.teacher[0].info || '';
+
+            $(".class-name").html(`${course_name}${model.course.enable == true ? '' : '(已取消)'}`)
+            // $(".class-name").addClass('text-danger')
+
+            let course_type_text = [];
+            if (course_type.includes('offline') == true) {
+                course_type_text.push('實體課')
+            }
+            if (course_type.includes('online') == true) {
+                course_type_text.push('視訊課')
+            }
+            if (course_type.includes('workshop') == true) {
+                course_type_text.push('工作坊')
+            }
+
+            // console.log(course_type_text, course_type)
+            $(".class-type").html(course_type_text.join('/'))
+
+            $(".course-tearcher").html(teacher_name)
+
+            $(".course-teacher-picture").attr("src", teacher_picture);
+
+            $(".class-date").html(class_date)
+
+            $(".class-time").html(`${course_hhmm_start}~${course_hhmm_end}`)
+
+            $(".course-info").html(course_info.replaceAll('\n', '<br>'))
+
+            $(".course-teacher-info").html(course_teacher_info.replaceAll('\n', '<br>'))
+
+            $(".course-online-info").html(course_online_info.replaceAll('\n', '<br>'))
+            $(".course-offline-info").html(course_offline_info.replaceAll('\n', '<br>'))
+
+
+
+            if (course_type.includes('offline') == true) {
+                $(".div-location").removeClass('d-none')
+                $(".div-capacity").removeClass('d-none')
+                $(".card-offline").removeClass('d-none')
+            }
+
+            if (course_type.includes('online') == true) {
+                $(".card-online").removeClass('d-none')
+            }
+
+            $(".course-location").html(course_location)
+            $(".course-capacity").html(`實體課程人數上限：${course_capacity}`)
+
+            $('.div-space').addClass('d-none')
+            $('.btn-member').addClass('d-none')
+
+            $('.modal-class').modal('hide')
+            $('.modal-course').modal('hide')
+        }
+
+
+        function onMember() {
+            let searchParams = new URLSearchParams(window.location.search)
+            window.location.href = `teacher-class-member-list.html?class_id=${searchParams.get('class_id')}`;
+        }
+
+        function onSet() {
+            let searchParams = new URLSearchParams(window.location.search)
+
+            if (searchParams.has('class_id') == true) {
+                $('.class-pause').removeClass('d-none')
+                $('.class-rework').removeClass('d-none')
+
+                if (model.class.status == 'normal') {
+                    $('.class-rework').addClass('d-none')
+                } else if (model.class.status == 'pause') {
+                    $('.class-pause').addClass('d-none')
+                }
+
+                $('.modal-class').modal('show')
+            } else if (searchParams.has('course_id') == true) {
+                $('.course-pause').removeClass('d-none')
+                $('.course-rework').removeClass('d-none')
+
+                if (model.course.enable == true) {
+                    $('.course-rework').addClass('d-none')
+                } else {
+                    $('.course-pause').addClass('d-none')
+                }
+
+                $('.modal-course').modal('show')
+            }
+        }
+
+
+    </script>
+
+    <script>
+
+        $('body').on('click', '.class-pause', function () {
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: '是否暫停本課堂？',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    let searchParams = new URLSearchParams(window.location.search)
+                    sendRequest('patch', `class/${searchParams.get('class_id')}`, { status: 'pause' })
+                }
+            })
+        })
+
+        $('body').on('click', '.class-rework', function () {
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: '是否恢復本課堂？',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    let searchParams = new URLSearchParams(window.location.search)
+                    sendRequest('patch', `class/${searchParams.get('class_id')}`, { status: 'normal' })
+                }
+            })
+        })
+
+        $('body').on('click', '.class-edit', function () {
+            let searchParams = new URLSearchParams(window.location.search)
+            window.location.href = `teacher-edit-class.html?class_id=${searchParams.get('class_id')}`;
+        })
+
+        $('body').on('click', '.course-pause', function () {
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: '是否取消本課程？',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    let searchParams = new URLSearchParams(window.location.search)
+                    sendRequest('patch', `course/${searchParams.get('course_id')}`, { enable: false })
+                }
+            })
+        })
+
+        $('body').on('click', '.course-rework', function () {
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: '是否恢復本課程？',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    let searchParams = new URLSearchParams(window.location.search)
+                    sendRequest('patch', `course/${searchParams.get('course_id')}`, { enable: true })
+                }
+            })
+        })
+
+        $('body').on('click', '.course-edit', function () {
+            let searchParams = new URLSearchParams(window.location.search)
+            window.location.href = `teacher-edit-course.html?course_id=${searchParams.get('course_id')}`;
+        })
+
+    </script>
+
+    <script>
+
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                fetchData();
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>璽璽藝術空間D Art Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- LINE -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <!-- UI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Control -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+    <!-- API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div
+        class="container-fluid position-fixed bg-default-teacher d-flex justify-content-center align-items-center nav-top">
+        <button onclick="onBack()" style="width:50px" type="button" class="btn align-self-center btn-exit text-white">
+            <img src="image/icon/student/close.png">
+        </button>
+        <div class="align-self-center text-center flex-fill div-title fs-20">一般課程</div>
+        <button onclick="onSave()" style="width:50px;" type="button"
+            class="btn align-self-center btn-save text-white fs-12">
+            儲存
+        </button>
+    </div>
+
+    <div class="container-fluid position-fixed overflow-auto" style="top:64px;bottom:0px;">
+        <div class="card mb-4 card-basic d-none">
+            <div class="card-header">
+                <div class="mb-3 div-capacity d-none">
+                    <label for="input-name" class="form-label">人數限制</label>
+                    <input type="number" class="form-control" id="input-capacity" placeholder="請輸入人數上限">
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="mb-3 div-online-link d-none">
+                    <label for="input-online-link" class="form-label">視訊課連結</label>
+                    <textarea class="form-control" id="input-online-link" rows="5"></textarea>
+                </div>
+                <div class="mb-3 div-note-offline d-none">
+                    <label for="input-note-offline" class="form-label">實體課注意事項</label>
+                    <textarea class="form-control" id="input-note-offline" rows="10"></textarea>
+                </div>
+                <div class="mb-3 div-note-online d-none">
+                    <label for="input-note-online" class="form-label">視訊課注意事項</label>
+                    <textarea class="form-control" id="input-note-online" rows="10"></textarea>
+                </div>
+                <div class="mb-3 div-note-info">
+                    <label for="input-note-info" class="form-label">課程簡介</label>
+                    <textarea class="form-control" id="input-note-info" rows="10"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var note = null
+
+        var obj_class = null
+
+    </script>
+
+    <script>
+
+        function fetchData() {
+            const token = liff.getIDToken();
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+
+            axios.get(`${host}/ccdartstudio/class/${class_id}`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+
+                    obj_class = response.data.obj.class;
+
+                    onView(obj_class);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+
+        function onView(obj_class) {
+
+            $('.div-note-info').removeClass('d-none')
+
+
+            if (obj_class.type == 'online') {
+                $('.div-note-online').removeClass('d-none')
+                $('.div-online-link').removeClass('d-none')
+            }
+
+            else if (obj_class.type == 'offline') {
+                $('.div-note-offline').removeClass('d-none')
+                $('.div-capacity').removeClass('d-none')
+                $('.card-basic').removeClass('d-none')
+
+            }
+
+            $('#input-capacity').val(obj_class.capacity)
+            $('#input-note-offline').val(obj_class.course.note.offline || '')
+            $('#input-note-online').val(obj_class.course.note.online || '')
+            $('#input-note-info').val(obj_class.course.note.info || '')
+            $('#input-online-link').val(obj_class.online_link || '')
+
+        }
+
+
+        function onSave() {
+
+            obj_class.capacity = $('#input-capacity').val().trim();
+            obj_class.course.note.offline = $('#input-note-offline').val().trim();
+            obj_class.course.note.online = $('#input-note-online').val().trim();
+            obj_class.course.note.info = $('#input-note-info').val().trim();
+            obj_class['online_link'] = $('#input-online-link').val().trim();
+
+            obj_class.capacity = obj_class.capacity == '' ? 0 : parseInt(obj_class.capacity);
+
+            if (obj_class.capacity == 0 && obj_class.type.includes('offline')) {
+                swal.fire('實體課需輸入人數上限')
+            } else {
+                sendRequest({
+                    capacity: obj_class.capacity,
+                    online_link: obj_class.online_link,
+                    course: obj_class.course,
+
+                })
+            }
+        }
+
+        function onBack() {
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: '是否返回課堂',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    // window.location.href = `teacher-class-list.html?tab=course`;
+                    window.location.href = `teacher-yoga-activity.html?class_id=${class_id}`;
+
+                }
+            })
+
+
+
+        }
+
+        function sendRequest(data) {
+
+            const token = liff.getIDToken();
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let class_id = searchParams.get('class_id')
+
+            axios.patch(`${host}/ccdartstudio/class/${class_id}`, data, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            }
+            )
+                .then(function (response) {
+                    console.log(response);
+
+                    // swal.fire(response.data.msg)
+                    // onClose();
+                    Swal.fire({
+                        title: response.data.msg,
+                        confirmButtonText: '確定',
+
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        // window.location.href = `teacher-yoga-activity.html?course_id=${course_id}`;
+
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+
+
+        }
+
+    </script>
+
+    <script>
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                fetchData();
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
+
+    </script>
+
+</body>
+
+</html>
