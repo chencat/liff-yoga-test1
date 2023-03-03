@@ -59,6 +59,9 @@
                 .then(function (response) {
                     console.log(response.data)
 
+                    if (response.data.status == false) {
+                        liff.logout();
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
