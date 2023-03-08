@@ -28,13 +28,14 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 
     <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+    <script src="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.js"></script>
 </head>
 
 <body>
     <div
         class="container-fluid bg-default-student d-flex justify-content-center align-items-center position-fixed nav-top">
         <button onclick="onBack()" style="width:40px" type="button" class="btn align-self-center">
-            <img src="image/icon/student/back.png">
+            <img src="../image/icon/student/back.png">
         </button>
         <div class="align-self-center text-center flex-fill fs-20">課程資訊</div>
         <div style="width:40px"></div>
@@ -42,7 +43,7 @@
 
     <div class="container-fluid mt-3 class-message position-fixed d-none" style="top:44px">
         <div class="card d-flex flex-row justify-content-start align-items-center bg-default">
-            <img class="align-self-center mx-2" src="./image/icon/student/information.png" />
+            <img class="align-self-center mx-2" src="../image/icon/student/information.png" />
             <h6 class="number_of_alternate align-self-center flex-grow-1 m-0 p-1"></h6>
         </div>
     </div>
@@ -65,16 +66,20 @@
                     </div>
                 </div>
                 <div class="hstack gap-2 d-flex mb-2">
-                    <img src="./image/icon/student/calendar.png">
+                    <img src="../image/icon/student/calendar.png">
                     <p class="me-auto m-0 class-date"></p>
                 </div>
                 <div class="hstack gap-2 d-flex mb-2">
-                    <img src="./image/icon/student/time.png">
+                    <img src="../image/icon/student/time.png">
                     <p class="me-auto m-0 class-time"></p>
                 </div>
                 <div class="hstack gap-2 d-flex mb-2 div-location d-none">
-                    <img src="./image/icon/student/location.png">
+                    <img src="../image/icon/student/location.png">
                     <p class="me-auto m-0 course-location"></p>
+                </div>
+                <div class="hstack gap-2 d-flex mb-2 div-address d-none">
+                    <img src="../image/icon/student/location.png">
+                    <p class="me-auto m-0 course-address"></p>
                 </div>
             </div>
 
@@ -84,7 +89,7 @@
         <div class="card mt-3 card-offline d-none">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">實體課注意事項</p>
                 </div>
                 <hr>
@@ -97,7 +102,7 @@
         <div class="card mt-3 card-online-link d-none">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">視訊課連結</p>
                 </div>
                 <hr>
@@ -110,7 +115,7 @@
         <div class="card mt-3 card-online d-none">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">視訊課注意事項</p>
                 </div>
                 <hr>
@@ -123,7 +128,7 @@
         <div class="card mt-3">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">課程簡介</p>
                 </div>
                 <hr>
@@ -135,7 +140,7 @@
         <div class="card mt-3">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">老師介紹</p>
                 </div>
                 <hr>
@@ -148,13 +153,14 @@
 
 
 
-    <div class="btn-activity bg-default-student position-fixed p-3 text-center fs-20" style="bottom: 0px;width: 100%;">
+    <div class="btn-activity bg-default-student position-fixed p-3 text-center fs-20 d-none"
+        style="bottom: 0px;width: 100%;">
 
     </div>
 
     <script>
 
-        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
+        var host = 'https://5cc1-59-126-54-247.jp.ngrok.io'
 
         moment.locale('zh-tw', {
             week: {
@@ -164,7 +170,7 @@
 
         var activity_type = null;
 
-        var model = null;
+        var obj_yoga = null;
 
         var obj_activity = null;
 
@@ -175,7 +181,7 @@
     <script>
 
         function onBack() {
-            let yyyymmdd = model.class.yyyymmdd;
+            let yyyymmdd = obj_yoga.yyyymmdd;
 
             window.location.href = `yoga-list.html?yyyymmdd=${yyyymmdd}`;
         }
@@ -206,10 +212,10 @@
 
         function onApply() {
             // 上課
-            let yyyymmdd = model.class.yyyymmdd;
+            let yyyymmdd = obj_yoga.yyyymmdd;
 
             let now = moment().format('yyyy-MM-DDThh:mm:ss')
-            let bound = moment(`${yyyymmdd}T${model.course.hhmm_start}:00`).add(-1, 'hours').format('yyyy-MM-DDTHH:mm:ss')
+            let bound = moment(`${yyyymmdd}T${obj_yoga.hhmm_start}:00`).add(-1, 'hours').format('yyyy-MM-DDTHH:mm:ss')
 
             if (now > bound) {
                 Swal.fire({
@@ -226,7 +232,7 @@
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         let data = {
-                            class_id: model.class.id,
+                            class_id: obj_yoga.id,
                             case: 'apply'
                         }
 
@@ -248,7 +254,7 @@
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         let data = {
-                            class_id: model.class.id,
+                            class_id: obj_yoga.id,
                             case: 'apply'
                         }
 
@@ -277,9 +283,9 @@
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     let data = {
-                        class_id: model.class.id,
+                        class_id: obj_yoga.id,
                         case: 'cancel',
-                        activity_id: model.activity.id
+                        activity_id: obj_yoga.activity.id
                     }
                     // console.log(data)
                     sendRequest(data);
@@ -307,9 +313,9 @@
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     let data = {
-                        class_id: model.class.id,
+                        class_id: obj_yoga.id,
                         case: 'checkin',
-                        activity_id: model.activity.id
+                        activity_id: obj_yoga.activity.id
                     }
 
                     sendRequest(data);
@@ -318,7 +324,7 @@
         }
 
         function sendRequest(data) {
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             axios.post(`${host}/ccdartstudio/activity`, data,
                 {
@@ -350,7 +356,7 @@
             let searchParams = new URLSearchParams(window.location.search)
             let class_id = searchParams.get('class_id')
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             axios.get(`${host}/ccdartstudio/class/${class_id}`, {
                 headers: {
@@ -358,8 +364,8 @@
                 }
             })
                 .then(function (response) {
+                    obj_yoga = build_obj_class(response.data.class, response.data.course, response.data.teacher);
 
-                    model = response.data.obj;
                     user = response.data.user;
                     onClassView();
 
@@ -374,51 +380,85 @@
 
         function onClassView() {
 
-            let yyyymmdd = model.class.yyyymmdd;
-            let class_type = model.class.type;
+            let yyyymmdd = obj_yoga.yyyymmdd;
+            let class_type = obj_yoga.type;
 
-            let course_name = model.course.name;
-            let course_location = model.course.location;
-            let class_capacity = model.class.capacity;
+            let class_name = obj_yoga.name == null ? obj_yoga.name : obj_yoga.name;
+            let class_location = obj_yoga.location == null ? obj_yoga.location : obj_yoga.location;
+            let class_address = obj_yoga.address == null ? obj_yoga.address : obj_yoga.address;
+            let class_capacity = obj_yoga.capacity;
 
-            let class_status = model.class.status || 'normal';
-
+            let class_status = obj_yoga.status || 'normal';
 
             let teacher = [];
-            model.course.teacher.forEach(obj => {
-                if (obj.name == "") {
-                    teacher.push(obj.displayName)
-                } else {
-                    teacher.push(obj.name)
-                }
-            })
+            let obj_teachr = null;
+            let teacher_picture = null;
+            let class_teacher_info = ''
+            console.log(obj_yoga)
+            if (obj_yoga.teacher == null) {
+                obj_yoga.teacher.forEach(obj => {
+                    if (obj.name == "") {
+                        teacher.push(obj.displayName)
+                    } else {
+                        teacher.push(obj.name)
+                    }
+
+                })
+                obj_teachr = obj_yoga.teacher[0]
+                teacher_picture = obj_teachr.pictureUrl;
+                class_teacher_info = obj_teachr.info || '';
+            } else {
+                obj_yoga.teacher.forEach(obj => {
+                    if (obj.name == "") {
+                        teacher.push(obj.displayName)
+                    } else {
+                        teacher.push(obj.name)
+                    }
+
+                })
+                obj_teachr = obj_yoga.teacher[0]
+                teacher_picture = obj_teachr.pictureUrl;
+                class_teacher_info = obj_teachr.info || '';
+            }
+            class_teacher_info = class_teacher_info == '' ? '無資訊' : class_teacher_info
+
             let teacher_name = teacher.join('、')
-            let teacher_picture = model.course.teacher[0].pictureUrl;
 
             let weekday = ['一', '二', '三', '四', '五', '六', '日'][moment(yyyymmdd).weekday()];
 
             let class_date = `${moment(yyyymmdd).format('yyyy/MM/DD')} 週${weekday}`;
 
-            let course_hhmm_start = model.course.hhmm_start;
-            let course_hhmm_end = model.course.hhmm_end;
+            let class_hhmm_start = obj_yoga.hhmm_start == null ? obj_yoga.hhmm_start : obj_yoga.hhmm_start;
+            let class_hhmm_end = obj_yoga.hhmm_end == null ? obj_yoga.hhmm_end : obj_yoga.hhmm_end;
 
-            let course_info = model.class.course.note.info || '';
-            course_info = course_info == '' ? model.course.note.info : course_info;
+            let class_info = '';
+            if (obj_yoga.note != null && obj_yoga.note.info != null) {
+                class_info = obj_yoga.note.info || '';
+            } else {
+                class_info = obj_yoga.note.info || '';
+            }
+            class_info = class_info == '' ? '無資訊' : class_info;
 
-            let course_online_info = model.class.course.note.online || '';
-            course_online_info = course_online_info == '' ? model.course.note.online : course_online_info;
-            course_online_info = course_online_info == '' ? '無資訊' : course_online_info
+            let class_online_info = '';
+            if (obj_yoga.note != null && obj_yoga.note.online != null) {
+                class_online_info = obj_yoga.note.online || '';
+            } else {
+                class_online_info = obj_yoga.note.online || '';
+            }
+            class_online_info = class_online_info == '' ? '無資訊' : class_online_info;
 
-            let course_offline_info = model.class.course.note.offline || '';
-            course_offline_info = course_offline_info == '' ? model.course.note.offline : course_offline_info;
-            course_offline_info = course_offline_info == '' ? '無資訊' : course_offline_info
+            let class_offline_info = '';
+            if (obj_yoga.note != null && obj_yoga.note.offline != null) {
+                class_offline_info = obj_yoga.note.offline || '';
+            } else {
+                class_offline_info = obj_yoga.note.offline || '';
+            }
+            class_offline_info = class_offline_info == '' ? '無資訊' : class_offline_info;
 
-            let course_teacher_info = model.class.course.teacher[0].info || '';
-
-            let class_online_link = model.class.online_link || '';
+            let class_online_link = obj_yoga.online_link || '';
             class_online_link = class_online_link == '' ? '無資訊' : class_online_link
 
-            $(".class-name").html(`${course_name}${model.course.enable == true ? '' : '(課程已取消)'}${class_status == 'normal' ? '' : '(課堂已暫停)'}`)
+            $(".class-name").html(`${class_name}${obj_yoga.enable == true ? '' : '(課程已取消)'}${class_status == 'normal' ? '' : '(課堂已暫停)'}`)
 
             let class_type_text = '';
             if (class_type == 'offline') {
@@ -436,13 +476,13 @@
 
             $(".class-date").html(class_date)
 
-            $(".class-time").html(`${course_hhmm_start}~${course_hhmm_end}`)
+            $(".class-time").html(`${class_hhmm_start}~${class_hhmm_end}`)
 
-            $(".course-info").html(course_info.replaceAll('\n', '<br>'))
+            $(".course-info").html(class_info.replaceAll('\n', '<br>'))
 
-            $(".course-teacher-info").html(course_teacher_info.replaceAll('\n', '<br>'))
-            $(".course-online-info").html(course_online_info.replaceAll('\n', '<br>'))
-            $(".course-offline-info").html(course_offline_info.replaceAll('\n', '<br>'))
+            $(".course-teacher-info").html(class_teacher_info.replaceAll('\n', '<br>'))
+            $(".course-online-info").html(class_online_info.replaceAll('\n', '<br>'))
+            $(".course-offline-info").html(class_offline_info.replaceAll('\n', '<br>'))
             $(".class-online-link").html(class_online_link.replaceAll('\n', '<br>'))
 
 
@@ -452,7 +492,9 @@
 
             } else if (class_type == 'offline') {
                 $(".div-location").removeClass('d-none')
-                $(".course-location").html(course_location)
+                $(".div-address").removeClass('d-none')
+                $(".course-location").html(class_location)
+                $(".course-address").html(class_address)
                 $(".card-offline").removeClass('d-none')
             }
 
@@ -465,17 +507,20 @@
             // 課程開始前分30鐘才可以取消，之後不可以取消，只能由老師取消
             // 課堂開始前30分鐘後才可以簽到
 
-            let yyyymmdd = model.class.yyyymmdd;
+            let yyyymmdd = obj_yoga.yyyymmdd;
 
             let now = moment().format('yyyy-MM-DDTHH:mm:ss')
             // let now = '2023-02-21T14:15:00'
 
-            let apply_bound_time = moment(`${yyyymmdd}T${model.course.hhmm_start}:00`).add(-30, 'minutes').format('yyyy-MM-DDTHH:mm:ss')
-            let cancel_bound_time = moment(`${yyyymmdd}T${model.course.hhmm_start}:00`).add(-30, 'minutes').format('yyyy-MM-DDTHH:mm:ss')
-            let checkin_bound_time = moment(`${yyyymmdd}T${model.course.hhmm_start}:00`).add(-30, 'minutes').format('yyyy-MM-DDTHH:mm:ss')
+            let class_hhmm_start = obj_yoga.hhmm_start == null ? obj_yoga.hhmm_start : obj_yoga.hhmm_start;
+            let class_hhmm_end = obj_yoga.hhmm_end == null ? obj_yoga.hhmm_end : obj_yoga.hhmm_end;
+
+            let apply_bound_time = moment(`${yyyymmdd}T${class_hhmm_start}:00`).add(-30, 'minutes').format('yyyy-MM-DDTHH:mm:ss')
+            let cancel_bound_time = moment(`${yyyymmdd}T${class_hhmm_start}:00`).add(-30, 'minutes').format('yyyy-MM-DDTHH:mm:ss')
+            let checkin_bound_time = moment(`${yyyymmdd}T${class_hhmm_start}:00`).add(-30, 'minutes').format('yyyy-MM-DDTHH:mm:ss')
 
 
-            let activity = model.activity;
+            let activity = obj_yoga.activity;
             let activity_case = activity == null ? null : activity.case;
             let checkin = activity == null ? null : activity.checkin;
 
@@ -515,6 +560,7 @@
 
     <script>
 
+
         let liffID = '1657127222-vlpYeZjK';
 
         liff.init({
@@ -536,7 +582,6 @@
             console.log(error);
             liff.logout();
         });
-
     </script>
 
 

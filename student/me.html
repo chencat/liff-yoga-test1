@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
+
     <!-- LINE -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -34,14 +35,15 @@
 
     <div
         class="container-fluid position-fixed bg-default-student d-flex justify-content-center align-items-center nav-top">
-        <div class="div-left" style="width:50px"></div>
-        <button onclick="onClose()" style="width:50px" type="button"
-            class="btn align-self-center btn-exit text-white d-none">
-            <img src="image/icon/student/close.png">
-        </button>
+        <div class="div-left" style="width:50px">
+            <button onclick="onClose()" type="button" class="btn align-self-center btn-exit text-white d-none">
+                <img src="../image/icon/student/close.png">
+            </button>
+        </div>
+
         <div class="align-self-center text-center flex-fill fs-20">個人資訊</div>
         <button onclick="onEdit()" style="width:50px" type="button" class="btn align-self-center btn-edit">
-            <img src="image/icon/student/edit.png">
+            <img src="../image/icon/student/edit.png">
         </button>
         <button onclick="onSave()" style="width:50px;" type="button"
             class="btn align-self-center btn-save text-white d-none fs-12">
@@ -49,7 +51,7 @@
         </button>
     </div>
 
-    <div class="container-fluid position-fixed overflow-auto" style="top:64px;bottom:86px;">
+    <div class="container-fluid position-fixed overflow-auto div-me" style="top:64px;bottom:120px;">
         <div class="card">
             <div class="card-header bg-default-student">
                 <div class="d-flex flex-column div-line-profile" style="border-radius: 10px;">
@@ -77,44 +79,44 @@
             </div>
             <div class="card-body card-user-info">
                 <div class="d-flex flex-row justify-content-center align-items-center gap-2">
-                    <div class="card align-self-center p-2" style="width:120px">
+                    <div class="card align-self-center p-2" style="width:100px">
                         <p class="align-self-center m-0">實體課</p>
-                        <p class="align-self-center m-0 me-number_of_offline fs-12"></p>
+                        <p class="align-self-center m-0 me-number_of_offline fs-16"></p>
                     </div>
-                    <div class="card align-self-center p-2" style="width:120px">
+                    <div class="card align-self-center p-2" style="width:100px">
                         <p class="align-self-center m-0">視訊課</p>
-                        <p class="align-self-center m-0 me-number_of_online fs-12"></p>
+                        <p class="align-self-center m-0 me-number_of_online fs-16"></p>
                     </div>
-                    <div class="card align-self-center p-2" style="width:120px">
+                    <div class="card align-self-center p-2" style="width:160px">
                         <p class="align-self-center m-0">截止日期</p>
-                        <p class="align-self-center m-0 me-expiration_date fs-12"></p>
+                        <p class="align-self-center m-0 me-expiration_date fs-16"></p>
                     </div>
                 </div>
 
                 <div class="vstack gap-2 mt-4">
                     <div class="d-flex flex-row align-items-end mb-1">
-                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/user1.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">姓名</small>
                         <small class="align-self-end me-3 me-name"></small>
                     </div>
 
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/user1.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">權限</small>
                         <small class="align-self-end me-3 me-role">學生</small>
                     </div>
 
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/calendar.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/calendar.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">生日</small>
                         <small class="align-self-end me-3 me-age"></small>
                     </div>
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">個人身體狀況</small>
                         <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#health"
                             aria-expanded="false" aria-controls="health">
-                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                            <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
                                 alt="">
                         </button>
                     </div>
@@ -124,12 +126,12 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/map_gym.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/map_gym.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">輔具使用狀況</small>
 
                         <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#assistive_devices"
                             aria-expanded="false" aria-controls="assistive_devices">
-                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                            <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
                                 alt="">
                         </button>
                     </div>
@@ -139,10 +141,7 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="onSwith()" type="button"
-                    class="btn bg-default-student text-center mx-2 mt-2 w-100 d-none" style="margin-bottom: 10px;">
-                    切換身份
-                </button>
+
             </div>
 
 
@@ -150,23 +149,46 @@
 
     </div>
 
+    <div class="container-fluid  position-fixed div-role d-none" style="bottom:76px;">
+        <button onclick="onRoleType()" type="button" class="btn btn-light text-center w-100">
+            切換使用者身份
+        </button>
+    </div>
+
     <div class="container-fluid position-fixed tab-list bg-white" style="bottom:0px;">
         <div class="row mt-2">
             <div class="col d-flex flex-column align-items-center tab-announcement">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center text-muted fs-12">課程公告</p>
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">課程公告</p>
             </div>
             <div class="col d-flex flex-column align-items-center tab-yoga">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center text-muted fs-12">課程列表</p>
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">課程列表</p>
             </div>
             <div class="col d-flex flex-column align-items-center tab-notification">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center text-muted fs-12">個人通知</p>
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">個人通知</p>
             </div>
             <div class="col d-flex flex-column align-items-center tab-me">
-                <img src="./image/icon/student/message0.png" class="align-self-center img-select-student"></img>
+                <img src="../image/icon/student/message0.png" class="align-self-center img-select-student"></img>
                 <p class="align-self-center text-center text-student fs-12">個人資訊</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-role" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm" style="align-items: flex-end;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="card-title">請選擇使用者身份</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-1">
+                    <div class="text-start p-2 role role-guest d-none" id="guest">訪客</div>
+                    <!-- <div class="text-start p-2 role role-student modal-bg-unselect" id="student">學生</div> -->
+                    <div class="text-start p-2 role role-teacher modal-bg-unselect" id="teacher">老師</div>
+                    <div class="text-start p-2 role role-admin d-none" id="admin">管理員</div>
+                </div>
             </div>
         </div>
     </div>
@@ -188,7 +210,7 @@
 
         function fetchUser() {
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             axios.get(`${host}/ccdartstudio/me`, {
                 headers: {
@@ -198,7 +220,7 @@
                 .then(function (response) {
                     console.log(response.data);
 
-                    user = response.data.obj;
+                    user = response.data.user;
 
                     onView(user);
                 })
@@ -230,6 +252,17 @@
             $('#input-age').val(user.age || '')
             $('#input-health').text(user.health || '')
             $('#input-assistive_devices').text(user.assistive_devices || '')
+
+
+            if (user.role.length <= 1) {
+                if ($('.div-role').hasClass('d-none') == false) {
+                    $('.div-role').addClass('d-none');
+                }
+                $('.div-me').css('bottom', "86px")
+            } else {
+                $('.div-me').css('bottom', "120px")
+                $('.div-role').removeClass('d-none');
+            }
         }
 
         function onEdit() {
@@ -271,7 +304,7 @@
         }
 
         function sendRequest(data) {
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             axios.patch(`${host}/ccdartstudio/me`, data, {
                 headers: {
@@ -288,6 +321,47 @@
                     console.log(error);
                 });
         }
+
+        function onRoleType() {
+
+            user.role.forEach(text => {
+                $(`.role-${text}`).removeClass('d-none')
+            });
+
+
+            $('.modal-role').modal('show')
+        }
+
+        $('body').on('click', '.role', function () {
+
+            let role_type_text = ''
+            if (this.id == 'guest') {
+                role_type_text = '訪客'
+            } else if (this.id == 'student') {
+                role_type_text = '學生'
+            } else if (this.id == 'teacher') {
+                role_type_text = '老師'
+            } else if (this.id == 'admin') {
+                role_type_text = '管理員'
+            }
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: `是否將身份切換為${role_type_text}？`,
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    sendRequest({ select_role_type: this.id })
+                }
+            })
+        })
 
         $('body').on('click', '.tab-announcement', function () {
 
@@ -311,6 +385,7 @@
     </script>
 
     <script>
+
         let liffID = '1657127222-vlpYeZjK';
 
         liff.init({
@@ -333,6 +408,7 @@
             liff.logout();
         });
     </script>
+
 </body>
 
 </html>

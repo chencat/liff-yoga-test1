@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>璽璽藝術空間D Art Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- LINE -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <!-- UI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Control -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+    <!-- API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div
+        class="container-fluid position-fixed bg-default-admin d-flex justify-content-center align-items-center nav-top">
+        <button onclick="onClose()" style="width:50px" type="button"
+            class="btn align-self-center btn-exit text-white d-none btn-member-edit">
+            <img src="../image/icon/student/close.png">
+        </button>
+        <button onclick="onBack()" style="width:50px" type="button"
+            class="btn align-self-center btn-back text-white btn-member-info">
+            <img src="../image/icon/student/back.png">
+        </button>
+        <div style="width:40px" class="btn-member-info"></div>
+        <div class="align-self-center text-center flex-fill fs-20">個人資訊</div>
+        <button onclick="onActivity()" style="width:40px" type="button"
+            class="btn align-self-center btn-activity img-select-student btn-member-info">
+            <img src="../image/icon/teacher/list.png">
+        </button>
+        <button onclick="onEdit()" style="width:50px" type="button"
+            class="btn align-self-center btn-edit btn-member-info">
+            <img src="../image/icon/student/edit.png">
+        </button>
+        <button onclick="onSave()" style="width:50px;" type="button"
+            class="btn align-self-center btn-save text-white d-none fs-12 btn-member-edit">
+            儲存
+        </button>
+    </div>
+
+    <div class="container-fluid position-fixed overflow-auto" style="top:64px;bottom:86px;">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex flex-column div-line-profile" style="border-radius: 10px;">
+                    <img class="line-pictureUrl align-self-center mt-2" src=""></img>
+                    <p class="align-self-center my-2 line-displayName">LINE ID：</p>
+                </div>
+            </div>
+            <div class="card-header card-member-edit d-none">
+                <div class="mb-3 div-student-edit d-none">
+                    <label for="input-nickname" class="form-label">暱稱</label>
+                    <input type="text" class="form-control" id="input-nickname" placeholder="請輸入姓名">
+                </div>
+
+                <div class="mb-3">
+                    <label for="input-role" class="form-label">權限</label>
+                    <div class="d-flex flex-row bg-white border border-secondary rounded">
+                        <div class="text-dark flex-fill align-self-center ms-4" id="input-role"></div>
+                        <button onclick="selectRole()" type="button" class="btn align-self-center text-center">
+                            <img src="../image/icon/student/down.png">
+                            </img>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3 div-student-edit d-none">
+                    <label for="input-number_of_offline" class="form-label">實體課堂數</label>
+                    <input type="number" class="form-control" id="input-number_of_offline" placeholder="請輸入數字">
+                </div>
+                <div class="mb-3 div-student-edit d-none">
+                    <label for="input-number_of_online" class="form-label">視訊課堂數</label>
+                    <input type="number" class="form-control" id="input-number_of_online" placeholder="請輸入數字">
+                </div>
+                <div class="mb-3 div-student-edit d-none">
+                    <label for="input-expiration_date" class="form-label">上課截止日</label>
+                    <input type="date" class="form-control" id="input-expiration_date">
+                </div>
+                <div class="mb-3 div-teacher-edit d-none ">
+                    <label for="input-teacher_info" class="form-label">老師介紹</label>
+                    <textarea class="form-control" id="input-teacher_info" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="card-body card-member-info">
+                <div class="d-flex flex-row justify-content-center align-items-center gap-2 div-student-info d-none">
+                    <div class="card align-self-center p-2" style="width:120px">
+                        <p class="align-self-center m-0">實體課</p>
+                        <p class="align-self-center m-0 member-number_of_offline fs-12"></p>
+                    </div>
+                    <div class="card align-self-center p-2" style="width:120px">
+                        <p class="align-self-center m-0">視訊課</p>
+                        <p class="align-self-center m-0 member-number_of_online fs-12"></p>
+                    </div>
+                    <div class="card align-self-center p-2" style="width:120px">
+                        <p class="align-self-center m-0">截止日期</p>
+                        <p class="align-self-center m-0 member-expiration_date fs-12"></p>
+                    </div>
+                </div>
+
+                <div class="vstack gap-2 mt-4">
+                    <div class="d-flex flex-row align-items-end mb-1">
+                        <img src="../image/icon/student/user1.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">姓名</small>
+                        <small class="align-self-end member-3 member-name"></small>
+                    </div>
+                    <div class="d-flex flex-row align-items-end mb-1 div-student-info d-none">
+                        <img src="../image/icon/student/user1.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">暱稱</small>
+                        <small class="align-self-end member-3 member-nickname"></small>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-start mb-1">
+                        <img src="../image/icon/student/user1.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">權限</small>
+                        <small class="align-self-end member-3 member-role"></small>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-start mb-1 div-student-info d-none">
+                        <img src="../image/icon/student/calendar.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">生日</small>
+                        <small class="align-self-end member-3 member-age"></small>
+                    </div>
+                    <div class="d-flex flex-row align-items-start mb-1 div-student-info d-none">
+                        <img src="../image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">個人身體狀況</small>
+                        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#health"
+                            aria-expanded="false" aria-controls="health">
+                            <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                                alt="">
+                        </button>
+                    </div>
+                    <div class="collapse" id="health">
+                        <div class="px-3 member-health">
+                            無
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-start mb-1 div-student-info d-none">
+                        <img src="../image/icon/student/map_gym.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">輔具使用狀況</small>
+
+                        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#assistive_devices"
+                            aria-expanded="false" aria-controls="assistive_devices">
+                            <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                                alt="">
+                        </button>
+                    </div>
+                    <div class="collapse" id="assistive_devices">
+                        <div class="px-3 member-assistive_devices">
+                            無
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-start mb-1 div-teacher-info d-none">
+                        <img src="../image/icon/student/map_gym.png" class="align-self-center mx-3 icon-size" alt="">
+                        <small class="text-muted align-self-center flex-fill">老師介紹</small>
+
+                        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#teacher_info"
+                            aria-expanded="false" aria-controls="teacher_info">
+                            <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                                alt="">
+                        </button>
+                    </div>
+                    <div class="collapse" id="teacher_info">
+                        <div class="px-3 member-teacher_info">
+                            無
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="div-student-info w-100 d-none">
+            <button onclick="onPause()" type="button"
+                class="btn bg-light text-center w-100 mt-4 mb-2 btn-pause d-none text-warning">
+                學生暫停
+            </button>
+            <button onclick="onSuspend()" type="button"
+                class="btn bg-light text-center w-100 mb-2 btn-suspend d-none text-danger">
+                停權
+            </button>
+            <button onclick="onNormal()" type="button"
+                class="btn bg-light text-center w-100 mt-4 mb-2 btn-normal d-none text-success">
+            </button>
+        </div>
+
+
+
+    </div>
+
+    <div class="modal modal-role" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm" style="align-items: flex-end;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="card-title">請選擇權限</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-1">
+                    <div class="text-start p-2 option-member-role member-role-guest" id="guest">訪客</div>
+                    <div class="text-start p-2 option-member-role member-role-student" id="student">學生</div>
+                    <div class="text-start p-2 option-member-role member-role-teacher" id="teacher">老師</div>
+                    <div class="text-start p-2 option-member-role member-role-admin" id="admin">管理員</div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="onRole()" type="button" class="btn btn-ok">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-activity-list" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-sm">
+            <div class="modal-content">
+                <div class="d-flex justify-content-between p-2">
+                    <p class="card-title">上課紀錄</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-1 activity-list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var user = null;
+
+        var member = null;
+
+        var activity_list = [];
+
+        var role_select = [];
+
+    </script>
+
+    <script>
+
+        function fetchMember() {
+
+            let token = liff.getIDToken();
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let userId = searchParams.get('userId')
+
+            axios.get(`${host}/ccdartstudio/member/${userId}`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+
+                    member = response.data.obj;
+                    user = response.data.user;
+                    activity_list = response.data.activity;
+                    onView(member);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function onView(member) {
+            console.log(member)
+            $('.card-member-edit').addClass('d-none')
+            $('.card-member-info').removeClass('d-none')
+            $('.btn-member-info').removeClass('d-none')
+            $('.btn-member-edit').addClass('d-none')
+
+            // $('.div-left').removeClass('d-none')
+            // $('.btn-edit').removeClass('d-none')
+            // $('.btn-save').addClass('d-none')
+            // $('.btn-exit').addClass('d-none')
+
+            role_select = [...member.role]
+
+            let role = [];
+
+            $('.div-line-profile').removeClass('bg-default-guest')
+            $('.div-line-profile').removeClass('bg-default-student')
+            $('.div-line-profile').removeClass('bg-default-teacher')
+            $('.div-line-profile').removeClass('bg-default-admin')
+
+            if (member.role.includes('guest')) {
+                role.push('訪客')
+                if (member.role.length == 1) {
+                    $('.div-line-profile').addClass('bg-default-guest')
+                }
+
+            }
+            if (member.role.includes('student')) {
+                role.push('學生')
+                if (member.role.length == 1) {
+                    $('.div-line-profile').addClass('bg-default-student')
+                }
+            }
+
+            if (member.role.includes('teacher')) {
+                role.push('老師')
+                if (member.role.length == 1) {
+                    $('.div-line-profile').addClass('bg-default-teacher')
+                }
+            }
+
+            if (member.role.includes('admin')) {
+                role.push('管理員')
+                if (member.role.length == 1) {
+                    $('.div-line-profile').addClass('bg-default-admin')
+                }
+            }
+
+            $('.line-pictureUrl').attr('src', member.line_profile.pictureUrl);
+            $('.line-displayName').html(`LINE ID：${member.line_profile.displayName}`)
+            $('.member-name').html(member.name)
+            $('.member-nickname').html(member.nickname || '')
+            $('.member-role').html(role.join('、'))
+            $('.member-age').html(member.age || '')
+            $('.member-health').html(member.health || '')
+            $('.member-assistive_devices').html(member.assistive_devices || '')
+            $('.member-number_of_offline').html(`${member.number_of_offline || '0'}堂`)
+            $('.member-number_of_online').html(`${member.number_of_online || '0'}堂`)
+            $('.member-expiration_date').html(member.expiration_date || '&nbsp;')
+            $('.member-teacher_info').html((member.info == null || member.info == '' ? '無' : member.info).replaceAll('\n', '<br>'))
+
+            $('#input-nickname').val(member.nickname || '')
+            $('#input-role').html(role)
+            $('#input-number_of_offline').val(member.number_of_offline || '')
+            $('#input-number_of_online').val(member.number_of_online || '')
+            $('#input-expiration_date').val(member.expiration_date || '')
+            $('#input-teacher_info').val(member.info || '')
+
+            if ($('.div-student-edit').hasClass('d-none') == false) {
+                $('.div-student-edit').addClass('d-none')
+            }
+
+            if ($('.div-teacher-edit').hasClass('d-none') == false) {
+                $('.div-teacher-edit').addClass('d-none')
+            }
+
+            if (member.role.includes('student')) {
+
+                if (member.permission == 'normal') {
+                    $('.btn-pause').removeClass('d-none')
+                    $('.btn-suspend').removeClass('d-none')
+                    if ($('.btn-normal').hasClass('d-none') == false) {
+                        $('.btn-normal').addClass('d-none')
+                    }
+
+                } else {
+                    if ($('.btn-pause').hasClass('d-none') == false) {
+                        $('.btn-pause').addClass('d-none')
+                    }
+                    if ($('.btn-suspend').hasClass('d-none') == false) {
+                        $('.btn-suspend').addClass('d-none')
+                    }
+                    $('.btn-normal').removeClass('d-none')
+                }
+
+                $('.div-student-info').removeClass('d-none')
+            } else {
+                if ($('.div-student-info').hasClass('d-none') == false) {
+                    $('.div-student-info').addClass('d-none')
+                }
+            }
+
+            if (member.role.includes('teacher')) {
+                $('.div-teacher-info').removeClass('d-none')
+            } else {
+                if ($('.div-teacher-info').hasClass('d-none') == false) {
+                    $('.div-teacher-info').addClass('d-none')
+                }
+            }
+        }
+
+        function onEdit() {
+            console.log(member)
+            let role = [];
+
+            if (member.role.includes('guest')) {
+                role.push('訪客')
+            }
+            if (member.role.includes('student')) {
+                role.push('學生')
+            }
+
+            if (member.role.includes('teacher')) {
+                role.push('老師')
+            }
+
+            if (member.role.includes('admin')) {
+                role.push('管理員')
+            }
+
+            $('#input-nickname').val(member.nickname || '')
+            $('#input-role').html(role.join('、'))
+            $('#input-number_of_offline').val(member.number_of_offline);
+            $('#input-number_of_online').val(member.number_of_online);
+            $('#input-expiration_date').val(member.expiration_date);
+
+            $('.card-member-edit').removeClass('d-none')
+            $('.card-member-info').addClass('d-none')
+            // $('.btn-back').addClass('d-none')
+            // $('.btn-edit').addClass('d-none')
+            // $('.btn-save').removeClass('d-none')
+            // $('.btn-exit').removeClass('d-none')
+            $('.btn-member-info').addClass('d-none')
+            $('.btn-member-edit').removeClass('d-none')
+
+
+            // if ($('.div-student-info').hasClass('d-none') == false) {
+            $('.div-student-info').addClass('d-none')
+            // }
+
+            // if ($('.div-teacher-info').hasClass('d-none') == false) {
+            $('.div-teacher-info').addClass('d-none')
+            // }
+
+            if (member.role.includes('student')) {
+                $('.div-student-edit').removeClass('d-none')
+            } else {
+                if ($('.div-student-edit').hasClass('d-none') == false) {
+                    $('.div-student-edit').addClass('d-none')
+                }
+            }
+
+            if (member.role.includes('teacher')) {
+                $('.div-teacher-edit').removeClass('d-none')
+            } else {
+                if ($('.div-teacher-edit').hasClass('d-none') == false) {
+                    $('.div-teacher-edit').addClass('d-none')
+                }
+            }
+        }
+
+        function onActivity() {
+
+            $('.activity-list').empty()
+
+            if (activity_list.length == 0) {
+                $('.activity-list').append(`<div class="text-center">無資料</div>`)
+            } else {
+                activity_list.forEach(obj_activity => {
+                    let class_type = obj_activity.class_type == 'online' ? '視訊課' : '實體課';
+                    let weekday = ['一', '二', '三', '四', '五', '六', '日'][obj_activity.weekday];
+                    $('.activity-list').append(`<div class="card mb-2 card-class" id="${obj_activity.class_id}">
+            <div class="hstack gap-2">
+                <div>
+                <img class="circle-img ms-2" src="${obj_activity.teacher[0].pictureUrl}" />
+                </div>
+                <div class="vstack gap-1 w-100">
+                    <h5 class="card-title mt-2 fs-12" style="color:#A95050;">${obj_activity.yyyymmdd} 週${weekday} ${obj_activity.class_hhmm_start}~${obj_activity.class_hhmm_end}</h5>
+                    <p class="card-text fs-24 mb-2" style="color: #5F5F5F;">${obj_activity.class_name}</p>
+                </div>
+                <div class="d-flex flex-column gap-1 me-2" style="width: 100px;">
+
+                    <div class="text-center fs-16">${class_type}</div>
+                    <div class="text-center bg-dark-teacher fs-16">${obj_activity.checkin == true ? '已簽到' : '未簽到'}</div>
+
+            </div>
+        </div>`)
+                })
+            }
+
+
+            $('.modal-activity-list').modal('show')
+        }
+
+        function onSave() {
+            $('.card-member-edit').addClass('d-none')
+            $('.card-member-info').removeClass('d-none')
+            $('.btn-member-info').removeClass('d-none')
+            $('.btn-member-edit').addClass('d-none')
+            // $('.btn-back').removeClass('d-none')
+            // $('.btn-edit').removeClass('d-none')
+            // $('.btn-save').addClass('d-none')
+            // $('.btn-exit').addClass('d-none')
+
+            let nickname = $('#input-nickname').val().trim();
+            let role = $('#input-role').html().split('、');
+            let number_of_offline = $('#input-number_of_offline').val().trim();
+            let number_of_online = $('#input-number_of_online').val().trim();
+            let expiration_date = $('#input-expiration_date').val().trim();
+            let teacher_info = $('#input-teacher_info').val().trim();
+
+            expiration_date = expiration_date == '' ? '' : moment(expiration_date).format('YYYY-MM-DD')
+
+            member.role = []
+            if (role.includes('訪客') == true) {
+                member.role.push('guest')
+            }
+            if (role.includes('學生') == true) {
+                member.role.push('student')
+            }
+            if (role.includes('老師') == true) {
+                member.role.push('teacher')
+            }
+            if (role.includes('管理員') == true) {
+                member.role.push('admin')
+            }
+
+            number_of_offline = number_of_offline == '' ? 0 : parseFloat(number_of_offline);
+            number_of_online = number_of_online == '' ? 0 : parseFloat(number_of_online);
+
+            // console.log({
+            //     nickname: nickname
+            //     , role: member.role
+            //     , number_of_offline: number_of_offline
+            //     , number_of_online: number_of_online
+            //     , expiration_date: expiration_date
+            //     , info: teacher_info
+            // })
+            sendRequest({
+                nickname: nickname
+                , role: member.role
+                , number_of_offline: number_of_offline
+                , number_of_online: number_of_online
+                , expiration_date: expiration_date
+                , info: teacher_info
+            })
+        }
+
+        function onBack() {
+            let searchParams = new URLSearchParams(window.location.search)
+            let back = searchParams.get('back')
+            if (back == 'member-list') {
+                window.location.href = `member-list.html`;
+            } else if (back == 'class-member-list') {
+                let class_id = searchParams.get('class_id')
+                window.location.href = `class-member-list.html?class_id=${class_id}`;
+            }
+
+        }
+
+        function onClose() {
+            $('.card-member-edit').addClass('d-none')
+            $('.card-member-info').removeClass('d-none')
+            // $('.btn-back').removeClass('d-none')
+            // $('.btn-edit').removeClass('d-none')
+            // $('.btn-save').addClass('d-none')
+            // $('.btn-exit').addClass('d-none')
+
+            role_select = [...member.role]
+            onView(member)
+
+            // if ($('.div-student-edit').hasClass('d-none') == false) {
+            //     $('.div-student-edit').addClass('d-none')
+            // }
+
+            // if ($('.div-teacher-edit').hasClass('d-none') == false) {
+            //     $('.div-teacher-edit').addClass('d-none')
+            // }
+
+            // if (member.role.includes('student')) {
+            //     $('.div-student-info').removeClass('d-none')
+            // } else {
+            //     if ($('.div-student-info').hasClass('d-none') == false) {
+            //         $('.div-student-info').addClass('d-none')
+            //     }
+            // }
+
+            // if (member.role.includes('teacher')) {
+            //     $('.div-teacher-info').removeClass('d-none')
+            // } else {
+            //     if ($('.div-teacher-info').hasClass('d-none') == false) {
+            //         $('.div-teacher-info').addClass('d-none')
+            //     }
+            // }
+        }
+
+
+
+        function onPause() {
+
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: '是否設定學生暫停？',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    sendRequest({ permission: 'pause' })
+                }
+            })
+        }
+        function onSuspend() {
+
+
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: '是否停權？',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    sendRequest({ permission: 'suspend' })
+                }
+            })
+        }
+
+        function onNormal() {
+
+            let title = '';
+
+            if (member.permission == 'pause') {
+                title = '是否取消學生暫停？';
+            } else if (member.permission == 'suspend') {
+                title = '是否取消停權？';
+            }
+
+
+            Swal.fire({
+
+                customClass: {
+                    cancelButton: 'order-1',
+                    confirmButton: 'order-2',
+                },
+                title: title,
+                showCancelButton: true,
+                cancelButtonText: '否',
+                confirmButtonText: '是',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    sendRequest({ permission: 'normal' })
+                }
+            })
+        }
+
+        function sendRequest(data) {
+            let token = 'develop';
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let userId = searchParams.get('userId')
+
+            axios.patch(`${host}/ccdartstudio/member/${userId}`, data, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+
+                    let title = response.data.msg;
+
+                    if (data.permission == 'normal' && member.permission == 'pause') {
+                        title = '已取消學生暫停。'
+                    } else if (data.permission == 'normal' && member.permission == 'suspend') {
+                        title = '已取消停權。'
+                    }
+
+                    Swal.fire({
+                        title: title,
+                        confirmButtonText: '確定',
+
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        fetchMember();
+
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function selectRole() {
+            // 基礎、療癒、睡眠修復
+
+            ['guest', 'student', 'teacher', 'admin'].forEach(text => {
+                $('.option-member-role').removeClass(`modal-bg-select-${text}`);
+                $('.option-member-role').removeClass(`modal-bg-unselect-${text}`);
+
+                if (role_select.includes(text)) {
+                    $(`.member-role-${text}`).addClass(`modal-bg-select-${text}`);
+                } else {
+                    $(`.member-role-${text}`).addClass(`modal-bg-unselect-${text}`);
+                }
+            })
+
+            $('.modal-role').modal('show')
+        }
+
+        $('body').on('click', '.option-member-role', function () {
+
+            let text = this.id;
+
+            if (role_select.includes(text) == false) {
+                role_select.push(text)
+            } else {
+                role_select = role_select.filter(row => row != text);
+
+                if (role_select.length == 0) {
+                    role_select.push(text)
+                    swal.fire('至少需要一個權限')
+                    return
+                } else if (member.userId == user.userId && text == 'admin') {
+                    swal.fire('無法取消自己的管理員權限，請其他管理員處理。')
+                    return
+                }
+            }
+
+            if ($(`.member-role-${text}`).hasClass(`modal-bg-select-${text}`)) {
+                $(`.member-role-${text}`).addClass(`modal-bg-unselect-${text}`);
+                $(`.member-role-${text}`).removeClass(`modal-bg-select-${text}`);
+            } else {
+                $(`.member-role-${text}`).removeClass(`modal-bg-unselect-${text}`);
+                $(`.member-role-${text}`).addClass(`modal-bg-select-${text}`);
+            }
+
+
+            // $('.modal-role').modal('hide')
+        })
+
+        function onRole() {
+            let role = [];
+            if ($(`.member-role-guest`).hasClass(`modal-bg-select-guest`)) {
+                role.push('訪客');
+            }
+            if ($(`.member-role-student`).hasClass(`modal-bg-select-student`)) {
+                role.push('學生');
+            }
+            if ($(`.member-role-teacher`).hasClass(`modal-bg-select-teacher`)) {
+                role.push('老師');
+            }
+            if ($(`.member-role-admin`).hasClass(`modal-bg-select-admin`)) {
+                role.push('管理員');
+            }
+
+            $('#input-role').html(role.join('、'))
+
+            $('.modal-role').modal('hide')
+        }
+
+    </script>
+
+    <script>
+
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                fetchMember();
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
+    </script>
+
+</body>
+
+</html>

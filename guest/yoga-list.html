@@ -28,6 +28,7 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 
     <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+    <script src="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.js"></script>
 </head>
 
 <body>
@@ -43,17 +44,14 @@
         <div class="card text-center">
             <div class="card-header bg-default-guest text-white">
                 <div class="row bg-default-guest">
-                    <div class="col text-start center">
-                        <button onclick="onToday()" type="button" class="btn text-white"
-                            style="font-size: 12px;">今日</button>
+                    <div class="col">
+                        <button onclick="onToday()" type="button" class="btn text-white fs-20 p-0 m-0">今日</button>
                     </div>
-                    <div class="col-6 center">
+                    <div class="col-6 p-0">
                         <div class="hstack">
-                            <button onclick="onPrev()" type="button" class="btn text-white"
-                                style="font-size: 8px;">❮</button>
-                            <p class="center month"></p>
-                            <button onclick="onNext()" type="button" class="btn text-white"
-                                style="font-size: 8px;">❯</button>
+                            <button onclick="onPrev()" type="button" class="btn text-white p-0 m-0 fs-20">❮</button>
+                            <p class="center fs-20 month"></p>
+                            <button onclick="onNext()" type="button" class="btn text-white p-0 m-0 fs-20">❯</button>
                         </div>
                     </div>
                     <div class="col"></div>
@@ -183,8 +181,21 @@
         </div>
     </div>
 
-    <div class="container-fluid position-fixed overflow-auto class-list" style="top:330px;bottom: 20px;">
+    <div class="container-fluid position-fixed overflow-auto yoga-list" style="top:330px;bottom: 20px;">
 
+    </div>
+
+    <div class="container-fluid position-fixed tab-list bg-white d-none" style="bottom:0px;">
+        <div class="row mt-2">
+            <div class="col d-flex flex-column align-items-center tab-class p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center img-select-guest"></img>
+                <p class="align-self-center text-center text-guest fs-12">課程列表</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-me p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">個人資訊</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -212,7 +223,7 @@
             current = moment().format('yyyy-MM-DD');
 
             onCalendarView(current, today)
-            // onListView(today)
+            // onClassListView(today)
 
             fetchData(firstday);
         }
@@ -225,7 +236,6 @@
             }
             onCalendarView(current, current);
 
-            // onListView(current)
 
             fetchData(firstday);
         }
@@ -239,7 +249,7 @@
             }
 
             onCalendarView(current, current)
-            // onListView(current)
+            // onClassListView(current)
 
             fetchData(firstday);
         }
@@ -249,7 +259,7 @@
             selectday = moment(firstday).add(index - 1, 'days').format('yyyy-MM-DD')
 
             onCalendarView(current, selectday)
-            onListView(selectday)
+            onClassListView(selectday)
 
         }
 
@@ -280,7 +290,7 @@
 
                 let date_type = null;
 
-                let _array_class = array_class.filter(row => row.class.yyyymmdd == yyyymmdd)
+                let _array_class = array_class.filter(row => row.yyyymmdd == yyyymmdd)
 
                 if (yyyymmdd == select) {
                     date_type = 'select';
@@ -308,17 +318,17 @@
             $('.selectday').html(`${moment(select).format('yyyy/MM/DD')} 週${weekday}`)
         }
 
-        function onListView(yyyymmdd) {
-            $(".class-list").empty();
+        function onClassListView(yyyymmdd) {
+            $(".yoga-list").empty();
 
-            let _array_class = array_class.filter(row => row.class.yyyymmdd == yyyymmdd);
+            let _array_class = array_class.filter(row => row.yyyymmdd == yyyymmdd);
             if (_array_class.length == 0) {
 
             } else {
 
-                _array_class.forEach(obj_class => {
+                _array_class.forEach(obj_yoga => {
 
-                    let class_type = obj_class.class.type;
+                    let class_type = obj_yoga.type;
                     if (class_type == 'offline') {
                         class_type = '實體課'
                     } else if (class_type == 'online') {
@@ -327,19 +337,19 @@
                         class_type = '工作坊'
                     }
 
-                    $(".class-list").append(`<div class="card mb-2 card-class" id="${obj_class.class.id}">
-            <div class="hstack gap-2" style="height: 68px;">
+                    $(".yoga-list").append(`<div class="card mb-2 card-class ${obj_yoga.type == 'online' ? 'bg-online' : 'bg-offline'}" id="${obj_yoga.id}">
+            <div class="hstack gap-2">
                 <div>
-                <img class="circle-img ms-2" src="${obj_class.course.teacher[0].pictureUrl}" />
+                <img class="circle-img ms-2" src="${obj_yoga.teacher[0].pictureUrl}" />
                 </div>
-                <div class="vstack gap-1" style="width: 100%;">
-                    <h5 class="card-title mt-1 fs-16" style="color:#A95050;">${obj_class.course.hhmm_start}~${obj_class.course.hhmm_end}</h5>
-                    <p class="card-text fs-16" style="color: #5F5F5F;">${obj_class.course.name}</p>
+                <div class="vstack gap-1 w-100">
+                    <h5 class="card-title mt-2 fs-20 text-class-hhmm">${obj_yoga.enable == true && obj_yoga.status == 'normal' ? (`${obj_yoga.hhmm_start}~${obj_yoga.hhmm_end}`) : '課程已暫停'}</h5>
+                    <p class="card-text fs-24 mb-2 text-gray5F">${obj_yoga.name}</p>
                 </div>
                 <div class="d-flex flex-column gap-1 me-2" style="width: 100px;">
 
-                    <div class="text-center fs-12">${class_type}</div>
-
+                    <div class="text-center fs-16">${class_type}</div>
+                    <div>&nbsp;</div>
             </div>
         </div>`)
                 })
@@ -347,6 +357,14 @@
 
         }
 
+        function onTabView(user) {
+            console.log(user)
+
+            if (user.role.length > 1) {
+                $('.tab-list').removeClass('d-none');
+                $('.yoga-list').attr('bottom', '86px');
+            }
+        }
 
         $('body').on('click', '.card-class', function () {
 
@@ -354,7 +372,17 @@
 
             // console.log(this.id)
 
-            window.location.href = `guest-class-activity.html?class_id=${class_id}`;
+            window.location.href = `class-activity.html?class_id=${class_id}`;
+        })
+
+        $('body').on('click', '.tab-class', function () {
+
+            window.location.href = 'yoga-list.html';
+        })
+
+        $('body').on('click', '.tab-me', function () {
+
+            window.location.href = 'me.html';
         })
 
     </script>
@@ -364,7 +392,7 @@
 
         function fetchData(firstday) {
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             axios.get(`${host}/ccdartstudio/class?firstday=${firstday}`, {
                 headers: {
@@ -372,17 +400,18 @@
                 }
             })
                 .then(function (response) {
-                    // console.log(response.data);
 
-                    array_class = response.data.array;
+
+                    array_class = build_array_class(response.data.class, response.data.course, response.data.teacher);
+                    user = response.data.user;
 
                     onCalendarView(current, selectday)
-                    onListView(selectday)
+                    onClassListView(selectday)
+                    onTabView(user)
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-
         }
     </script>
 
@@ -413,7 +442,6 @@
     </script>
 
     <script>
-
 
 
         let liffID = '1657127222-vlpYeZjK';

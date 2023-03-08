@@ -29,27 +29,28 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 
     <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+    <script src="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.js"></script>
 </head>
 
 <body>
     <div
         class="container-fluid bg-default-teacher d-flex justify-content-center align-items-center position-fixed nav-top">
         <button onclick="onBack()" style="width:40px" type="button" class="btn align-self-center">
-            <img src="image/icon/student/back.png">
+            <img src="../image/icon/student/back.png">
         </button>
         <div class="div-space" style="width:40px"></div>
         <div class="align-self-center text-center flex-fill fs-20">課程資訊</div>
         <button onclick="onMember()" style="width:40px" type="button" class="btn align-self-center btn-member">
-            <img src="image/icon/teacher/book.png">
+            <img src="../image/icon/list.png" style="width: 24px;height: 24px;" class="img-select-white">
         </button>
         <button onclick="onSet()" style="width:40px" type="button" class="btn align-self-center">
-            <img src="image/icon/teacher/ellipsis.png">
+            <img src="../image/icon/teacher/ellipsis.png">
         </button>
     </div>
 
     <div class="container-fluid mt-3 class-message position-fixed d-none" style="top:44px">
         <div class="card d-flex flex-row justify-content-start align-items-center bg-default">
-            <img class="align-self-center mx-2" src="./image/icon/student/information.png" />
+            <img class="align-self-center mx-2" src="../image/icon/student/information.png" />
             <h6 class="number_of_alternate align-self-center flex-grow-1 m-0 p-1"></h6>
         </div>
     </div>
@@ -72,20 +73,24 @@
                     </div>
                 </div>
                 <div class="hstack gap-2 d-flex mb-2">
-                    <img src="./image/icon/student/calendar.png">
+                    <img src="../image/icon/student/calendar.png">
                     <p class="me-auto m-0 class-date"></p>
                 </div>
                 <div class="hstack gap-2 d-flex mb-2">
-                    <img src="./image/icon/student/time.png">
+                    <img src="../image/icon/student/time.png">
                     <p class="me-auto m-0 class-time"></p>
                 </div>
                 <div class="hstack gap-2 d-flex mb-2 div-location d-none">
-                    <img src="./image/icon/student/location.png">
+                    <img src="../image/icon/student/location.png">
                     <p class="me-auto m-0 course-location"></p>
                 </div>
                 <div class="hstack gap-2 d-flex mb-2 div-capacity d-none">
-                    <img src="./image/icon/student/location.png">
+                    <img src="../image/icon/student/location.png">
                     <p class="me-auto m-0 course-capacity"></p>
+                </div>
+                <div class="hstack gap-2 d-flex mb-2 div-address d-none">
+                    <img src="../image/icon/student/location.png">
+                    <p class="me-auto m-0 course-address"></p>
                 </div>
             </div>
 
@@ -95,7 +100,7 @@
         <div class="card mt-3 card-offline d-none">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">實體課注意事項</p>
                 </div>
                 <hr>
@@ -108,7 +113,7 @@
         <div class="card mt-3 card-online-link d-none">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">視訊課連結</p>
                 </div>
                 <hr>
@@ -121,7 +126,7 @@
         <div class="card mt-3 card-online d-none">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">視訊課注意事項</p>
                 </div>
                 <hr>
@@ -134,7 +139,7 @@
         <div class="card mt-3">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">課程簡介</p>
                 </div>
                 <hr>
@@ -146,7 +151,7 @@
         <div class="card mt-3">
             <div class="card-header">
                 <div class="hstack gap-2 d-flex mt-2">
-                    <img src="./image/icon/student/message1.png">
+                    <img src="../image/icon/student/message1.png">
                     <p class="me-auto m-0">老師介紹</p>
                 </div>
                 <hr>
@@ -191,7 +196,7 @@
             }
         });
 
-        var model = null;
+        var obj_yoga = null;
 
     </script>
 
@@ -201,18 +206,18 @@
             let searchParams = new URLSearchParams(window.location.search)
 
             if (searchParams.has('class_id') == true) {
-                let yyyymmdd = model.class.yyyymmdd;
+                let yyyymmdd = obj_yoga.yyyymmdd;
 
-                window.location.href = `teacher-yoga-list.html?tab=class&yyyymmdd=${yyyymmdd}`;
+                window.location.href = `yoga-list.html?tab=class&yyyymmdd=${yyyymmdd}`;
             } else if (searchParams.has('course_id') == true) {
-                window.location.href = `teacher-yoga-list.html?tab=course`;
+                window.location.href = `yoga-list.html?tab=course`;
             }
 
 
         }
 
         function sendRequest(method, path, data) {
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             if (method == 'post') {
                 axios.post(`${host}/ccdartstudio/${path}`, data,
@@ -277,7 +282,7 @@
 
         function fetchData() {
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             let searchParams = new URLSearchParams(window.location.search)
 
@@ -291,9 +296,9 @@
                     }
                 })
                     .then(function (response) {
+                        obj_yoga = build_obj_class(response.data.class, response.data.course, response.data.teacher);
 
-                        model = response.data.obj;
-
+                        user = response.data.user;
                         onClassView();
                     })
                     .catch(function (error) {
@@ -311,7 +316,7 @@
                     .then(function (response) {
 
                         console.log(response.data)
-                        model = { course: response.data.course };
+                        obj_yoga = response.data.course;
 
                         onCourseView();
                     })
@@ -324,55 +329,85 @@
 
         function onClassView() {
 
-            let searchParams = new URLSearchParams(window.location.search)
+            let yyyymmdd = obj_yoga.yyyymmdd;
+            let class_type = obj_yoga.type;
 
-            let yyyymmdd = model.class.yyyymmdd;
-            let class_type = model.class.type;
+            let class_name = obj_yoga.name || '';
+            let class_location = obj_yoga.location || '';
+            let class_address = obj_yoga.address || '';
+            let class_capacity = obj_yoga.capacity;
 
-            let course_name = model.course.name;
-            let course_location = model.course.location;
-            let class_capacity = model.class.capacity;
-
-            let class_status = model.class.status || 'normal';
-
+            let class_status = obj_yoga.status || 'normal';
 
             let teacher = [];
-            model.course.teacher.forEach(obj => {
+            let obj_teachr = null;
+            let teacher_picture = null;
+            let class_teacher_info = ''
 
-                if (obj.name == "") {
-                    teacher.push(obj.displayName)
-                } else {
-                    teacher.push(obj.name)
-                }
+            if (obj_yoga.teacher == null) {
+                obj_yoga.teacher.forEach(obj => {
+                    if (obj.name == "") {
+                        teacher.push(obj.displayName)
+                    } else {
+                        teacher.push(obj.name)
+                    }
 
-            })
+                })
+                obj_teachr = obj_yoga.teacher[0]
+                teacher_picture = obj_teachr.pictureUrl;
+                class_teacher_info = obj_teachr.info || '';
+            } else {
+                obj_yoga.teacher.forEach(obj => {
+                    if (obj.name == "") {
+                        teacher.push(obj.displayName)
+                    } else {
+                        teacher.push(obj.name)
+                    }
+
+                })
+                obj_teachr = obj_yoga.teacher[0]
+                teacher_picture = obj_teachr.pictureUrl;
+                class_teacher_info = obj_teachr.info || '';
+            }
+            class_teacher_info = class_teacher_info == '' ? '無資訊' : class_teacher_info
+
             let teacher_name = teacher.join('、')
-            let teacher_picture = model.course.teacher[0].pictureUrl;
 
             let weekday = ['一', '二', '三', '四', '五', '六', '日'][moment(yyyymmdd).weekday()];
 
             let class_date = `${moment(yyyymmdd).format('yyyy/MM/DD')} 週${weekday}`;
 
-            let course_hhmm_start = model.course.hhmm_start;
-            let course_hhmm_end = model.course.hhmm_end;
+            let class_hhmm_start = obj_yoga.hhmm_start == null ? obj_yoga.hhmm_start : obj_yoga.hhmm_start;
+            let class_hhmm_end = obj_yoga.hhmm_end == null ? obj_yoga.hhmm_end : obj_yoga.hhmm_end;
 
-            let course_info = model.class.course.note.info || '';
-            course_info = course_info == '' ? model.course.note.info : course_info;
+            let class_info = '';
+            if (obj_yoga.note != null && obj_yoga.note.info != null) {
+                class_info = obj_yoga.note.info || '';
+            } else {
+                class_info = obj_yoga.note.info || '';
+            }
+            class_info = class_info == '' ? '無資訊' : class_info;
 
-            let course_online_info = model.class.course.note.online || '';
-            course_online_info = course_online_info == '' ? model.course.note.online : course_online_info;
-            course_online_info = course_online_info == '' ? '無資訊' : course_online_info
+            let class_online_info = '';
+            if (obj_yoga.note != null && obj_yoga.note.online != null) {
+                class_online_info = obj_yoga.note.online || '';
+            } else {
+                class_online_info = obj_yoga.note.online || '';
+            }
+            class_online_info = class_online_info == '' ? '無資訊' : class_online_info;
 
-            let course_offline_info = model.class.course.note.offline || '';
-            course_offline_info = course_offline_info == '' ? model.course.note.offline : course_offline_info;
-            course_offline_info = course_offline_info == '' ? '無資訊' : course_offline_info
+            let class_offline_info = '';
+            if (obj_yoga.note != null && obj_yoga.note.offline != null) {
+                class_offline_info = obj_yoga.note.offline || '';
+            } else {
+                class_offline_info = obj_yoga.note.offline || '';
+            }
+            class_offline_info = class_offline_info == '' ? '無資訊' : class_offline_info;
 
-            let course_teacher_info = model.class.course.teacher[0].info || '';
-
-            let class_online_link = model.class.online_link || '';
+            let class_online_link = obj_yoga.online_link || '';
             class_online_link = class_online_link == '' ? '無資訊' : class_online_link
 
-            $(".class-name").html(`${course_name}${model.course.enable == true ? '' : '(課程已取消)'}${class_status == 'normal' ? '' : '(課堂已暫停)'}`)
+            $(".class-name").html(`${class_name}${obj_yoga.enable == true ? '' : '(課程已取消)'}${class_status == 'normal' ? '' : '(課堂已暫停)'}`)
 
             let class_type_text = '';
             if (class_type == 'offline') {
@@ -390,13 +425,13 @@
 
             $(".class-date").html(class_date)
 
-            $(".class-time").html(`${course_hhmm_start}~${course_hhmm_end}`)
+            $(".class-time").html(`${class_hhmm_start}~${class_hhmm_end}`)
 
-            $(".course-info").html(course_info.replaceAll('\n', '<br>'))
+            $(".course-info").html(class_info.replaceAll('\n', '<br>'))
 
-            $(".course-teacher-info").html(course_teacher_info.replaceAll('\n', '<br>'))
-            $(".course-online-info").html(course_online_info.replaceAll('\n', '<br>'))
-            $(".course-offline-info").html(course_offline_info.replaceAll('\n', '<br>'))
+            $(".course-teacher-info").html(class_teacher_info.replaceAll('\n', '<br>'))
+            $(".course-online-info").html(class_online_info.replaceAll('\n', '<br>'))
+            $(".course-offline-info").html(class_offline_info.replaceAll('\n', '<br>'))
             $(".class-online-link").html(class_online_link.replaceAll('\n', '<br>'))
 
 
@@ -406,30 +441,26 @@
 
             } else if (class_type == 'offline') {
                 $(".div-location").removeClass('d-none')
-                $(".div-capacity").removeClass('d-none')
-                $(".course-location").html(course_location)
-                $(".course-capacity").html(`實體課程人數上限：${class_capacity}`)
+                $(".div-address").removeClass('d-none')
+                $(".course-location").html(class_location)
+                $(".course-address").html(class_address)
                 $(".card-offline").removeClass('d-none')
             }
-
-
-            $('.modal-class').modal('hide')
-            $('.modal-course').modal('hide')
 
         }
 
 
         function onCourseView() {
 
-            let course_type = model.course.type;
+            let course_type = obj_yoga.type;
 
-            let course_name = model.course.name;
-            let course_location = model.course.location;
-            let course_capacity = model.course.capacity;
+            let course_name = obj_yoga.name;
+            let course_location = obj_yoga.location;
+            let course_capacity = obj_yoga.capacity;
 
 
             let teacher = [];
-            model.course.teacher.forEach(obj => {
+            obj_yoga.teacher.forEach(obj => {
 
                 if (obj.name == "") {
                     teacher.push(obj.displayName)
@@ -439,24 +470,24 @@
 
             })
             let teacher_name = teacher.join('、')
-            let teacher_picture = model.course.teacher[0].pictureUrl;
+            let teacher_picture = obj_yoga.teacher[0].pictureUrl;
 
-            let weekday = ['一', '二', '三', '四', '五', '六', '日'][model.course.weekday];
+            let weekday = ['一', '二', '三', '四', '五', '六', '日'][obj_yoga.weekday];
 
             let class_date = `週${weekday}`;
 
-            let course_hhmm_start = model.course.hhmm_start;
-            let course_hhmm_end = model.course.hhmm_end;
+            let course_hhmm_start = obj_yoga.hhmm_start;
+            let course_hhmm_end = obj_yoga.hhmm_end;
 
-            let course_info = model.course.note.info || '';
+            let course_info = obj_yoga.note.info || '';
             course_info = course_info == '' ? '無資料' : course_info;
-            let course_online_info = model.course.note.online || '';
+            let course_online_info = obj_yoga.note.online || '';
             course_online_info = course_online_info == '' ? '無資料' : course_online_info;
-            let course_offline_info = model.course.note.offline || '';
+            let course_offline_info = obj_yoga.note.offline || '';
             course_offline_info = course_offline_info == '' ? '無資料' : course_offline_info;
-            let course_teacher_info = model.course.teacher[0].info || '';
+            let course_teacher_info = obj_yoga.teacher[0].info || '';
 
-            $(".class-name").html(`${course_name}${model.course.enable == true ? '' : '(已取消)'}`)
+            $(".class-name").html(`${course_name}${obj_yoga.enable == true ? '' : '(已取消)'}`)
             // $(".class-name").addClass('text-danger')
 
             let course_type_text = [];
@@ -513,7 +544,7 @@
 
         function onMember() {
             let searchParams = new URLSearchParams(window.location.search)
-            window.location.href = `teacher-class-member-list.html?class_id=${searchParams.get('class_id')}`;
+            window.location.href = `class-member-list.html?class_id=${searchParams.get('class_id')}`;
         }
 
         function onSet() {
@@ -523,9 +554,9 @@
                 $('.class-pause').removeClass('d-none')
                 $('.class-rework').removeClass('d-none')
 
-                if (model.class.status == 'normal') {
+                if (obj_yoga.status == 'normal') {
                     $('.class-rework').addClass('d-none')
-                } else if (model.class.status == 'pause') {
+                } else if (obj_yoga.status == 'pause') {
                     $('.class-pause').addClass('d-none')
                 }
 
@@ -534,7 +565,7 @@
                 $('.course-pause').removeClass('d-none')
                 $('.course-rework').removeClass('d-none')
 
-                if (model.course.enable == true) {
+                if (obj_yoga.enable == true) {
                     $('.course-rework').addClass('d-none')
                 } else {
                     $('.course-pause').addClass('d-none')
@@ -593,7 +624,7 @@
 
         $('body').on('click', '.class-edit', function () {
             let searchParams = new URLSearchParams(window.location.search)
-            window.location.href = `teacher-edit-class.html?class_id=${searchParams.get('class_id')}`;
+            window.location.href = `edit-class.html?class_id=${searchParams.get('class_id')}`;
         })
 
         $('body').on('click', '.course-pause', function () {
@@ -640,12 +671,12 @@
 
         $('body').on('click', '.course-edit', function () {
             let searchParams = new URLSearchParams(window.location.search)
-            window.location.href = `teacher-edit-course.html?course_id=${searchParams.get('course_id')}`;
+            window.location.href = `edit-course.html?course_id=${searchParams.get('course_id')}`;
         })
 
     </script>
-
     <script>
+
 
         let liffID = '1657127222-vlpYeZjK';
 
@@ -660,7 +691,6 @@
             if (!liff.isLoggedIn()) {
                 liff.login();
             } else {
-
                 fetchData();
 
             }

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>璽璽藝術空間D Art Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- LINE -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <!-- UI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Control -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+    <!-- API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div
+        class="container-fluid bg-default-teacher d-flex justify-content-center align-items-center position-fixed nav-top">
+        <!-- <button onclick="onCheckinAll()" style="width:100px;" type="button"
+            class="btn align-self-center btn-checkin-all text-white fs-16">
+            全部簽到
+        </button> -->
+        <div class="align-self-center text-center flex-fill fs-20">簽到管理</div>
+
+        <!-- <div style="width:100px"> -->
+        <!-- <button onclick="onCheckin()" type="button"
+                class="btn align-self-center btn-checkin text-white fs-16 d-none w-100">
+                簽到
+            </button> -->
+        <!-- </div> -->
+    </div>
+
+    <div class="container-fluid position-fixed bg-secondary text-white fs-16 text-center" style="top:44px;">
+        每日23:00彙整當天未簽到的學生名單
+    </div>
+    <!-- <div class="container-fluid position-fixed bg-success text-white fs-16" style="top:68px;">
+        選擇學生後，點選右上角簽到，即可完成幫學生補簽到
+    </div> -->
+
+    <div class="container-fluid position-fixed overflow-auto checkin-list" style="top:88px;bottom:86px;">
+
+    </div>
+
+
+
+    <div class="container-fluid position-fixed tab-list bg-white" style="bottom:0px;">
+        <div class="row mt-2">
+            <div class="col d-flex flex-column align-items-center tab-announcement p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">課程公告</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-yoga p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">課程列表</p>
+            </div>
+            <div class="col d-flex flex-column  align-items-center tab-member p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">使用者管理</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-checkin p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center img-select-teacher"></img>
+                <p class="align-self-center text-center text-teacher fs-12">簽到管理</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-me p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">個人資訊</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-checkin" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-sm">
+            <div class="modal-content">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                    <!-- <button type="button" class="btn" data-bs-dismiss="modal">取消</button> -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div>
+                        <button onclick="onCheckin(this.id)" type="button" class="btn btn-checkin">簽到</button>
+                        <button onclick="onCheckinAll(this.id)" type="button" class="btn btn-checkin-all">全部簽到</button>
+                    </div>
+
+                </div>
+                <div class="px-2">
+                    <input type="text" class="form-control align-self-center" id="input-search" placeholder="搜尋姓名">
+                </div>
+                <div class="modal-body p-1 member-list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io';
+
+        moment.locale('zh-tw', {
+            week: {
+                dow: 1
+            }
+        });
+
+        var user = null;
+
+        var checkin_list = [];
+
+        var days = [];
+
+
+    </script>
+
+    <script>
+        function fetchData() {
+
+            let token = liff.getIDToken();
+
+            let searchParams = new URLSearchParams(window.location.search)
+            let userId = searchParams.get('userId')
+
+            axios.get(`${host}/ccdartstudio/checkin`, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(function (response) {
+                    console.log(response.data)
+                    checkin_list = response.data.array;
+                    days = response.data.days;
+                    user = response.data.user;
+                    onView(checkin_list, days);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
+
+    <script>
+        function onView(checkin_list, days) {
+            $('.checkin-list').empty();
+
+            days.forEach(yyyymmdd => {
+
+                let weekday = `週${['一', '二', '三', '四', '五', '六', '日'][moment(yyyymmdd).weekday()]}`;
+                $('.checkin-list').append(`<div class="d-flex flex-row justify-content-start mb-2 bg-default-grayD9">
+                    <div class="p-2 align-self-center flex-fill">${yyyymmdd} ${weekday}</div>
+                </div>`);
+
+                let _checkin_list = checkin_list.filter(a => a.class_yyyymmdd == yyyymmdd);
+
+                if (_checkin_list.length > 0) {
+                    checkin_list.forEach(obj_yoga => {
+
+                        let class_type = '';
+                        if (obj_yoga.class_type == 'offline') {
+                            class_type = '實體課'
+                        } else if (obj_activity.class_type == 'online') {
+                            class_type = '視訊課'
+                        }
+                        $('.checkin-list').append(`<div class="card mb-2 card-class" id="${obj_yoga.class_id}">
+            <div class="hstack gap-2">
+                <div>
+                <img class="circle-img ms-2" src="${obj_yoga.class_teacher[0].pictureUrl}" />
+                </div>
+                <div class="vstack gap-1 w-100">
+                    <h5 class="card-title mt-2 fs-20 text-class-hhmm">${obj_yoga.class_hhmm_start}~${obj_yoga.class_hhmm_end}${obj_yoga.course_enable == true && obj_yoga.class_status == 'normal' ? '' : '(已暫停)'}</h5>
+                    <p class="card-text fs-24 mb-2 text-gray5F">${obj_yoga.class_name}</p>
+                </div>
+                <div class="d-flex flex-column gap-1 me-2" style="width: 100px;">
+
+                    <div class="text-center fs-16">${class_type}</div>
+                    <div>&nbsp;</div>
+            </div>
+        </div>`)
+                    });
+
+
+                }
+            })
+
+
+
+        }
+    </script>
+
+    <script>
+
+        function sendRequest(data) {
+            console.log(data)
+            let token = liff.getIDToken();
+
+            axios.post(`${host}/ccdartstudio/activity`, data,
+                {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                }
+            )
+                .then(function (response) {
+                    console.log(response.data);
+                    fetchData()
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function onCheckinAll(class_id) {
+
+            // console.log(class_id)
+            let array = [];
+
+            let obj_checkin = checkin_list.filter(a => a.class_id == class_id)[0]
+
+            obj_checkin.activity.forEach(obj_activity => {
+
+                array.push({
+                    id: obj_activity.activity_id,
+                    student: obj_activity.student_userId,
+                    class_id: class_id,
+                    checkin: true
+                })
+            })
+
+            // console.log(array)
+
+            if (array.length == 0) {
+                swal.fire('需選擇學生')
+            } else {
+                Swal.fire({
+
+                    customClass: {
+                        cancelButton: 'order-1',
+                        confirmButton: 'order-2',
+                    },
+                    title: '是否全部簽到',
+                    showCancelButton: true,
+                    cancelButtonText: '否',
+                    confirmButtonText: '是',
+
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+
+                        sendRequest({
+                            array: array
+                        });
+
+                        $('.modal-checkin').modal('hide')
+
+                    }
+                })
+            }
+
+        }
+
+        function onCheckin(class_id) {
+
+            // console.log(class_id)
+
+            let array = [];
+
+            $('.card-checkin').each(function () {
+                if ($(this).hasClass("modal-bg-select-student") == true) {
+                    let activity_id = $(this).attr('id');
+
+                    let obj_checkin = checkin_list.filter(a => a.class_id == class_id)[0]
+
+                    let obj_activity = obj_checkin.activity.filter(a => a.activity_id == activity_id)[0]
+                    array.push({
+                        id: activity_id,
+                        student: obj_activity.student_userId,
+                        class_id: class_id,
+                        checkin: true
+                    })
+                }
+
+            });
+
+            // console.log(array)
+
+            if (array.length == 0) {
+                swal.fire('需選擇學生')
+            } else {
+
+                Swal.fire({
+
+                    customClass: {
+                        cancelButton: 'order-1',
+                        confirmButton: 'order-2',
+                    },
+                    title: '是否簽到',
+                    showCancelButton: true,
+                    cancelButtonText: '否',
+                    confirmButtonText: '是',
+
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+
+                        sendRequest({
+                            array: array
+                        });
+
+                        $('.modal-checkin').modal('hide')
+
+                    }
+                })
+            }
+
+        }
+
+        $('body').on('click', '.card-class', function () {
+
+            let class_id = this.id;
+
+            let obj_class = checkin_list.filter(a => a.class_id == class_id)[0];
+
+            console.log(obj_class)
+
+            $('.member-list').empty();
+
+            obj_class.activity.forEach(obj_activity => {
+                $('.member-list').append(`<div class="card-checkin" id="${obj_activity.activity_id}">
+            <div class="hstack gap-2">
+                <div>
+                <img class="circle-img ms-2" src="${obj_activity.student_pictureUrl}" />
+                </div>
+                <div class="my-3 d-flex align-items-center justify-content-center">
+
+                    <p class="card-text fs-24 mb-2 text-gray5F">${obj_activity.student_displayName}</p>
+                </div>
+
+        </div>`);
+            })
+
+            $('.btn-checkin').attr('id', class_id)
+            $('.btn-checkin-all').attr('id', class_id)
+
+            $('.modal-checkin').modal('show')
+
+        })
+
+        $('body').on('click', '.card-checkin', function () {
+
+            if ($(`#${this.id}`).hasClass('modal-bg-select-student') == true) {
+                $(`#${this.id}`).removeClass('modal-bg-select-student')
+            } else {
+                $(`#${this.id}`).addClass('modal-bg-select-student')
+            }
+
+            // if ($('.card-checkin').hasClass('bg-warning') == true) {
+            //     $(`.btn-checkin`).removeClass('d-none')
+            // } else {
+            //     $(`.btn-checkin`).addClass('d-none')
+            // }
+
+        })
+
+        $('body').on('click', '.tab-announcement', function () {
+
+            window.location.href = 'announcement-list.html';
+        })
+
+        $('body').on('click', '.tab-yoga', function () {
+
+            window.location.href = 'yoga-list.html';
+        })
+
+        $('body').on('click', '.tab-member', function () {
+
+            window.location.href = 'member-list.html';
+        })
+
+        $('body').on('click', '.tab-checkin', function () {
+
+            window.location.href = 'checkin-list.html';
+        })
+
+        $('body').on('click', '.tab-me', function () {
+
+            window.location.href = 'me.html';
+        })
+
+    </script>
+
+    <script>
+
+        let liffID = '1657127222-vlpYeZjK';
+
+        liff.init({
+            liffId: liffID
+        }).then(function () {
+            console.log('LIFF init');
+
+            // 這邊開始寫使用其他功能
+
+            // login call, only when external browser or LINE's in-app browser is used
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+
+                fetchData();
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+            liff.logout();
+        });
+    </script>
+
+</body>
+
+</html>

@@ -8,6 +8,41 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
+    <!-- <style>
+        body {
+            background-image: url("../image/picture/background.jpg");
+            height: 100%;
+            width: 100%;
+        }
+
+        .bg-default {
+            background: #D28C8C;
+            color: white;
+        }
+
+        .text-default {
+            color: #D28C8C;
+        }
+
+        .tab-img-select {
+            filter: invert(68%) sepia(6%) saturate(2111%) hue-rotate(314deg) brightness(92%) contrast(87%);
+        }
+
+        .tab-img-unselect {
+            filter: invert(81%) sepia(4%) saturate(18%) hue-rotate(354deg) brightness(89%) contrast(102%);
+        }
+
+        .tab-text-select {
+            color: #D28C8C;
+            font-size: 12px;
+        }
+
+        .tab-text-unselect {
+            color: #BCBCBC;
+            font-size: 12px;
+        }
+    </style> -->
+
     <!-- LINE -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -45,9 +80,9 @@
 
 
 
-    <div class="container-fluid position-fixed overflow-auto" style="top:64px;">
-        <button onclick="onSelect()" class="btn bg-white text-black dropdown-toggle position-fixed announcement-button"
-            type="button" aria-expanded="false" style="top:64px;">
+    <div class="container-fluid position-fixed hstack gap-2 overflow-auto" style="top:64px;">
+        <button onclick="onSelect()" class="btn bg-white text-black dropdown-toggle announcement-button" type="button"
+            aria-expanded="false">
             全部公告
         </button>
     </div>
@@ -59,21 +94,25 @@
 
     <div class="container-fluid position-fixed tab-list bg-white" style="bottom:0px;">
         <div class="row mt-2">
-            <div class="col d-flex flex-column align-items-center">
-                <img src="./image/icon/student/message0.png" class="align-self-center img-select-teacher"></img>
+            <div class="col d-flex flex-column align-items-center tab-announcement p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center img-select-teacher"></img>
                 <p class="align-self-center text-center text-teacher fs-12">課程公告</p>
             </div>
-            <div class="col d-flex flex-column align-items-center tab-yoga">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center text-muted fs-12">課程列表</p>
+            <div class="col d-flex flex-column align-items-center tab-yoga p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">課程列表</p>
             </div>
-            <div class="col d-flex flex-column align-items-center tab-member">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center text-muted fs-12">使用者管理</p>
+            <div class="col d-flex flex-column  align-items-center tab-member p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">使用者管理</p>
             </div>
-            <div class="col d-flex flex-column align-items-center tab-checkin">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center text-muted fs-12">簽到管理</p>
+            <div class="col d-flex flex-column align-items-center tab-checkin p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">簽到管理</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-me p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">個人資訊</p>
             </div>
         </div>
     </div>
@@ -110,7 +149,7 @@
     <script>
 
         function onAdd() {
-            window.location.href = 'teacher-edit-announcement.html?announcement_id=add';
+            window.location.href = 'edit-announcement.html?announcement_id=add';
 
         }
 
@@ -145,29 +184,29 @@
             $('.modal').modal('hide');
         });
 
-        $('body').on('click', '.card-announcement', function () {
-
-            window.location.href = `teacher-edit-announcement.html?announcement_id=${this.id}`;
-        })
-
         $('body').on('click', '.tab-announcement', function () {
 
-            window.location.href = 'teacher-announcement-list.html';
+            window.location.href = 'announcement-list.html';
         })
 
         $('body').on('click', '.tab-yoga', function () {
 
-            window.location.href = 'teacher-yoga-list.html';
+            window.location.href = 'yoga-list.html';
         })
 
         $('body').on('click', '.tab-member', function () {
 
-            window.location.href = 'teacher-member-list.html';
+            window.location.href = 'member-list.html';
         })
 
         $('body').on('click', '.tab-checkin', function () {
 
-            window.location.href = 'teacher-checkin-list.html';
+            window.location.href = 'checkin-list.html';
+        })
+
+        $('body').on('click', '.tab-me', function () {
+
+            window.location.href = 'me.html';
         })
 
     </script>
@@ -176,7 +215,7 @@
 
         function fetchData() {
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             axios.get(`${host}/ccdartstudio/announcement`, {
                 headers: {
@@ -204,7 +243,7 @@
 
                 $(".announcement-list").append(`<div class="card mb-2 card-announcement" id="${element.id}">
             <div class="card-body">
-                <h5 class="card-title">${element.title || ''}</h5>
+                <h5 class="card-title">${element.title || ''}${element.enable == false ? '(已停止)' : ''}</h5>
                 <small class="card-text">${element.yyyymmdd || ''}</small>
                 <p class="card-text">${(element.content || '').replaceAll('\n', '<br>')}</p>
             </div>
@@ -217,8 +256,9 @@
 
         }
 
-    </script>
 
+
+    </script>
     <script>
         let liffID = '1657127222-vlpYeZjK';
 

@@ -8,6 +8,42 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
+    <!-- <style>
+        body {
+            background-image: url("../image/picture/background.jpg");
+            height: 100%;
+            width: 100%;
+        }
+
+        .bg-default {
+            background: #D28C8C;
+            color: white;
+        }
+
+
+        .line-pictureUrl {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .modal-bg-select {
+            background: #D28C8C !important;
+            color: white !important;
+        }
+
+        .modal-bg-unselect {
+            background: white !important;
+            color: #D28C8C !important;
+        }
+
+        .btn-ok {
+            background: #D28C8C !important;
+            color: white !important;
+        }
+    </style> -->
+
     <!-- LINE -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -36,14 +72,14 @@
         class="container-fluid position-fixed bg-default-teacher d-flex justify-content-center align-items-center nav-top">
         <button onclick="onClose()" style="width:50px" type="button"
             class="btn align-self-center btn-exit text-white d-none">
-            <img src="image/icon/student/close.png">
+            <img src="../image/icon/student/close.png">
         </button>
         <button onclick="onBack()" style="width:50px" type="button" class="btn align-self-center btn-back text-white">
-            <img src="image/icon/student/back.png">
+            <img src="../image/icon/student/back.png">
         </button>
         <div class="align-self-center text-center flex-fill fs-20">個人資訊</div>
         <button onclick="onEdit()" style="width:50px" type="button" class="btn align-self-center btn-edit">
-            <img src="image/icon/student/edit.png">
+            <img src="../image/icon/student/edit.png">
         </button>
         <button onclick="onSave()" style="width:50px;" type="button"
             class="btn align-self-center btn-save text-white d-none fs-12">
@@ -70,7 +106,7 @@
                     <div class="d-flex flex-row bg-white border border-secondary rounded">
                         <div class="text-dark flex-fill align-self-center ms-4" id="input-role"></div>
                         <button onclick="selectRole()" type="button" class="btn align-self-center text-center">
-                            <img src="./image/icon/student/down.png">
+                            <img src="../image/icon/student/down.png">
                             </img>
                         </button>
                     </div>
@@ -107,33 +143,33 @@
 
                 <div class="vstack gap-2 mt-4">
                     <div class="d-flex flex-row align-items-end mb-1">
-                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/user1.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">姓名</small>
                         <small class="align-self-end me-3 me-name"></small>
                     </div>
                     <div class="d-flex flex-row align-items-end mb-1">
-                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/user1.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">暱稱</small>
                         <small class="align-self-end me-3 me-nickname"></small>
                     </div>
 
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/user2.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/user1.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">權限</small>
                         <small class="align-self-end me-3 me-role"></small>
                     </div>
 
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/calendar.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/calendar.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">生日</small>
                         <small class="align-self-end me-3 me-age"></small>
                     </div>
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">個人身體狀況</small>
                         <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#health"
                             aria-expanded="false" aria-controls="health">
-                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                            <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
                                 alt="">
                         </button>
                     </div>
@@ -143,12 +179,12 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-start mb-1">
-                        <img src="./image/icon/student/map_gym.png" class="align-self-center mx-3 icon-size" alt="">
+                        <img src="../image/icon/student/map_gym.png" class="align-self-center mx-3 icon-size" alt="">
                         <small class="text-muted align-self-center flex-fill">輔具使用狀況</small>
 
                         <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#assistive_devices"
                             aria-expanded="false" aria-controls="assistive_devices">
-                            <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
+                            <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size"
                                 alt="">
                         </button>
                     </div>
@@ -214,7 +250,7 @@
 
         function fetchMember() {
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             let searchParams = new URLSearchParams(window.location.search)
             let userId = searchParams.get('userId')
@@ -363,11 +399,11 @@
         function onBack() {
             let searchParams = new URLSearchParams(window.location.search)
             let back = searchParams.get('back')
-            if (back == 'teacher-member-list') {
-                window.location.href = `teacher-member-list.html`;
-            } else if (back == 'teacher-class-member-list') {
+            if (back == 'member-list') {
+                window.location.href = `member-list.html`;
+            } else if (back == 'class-member-list') {
                 let class_id = searchParams.get('class_id')
-                window.location.href = `teacher-class-member-list.html?class_id=${class_id}`;
+                window.location.href = `class-member-list.html?class_id=${class_id}`;
             }
 
         }
@@ -472,7 +508,7 @@
         }
 
         function sendRequest(data) {
-            const token = 'develop';
+            let token = 'develop';
 
             let searchParams = new URLSearchParams(window.location.search)
             let userId = searchParams.get('userId')

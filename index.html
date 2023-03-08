@@ -9,7 +9,7 @@
 
     <style>
         body {
-            background-image: url("./image/picture/background.jpg");
+            background-image: url("../image/picture/login.jpg");
             height: 100%;
             width: 100%;
         }
@@ -34,11 +34,13 @@
     <!-- Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 
+    <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+
 </head>
 
 <body>
     <script>
-        let host = 'https://5cc1-59-126-54-247.jp.ngrok.io'
+        var host = 'https://5cc1-59-126-54-247.jp.ngrok.io'
 
         moment.locale('zh-tw', {
             week: {
@@ -50,24 +52,26 @@
 
         function fetchUser() {
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
+
             axios.get(`${host}/ccdartstudio/me`, {
                 headers: {
                     'Authorization': `${token}`
                 }
             })
                 .then(function (response) {
-                    console.log(response)
-                    let user = response.data.obj;
+                    console.log(response.data);
+
+                    let user = response.data.user;
 
                     if (user.select_role_type == 'guest') {
-                        window.location.href = 'guest-yoga-list.html';
+                        window.location.href = './guest/yoga-list.html'
                     } else if (user.select_role_type == 'student') {
-                        window.location.href = 'yoga-list.html';
+                        window.location.href = '/student/yoga-list.html'
                     } else if (user.select_role_type == 'teacher') {
-                        window.location.href = 'teacher-yoga-list.html';
+                        window.location.href = '/teacher/yoga-list.html'
                     } else if (user.select_role_type == 'admin') {
-
+                        window.location.href = '/admin/member-list.html'
                     }
 
                 })
@@ -76,6 +80,11 @@
                 });
         }
 
+
+
+    </script>
+
+    <script>
 
         let liffID = '1657127222-vlpYeZjK';
 
@@ -91,16 +100,14 @@
                 liff.login();
             } else {
 
-                fetchUser();
+                fetchUser()
 
             }
         }).catch(function (error) {
             console.log(error);
             liff.logout();
         });
-
     </script>
-
 
 
 

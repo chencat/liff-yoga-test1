@@ -28,6 +28,7 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 
     <link href="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.css" rel="stylesheet">
+    <script src="https://5cc1-59-126-54-247.jp.ngrok.io/ccdartstudio/css/main.js"></script>
 </head>
 
 <body>
@@ -57,23 +58,23 @@
     <div class="container-fluid position-fixed container-course px-0 d-none overflow-auto"
         style="top:88px;bottom: 66px;">
         <div class="d-flex flex-row align-items-center bg-white">
-            <img src="./image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
+            <img src="../image/icon/student/health.png" class="align-self-center mx-3 icon-size" alt="">
             <small class="text-muted align-self-center flex-fill">一般課程</small>
             <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#course-normal"
                 aria-expanded="false" aria-controls="course-normal">
-                <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size" alt="">
+                <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3 icon-size" alt="">
             </button>
         </div>
         <div class="collapse p-2 my-2 show" id="course-normal">
 
         </div>
         <div class="d-flex flex-row align-items-center bg-white">
-            <img src="./image/icon/student/health.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
+            <img src="../image/icon/student/health.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
                 alt="">
             <small class="text-muted align-self-center flex-fill">工作坊</small>
             <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#course-workshop"
                 aria-expanded="false" aria-controls="course-workshop">
-                <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3"
+                <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3"
                     style="width: 11px;height: 11px;" alt="">
             </button>
         </div>
@@ -81,12 +82,12 @@
 
         </div>
         <div class="d-flex flex-row align-items-center bg-white">
-            <img src="./image/icon/student/health.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
+            <img src="../image/icon/student/health.png" class="align-self-center mx-3" style="width: 11px;height: 11px;"
                 alt="">
             <small class="text-muted align-self-center flex-fill">已取消課程</small>
             <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#course-cancel"
                 aria-expanded="false" aria-controls="course-cancel">
-                <img src="./image/icon/student/arrow-down.png" class="align-self-center mx-3"
+                <img src="../image/icon/student/arrow-down.png" class="align-self-center mx-3"
                     style="width: 11px;height: 11px;" alt="">
             </button>
         </div>
@@ -100,17 +101,14 @@
         <div class="card text-center">
             <div class="card-header bg-default-teacher text-white">
                 <div class="row bg-default-teacher">
-                    <div class="col text-start center">
-                        <button onclick="onToday()" type="button" class="btn text-white"
-                            style="font-size: 12px;">今日</button>
+                    <div class="col">
+                        <button onclick="onToday()" type="button" class="btn text-white fs-20 p-0 m-0">今日</button>
                     </div>
-                    <div class="col-6 center">
+                    <div class="col-6 p-0">
                         <div class="hstack">
-                            <button onclick="onPrev()" type="button" class="btn text-white"
-                                style="font-size: 8px;">❮</button>
-                            <p class="center month"></p>
-                            <button onclick="onNext()" type="button" class="btn text-white"
-                                style="font-size: 8px;">❯</button>
+                            <button onclick="onPrev()" type="button" class="btn text-white p-0 m-0 fs-20">❮</button>
+                            <p class="center fs-20 month"></p>
+                            <button onclick="onNext()" type="button" class="btn text-white p-0 m-0 fs-20">❯</button>
                         </div>
                     </div>
                     <div class="col"></div>
@@ -246,21 +244,25 @@
 
     <div class="container-fluid position-fixed tab-list bg-white" style="bottom:0px;">
         <div class="row mt-2">
-            <div class="col d-flex flex-column align-items-center tab-announcement">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center text-muted fs-12">課程公告</p>
+            <div class="col d-flex flex-column align-items-center tab-announcement p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">課程公告</p>
             </div>
-            <div class="col d-flex flex-column align-items-center">
-                <img src="./image/icon/student/message0.png" class="align-self-center img-select-teacher"></img>
+            <div class="col d-flex flex-column align-items-center tab-yoga p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center img-select-teacher"></img>
                 <p class="align-self-center text-center text-teacher fs-12">課程列表</p>
             </div>
-            <div class="col d-flex flex-column align-items-center tab-member">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center text-muted fs-12">使用者管理</p>
+            <div class="col d-flex flex-column  align-items-center tab-member p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">使用者管理</p>
             </div>
-            <div class="col d-flex flex-column align-items-center tab-checkin">
-                <img src="./image/icon/student/message0.png" class="align-self-center"></img>
-                <p class="align-self-center text-center text-muted fs-12">簽到管理</p>
+            <div class="col d-flex flex-column align-items-center tab-checkin p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">簽到管理</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center tab-me p-0">
+                <img src="../image/icon/student/message0.png" class="align-self-center"></img>
+                <p class="align-self-center text-center text-unselect fs-12">個人資訊</p>
             </div>
         </div>
     </div>
@@ -347,6 +349,7 @@
             for (let i = 0; i < 14; i++) {
                 let yyyymmdd = moment(begin).weekday(0).add(i, 'days').format('yyyy-MM-DD');
                 let day = parseInt(moment(begin).weekday(0).add(i, 'days').format('DD'));
+                // console.log(moment().weekday(0).add(i, 'days').format('yyyy-MM-DD'))
 
                 $(`.day-${i + 1}`).html(day);
 
@@ -356,8 +359,7 @@
 
                 let date_type = null;
 
-                let _array_class = array_class.filter(row => row.class.yyyymmdd == yyyymmdd)
-
+                let _array_class = array_class.filter(row => row.yyyymmdd == yyyymmdd)
 
                 if (yyyymmdd == select) {
                     date_type = 'select';
@@ -388,14 +390,14 @@
         function onClassListView(yyyymmdd) {
             $(".yoga-list").empty();
 
-            let _array_class = array_class.filter(row => row.class.yyyymmdd == yyyymmdd);
+            let _array_class = array_class.filter(row => row.yyyymmdd == yyyymmdd);
             if (_array_class.length == 0) {
 
             } else {
 
-                _array_class.forEach(obj_class => {
+                _array_class.forEach(obj_yoga => {
 
-                    let class_type = obj_class.class.type;
+                    let class_type = obj_yoga.type;
                     if (class_type == 'offline') {
                         class_type = '實體課'
                     } else if (class_type == 'online') {
@@ -404,19 +406,19 @@
                         class_type = '工作坊'
                     }
 
-                    $(".yoga-list").append(`<div class="card mb-2 card-class" id="${obj_class.class.id}">
-            <div class="hstack gap-2" style="height: 68px;">
+                    $(".yoga-list").append(`<div class="card mb-2 card-class ${obj_yoga.type == 'online' ? 'bg-online' : 'bg-offline'}" id="${obj_yoga.id}">
+            <div class="hstack gap-2">
                 <div>
-                <img class="circle-img ms-2" src="${obj_class.course.teacher[0].pictureUrl}" />
+                <img class="circle-img ms-2" src="${obj_yoga.teacher[0].pictureUrl}" />
                 </div>
                 <div class="vstack gap-1 w-100">
-                    <h5 class="card-title mt-1" style="font-size:16px;color:#A95050;">${obj_class.course.hhmm_start}~${obj_class.course.hhmm_end}</h5>
-                    <p class="card-text" style="font-size:16px;color: #5F5F5F;">${obj_class.course.name}${obj_class.class.status == 'normal' ? '' : '(已暫停)'}</p>
+                    <h5 class="card-title mt-2 fs-20 text-class-hhmm">${obj_yoga.enable == true && obj_yoga.status == 'normal' ? (`${obj_yoga.hhmm_start}~${obj_yoga.hhmm_end}`) : '課程已暫停'}</h5>
+                    <p class="card-text fs-24 mb-2 text-gray5F">${obj_yoga.name}</p>
                 </div>
                 <div class="d-flex flex-column gap-1 me-2" style="width: 100px;">
 
-                    <div class="text-center fs-12">${class_type}</div>
-
+                    <div class="text-center fs-16">${class_type}</div>
+                    <div>&nbsp;</div>
             </div>
         </div>`)
                 })
@@ -449,23 +451,19 @@
 
 
                         $('#course-normal').append(`
-
 <div class="card mb-2 card-course" id="${_course.id}">
-    <div class="hstack gap-2" style="height: 68px;">
+    <div class="hstack gap-2">
         <div>
             <img class="circle-img ms-2" src="${_course.teacher[0].pictureUrl}" />
         </div>
-        <div class="vstack gap-1">
-            <h5 class="card-title mt-1" style="font-size:16px;color:#A95050;">
+        <div class="vstack gap-1 w-100">
+            <h5 class="card-title mt-2 fs-20 text-class-hhmm">
                 ${_course.hhmm_start}~${_course.hhmm_end}</h5>
-            <p class="card-text" style="font-size:16px;color: #5F5F5F;">${_course.name}</p>
+            <p class="card-text fs-24 mb-2 text-gray5F">${_course.name}</p>
         </div>
-        <div class="d-flex flex-column gap-1 me-2">
-
-            ${_course.type.includes('offline') == true ? '<div class="text-center" style="font-size:12px;">實體課</div>' : ''}
-
-            ${_course.type.includes('online') == true ? '<div class="text-center" style="font-size:12px;">視訊課</div>' : ''}
-
+        <div class="d-flex flex-column gap-1 me-2" style="width: 100px;">
+            ${_course.type.includes('offline') == true ? '<div class="text-center fs-16">實體課</div>' : '&nbsp;'}
+            ${_course.type.includes('online') == true ? '<div class="text-center fs-16">視訊課</div>' : '&nbsp;'}
         </div>
     </div>
 </div>`);
@@ -483,23 +481,19 @@
 
 
                         $('#course-cancel').append(`
-
 <div class="card mb-2 card-course" id="${_course.id}">
-    <div class="hstack gap-2" style="height: 68px;">
+    <div class="hstack gap-2">
         <div>
             <img class="circle-img ms-2" src="${_course.teacher[0].pictureUrl}" />
         </div>
-        <div class="vstack gap-1">
-            <h5 class="card-title mt-1 fs-16" style="color:#A95050;">
+        <div class="vstack gap-1 w-100">
+            <h5 class="card-title mt-2 fs-20 text-class-hhmm">
                 ${_course.hhmm_start}~${_course.hhmm_end}</h5>
-            <p class="card-text fs-16" style="color: #5F5F5F;">${_course.name}</p>
+            <p class="card-text fs-24 mb-2 text-gray5F">${_course.name}</p>
         </div>
-        <div class="d-flex flex-column gap-1 me-2">
-
-            ${_course.type.includes('offline') == true ? '<div class="text-center fs-12">實體課</div>' : ''}
-
-            ${_course.type.includes('online') == true ? '<div class="text-center fs-12">視訊課</div>' : ''}
-
+        <div class="d-flex flex-column gap-1 me-2" style="width: 100px;">
+            ${_course.type.includes('offline') == true ? '<div class="text-center fs-16">實體課</div>' : '&nbsp;'}
+            ${_course.type.includes('online') == true ? '<div class="text-center fs-16">視訊課</div>' : '&nbsp;'}
         </div>
     </div>
 </div>`);
@@ -515,7 +509,7 @@
         }
 
         function onAdd() {
-            window.location.href = `teacher-edit-course.html?course_id=add`;
+            window.location.href = `edit-course.html?course_id=add`;
         }
 
         $('body').on('click', '.card-class', function () {
@@ -524,38 +518,39 @@
 
             // console.log(this.id)
 
-            window.location.href = `teacher-yoga-activity.html?class_id=${class_id}`;
+            window.location.href = `class-activity.html?class_id=${class_id}`;
         })
 
         $('body').on('click', '.card-course', function () {
 
             let course_id = this.id;
 
-            // console.log(this.id)
-
-            // window.location.href = `teacher-edit-course.html?course_id=${course_id}`;
-
-            window.location.href = `teacher-yoga-activity.html?course_id=${course_id}`;
+            window.location.href = `class-activity.html?course_id=${course_id}`;
         })
 
         $('body').on('click', '.tab-announcement', function () {
 
-            window.location.href = 'teacher-announcement-list.html';
+            window.location.href = 'announcement-list.html';
         })
 
-        // $('body').on('click', '.tab-yoga', function () {
+        $('body').on('click', '.tab-yoga', function () {
 
-        //     window.location.href = 'teacher-yoga-list.html';
-        // })
+            window.location.href = 'yoga-list.html';
+        })
 
         $('body').on('click', '.tab-member', function () {
 
-            window.location.href = 'teacher-member-list.html';
+            window.location.href = 'member-list.html';
         })
 
         $('body').on('click', '.tab-checkin', function () {
 
-            window.location.href = 'teacher-checkin-list.html';
+            window.location.href = 'checkin-list.html';
+        })
+
+        $('body').on('click', '.tab-me', function () {
+
+            window.location.href = 'me.html';
         })
 
         $('body').on('click', '.tab-class', function () {
@@ -599,11 +594,11 @@
 
         function fetchData(api, firstday) {
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             if (api == 'class') {
 
-                axios.get(`${host}/ccdartstudio/class?firstday=${firstday}&role_type=teacher`, {
+                axios.get(`${host}/ccdartstudio/class?firstday=${firstday}`, {
                     headers: {
                         'Authorization': `${token}`
                     }
@@ -611,8 +606,9 @@
                     .then(function (response) {
                         // console.log(response.data);
 
-                        array_class = response.data.array;
+                        array_class = build_array_class(response.data.class, response.data.course, response.data.teacher);
                         user = response.data.user;
+                        console.log(array_class)
                         onCalendarView(current, selectday)
                         onClassListView(selectday)
                     })
@@ -623,7 +619,7 @@
 
             } else if (api == 'course') {
 
-                axios.get(`${host}/ccdartstudio/course?role_type=teacher`, {
+                axios.get(`${host}/ccdartstudio/course`, {
                     headers: {
                         'Authorization': `${token}`
                     }
@@ -631,7 +627,8 @@
                     .then(function (response) {
                         // console.log(response.data);
                         array_course = response.data.array;
-                        user = response.data.user;
+                        user = response.data.uesr
+
                         onCourseListView(array_course)
                     })
                     .catch(function (error) {
@@ -700,8 +697,8 @@
 
     </script>
 
-
     <script>
+
 
         let liffID = '1657127222-vlpYeZjK';
 
@@ -725,6 +722,7 @@
             liff.logout();
         });
     </script>
+
 
 </body>
 

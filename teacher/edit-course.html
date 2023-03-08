@@ -8,6 +8,44 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
+    <!-- <style>
+        body {
+            background-image: url("../image/picture/background.jpg");
+            height: 100%;
+            width: 100%;
+        }
+
+        .bg-default {
+            background: #D28C8C;
+            color: white;
+        }
+
+        .bg-select {
+            background: #B2C5BF !important;
+            color: blac !important;
+            border-color: black !important;
+        }
+
+        .modal-bg-select-teacher {
+            background: #D28C8C !important;
+            color: white !important;
+        }
+
+        .modal-bg-unselect-teacher {
+            background: white !important;
+            color: #D28C8C !important;
+        }
+
+        .btn-ok {
+            background: #D28C8C !important;
+            color: white !important;
+        }
+
+        .text-default {
+            color: #D28C8C;
+        }
+    </style> -->
+
     <!-- LINE -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -35,7 +73,7 @@
     <div
         class="container-fluid position-fixed bg-default-teacher d-flex justify-content-center align-items-center nav-top">
         <button onclick="onBack()" style="width:50px" type="button" class="btn align-self-center btn-exit text-white">
-            <img src="image/icon/student/close.png">
+            <img src="../image/icon/student/close.png">
         </button>
         <div class="align-self-center text-center flex-fill div-title fs-20">一般課程</div>
         <button onclick="onSave()" style="width:50px;" type="button"
@@ -57,7 +95,7 @@
                     <div class="d-flex flex-row bg-white border border-secondary rounded">
                         <div class="text-dark flex-fill align-self-center ms-4" id="input-type"></div>
                         <button onclick="selectType()" type="button" class="btn align-self-center text-center">
-                            <img src="./image/icon/student/down.png">
+                            <img src="../image/icon/student/down.png">
                             </img>
                         </button>
                     </div>
@@ -68,7 +106,7 @@
                     <div class="d-flex flex-row bg-white border border-secondary rounded">
                         <div class="text-dark flex-fill align-self-center ms-4" id="input-level"></div>
                         <button onclick="selectLevel()" type="button" class="btn align-self-center text-center">
-                            <img src="./image/icon/student/down.png">
+                            <img src="../image/icon/student/down.png">
                             </img>
                         </button>
                     </div>
@@ -79,7 +117,7 @@
                     <div class="d-flex flex-row bg-white border border-secondary rounded">
                         <div class="text-dark flex-fill align-self-center ms-4" id="input-teacher"></div>
                         <button onclick="selectTeacher()" type="button" class="btn align-self-center text-center">
-                            <img src="./image/icon/student/down.png">
+                            <img src="../image/icon/student/down.png">
                             </img>
                         </button>
                     </div>
@@ -90,7 +128,7 @@
                     <div class="d-flex flex-row bg-white border border-secondary rounded">
                         <div class="text-dark flex-fill align-self-center ms-4" id="input-weekday"></div>
                         <button onclick="selectWeekday()" type="button" class="btn align-self-center text-center">
-                            <img src="./image/icon/student/down.png">
+                            <img src="../image/icon/student/down.png">
                             </img>
                         </button>
                     </div>
@@ -237,7 +275,7 @@
 
         function fetchUser() {
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
             axios.get(`${host}/ccdartstudio/me`, {
                 headers: {
                     'Authorization': `${token}`
@@ -256,7 +294,7 @@
         }
 
         function fetchData() {
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
             let searchParams = new URLSearchParams(window.location.search)
             let course_id = searchParams.get('course_id')
 
@@ -402,44 +440,42 @@
             let course_id = searchParams.get('course_id')
 
             if (course_id == 'add') {
-                Swal.fire({
+                // Swal.fire({
 
-                    customClass: {
-                        cancelButton: 'order-1',
-                        confirmButton: 'order-2',
-                    },
-                    title: '是否返回課程列表',
-                    showCancelButton: true,
-                    cancelButtonText: '否',
-                    confirmButtonText: '是',
+                //     customClass: {
+                //         cancelButton: 'order-1',
+                //         confirmButton: 'order-2',
+                //     },
+                //     title: '是否返回課程列表',
+                //     showCancelButton: true,
+                //     cancelButtonText: '否',
+                //     confirmButtonText: '是',
 
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        window.location.href = `teacher-yoga-list.html?tab=course`;
+                // }).then((result) => {
 
-                    }
-                })
+                //     if (result.isConfirmed) {
+                window.location.href = `yoga-list.html?tab=course`;
+
+                // }
+                // })
             } else {
-                Swal.fire({
+                // Swal.fire({
+                //     customClass: {
+                //         cancelButton: 'order-1',
+                //         confirmButton: 'order-2',
+                //     },
+                //     title: '是否返回課程',
+                //     showCancelButton: true,
+                //     cancelButtonText: '否',
+                //     confirmButtonText: '是',
 
-                    customClass: {
-                        cancelButton: 'order-1',
-                        confirmButton: 'order-2',
-                    },
-                    title: '是否返回課程',
-                    showCancelButton: true,
-                    cancelButtonText: '否',
-                    confirmButtonText: '是',
+                // }).then((result) => {
 
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        // window.location.href = `teacher-class-list.html?tab=course`;
-                        window.location.href = `teacher-yoga-activity.html?course_id=${course_id}`;
+                //     if (result.isConfirmed) {
+                window.location.href = `class-activity.html?course_id=${course_id}`;
 
-                    }
-                })
+                //     }
+                // })
             }
 
 
@@ -447,7 +483,7 @@
 
         function sendRequest(data) {
 
-            const token = liff.getIDToken();
+            let token = liff.getIDToken();
 
             let searchParams = new URLSearchParams(window.location.search)
             let course_id = searchParams.get('course_id')
@@ -472,7 +508,7 @@
 
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
-                            window.location.href = `teacher-yoga-list.html?tab=course`;
+                            window.location.href = `yoga-list.html?tab=course`;
 
                         })
                     })
@@ -497,7 +533,7 @@
 
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
-                            // window.location.href = `teacher-yoga-activity.html?course_id=${course_id}`;
+
 
                         })
                     })
